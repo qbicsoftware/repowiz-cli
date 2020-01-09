@@ -7,13 +7,14 @@
 		<groupId>life.qbic</groupId>
 		<artifactId>cli-parent-pom</artifactId>
 		<version>1.4.0</version>
+		<!-- update to 2.1.0 -->
 	</parent>
 	<groupId>life.qbic</groupId>
 	<artifactId>repowiz</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>RepoWiz</name>
 	<url>http://github.com/qbicsoftware/repowiz</url>
-	<description>Application that helps to find a suitable repository to deposite research data for open access and to prepare the submission</description>
+	<description>Command-line utility to...</description>
 	<packaging>jar</packaging>
 	<!-- we only need to tell maven where to find our parent pom and other QBiC dependencies -->
 	<repositories>
@@ -51,11 +52,6 @@
 			<artifactId>core-utils-lib</artifactId>
 			<version>1.0.0</version>
 		</dependency>
-		<dependency>
-			<groupId>life.qbic</groupId>
-			<artifactId>javafx-utils-lib</artifactId>
-			<version>1.0.0</version>
-		</dependency>
 	</dependencies>
 	
 	<build>
@@ -72,7 +68,7 @@
 						<configuration>
 							<archive>
 								<manifest>
-									<mainClass>life.qbic.gui.SubmissionEntryPoint</mainClass>
+									<mainClass>life.qbic.application.cli.RepowizEntryPoint</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>
