@@ -1,4 +1,4 @@
-package life.qbic.application.cli;
+package life.qbic.repowiz.application.cli;
 
 import life.qbic.cli.AbstractCommand;
 import picocli.CommandLine.Command;

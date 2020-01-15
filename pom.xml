@@ -10,7 +10,7 @@
 		<!-- update to 2.1.0 -->
 	</parent>
 	<groupId>life.qbic</groupId>
-	<artifactId>repowiz</artifactId>
+	<artifactId>RepoWiz</artifactId> <!-- RepoWiz -->
 	<version>1.0.0-SNAPSHOT</version>
 	<name>RepoWiz</name>
 	<url>http://github.com/qbicsoftware/repowiz</url>
@@ -68,7 +68,7 @@
 						<configuration>
 							<archive>
 								<manifest>
-									<mainClass>life.qbic.application.cli.RepowizEntryPoint</mainClass>
+									<mainClass>life.qbic.repowiz.application.cli.RepowizEntryPoint</mainClass>
 								</manifest>
 							</archive>
 							<descriptorRefs>

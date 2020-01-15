@@ -1,4 +1,4 @@
-package life.qbic.application.cli;
+package life.qbic.repowiz.application.cli;
 
 import life.qbic.cli.ToolExecutor;
 import org.apache.logging.log4j.LogManager;
