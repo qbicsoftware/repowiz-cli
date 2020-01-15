@@ -3,6 +3,11 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<modules>
+		<module>repowiz-domain</module>
+		<module>repowiz-infrastructure</module>
+		<module>repowiz-application</module>
+	</modules>
 	<parent>
 		<groupId>life.qbic</groupId>
 		<artifactId>cli-parent-pom</artifactId>
@@ -10,7 +15,7 @@
 		<!-- update to 2.1.0 -->
 	</parent>
 	<groupId>life.qbic</groupId>
-	<artifactId>RepoWiz</artifactId> <!-- RepoWiz -->
+	<artifactId>repowiz-cli</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>RepoWiz</name>
 	<url>http://github.com/qbicsoftware/repowiz</url>
