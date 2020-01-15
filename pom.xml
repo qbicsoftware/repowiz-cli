@@ -15,7 +15,7 @@
 	<name>RepoWiz</name>
 	<url>http://github.com/qbicsoftware/repowiz</url>
 	<description>Command-line utility to...</description>
-	<packaging>jar</packaging>
+	<packaging>pom</packaging>
 	<!-- we only need to tell maven where to find our parent pom and other QBiC dependencies -->
 	<repositories>
 		<repository>
