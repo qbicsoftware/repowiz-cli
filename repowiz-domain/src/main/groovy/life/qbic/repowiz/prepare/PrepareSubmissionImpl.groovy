@@ -1,4 +1,4 @@
-package life.qbic.repowiz
+package life.qbic.repowiz.prepare
 
 class PrepareSubmissionImpl {
 
