@@ -18,4 +18,8 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput{
     def prepareSubmissionForProject(String projectCode) {
         return null
     }
+
+    def isAPISubmission(String repo){
+
+    }
 }

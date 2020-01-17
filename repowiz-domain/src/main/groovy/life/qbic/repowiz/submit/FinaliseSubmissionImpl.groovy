@@ -11,12 +11,12 @@ class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission{
     }
 
     @Override
-    def checkSubmissionValidity(Object metadata) {
+    def checkSubmissionValidity(HashMap<String,String> metadata) {
         return null
     }
 
     @Override
-    def createSubmissionOverview() {
+    def createSubmissionOverview(HashMap<String, String> metadata, List<String> files) {
         return null
     }
 
