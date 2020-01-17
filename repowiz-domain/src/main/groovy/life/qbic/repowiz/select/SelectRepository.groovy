@@ -1,19 +1,19 @@
-package life.qbic.repowiz.find
+package life.qbic.repowiz.select
 
 import life.qbic.repowiz.ProjectSpecification
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionSpecificationInput
 
-class FindMatchingRepositories implements SubmissionSpecificationInput{
+class SelectRepository implements SubmissionSpecificationInput{
 
-    MatchingRepositoriesOutput output
     ProjectSpecification projectSpecification
     RepositoryDescription repositoryDescription
+    RepositorySpecificationOutput output
 
-    FindMatchingRepositories(MatchingRepositoriesOutput output, ProjectSpecification projectSpec, RepositoryDescription repoDescription){
+    SelectRepository(RepositorySpecificationOutput output, RepositoryDescription description, ProjectSpecification project){
+        projectSpecification = project
+        repositoryDescription = description
         this.output = output
-        this.projectSpecification = projectSpec
-        this.repositoryDescription = repoDescription
     }
 
     @Override

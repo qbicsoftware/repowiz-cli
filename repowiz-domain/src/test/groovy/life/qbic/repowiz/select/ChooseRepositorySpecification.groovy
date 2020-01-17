@@ -1,4 +1,4 @@
-package life.qbic.repowiz.choose
+package life.qbic.repowiz.select
 
 import spock.lang.Specification
 

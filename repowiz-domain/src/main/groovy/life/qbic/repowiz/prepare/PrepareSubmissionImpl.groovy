@@ -1,7 +1,21 @@
 package life.qbic.repowiz.prepare
 
-class PrepareSubmissionImpl {
+import life.qbic.repowiz.RepositoryUploadService
 
-    String test
+class PrepareSubmissionImpl implements PrepareSubmissionInput{
 
+    MappedMetadata mappedMetadata
+    ProjectSubmissionOutput output
+    RepositoryUploadService uploadService
+
+    PrepareSubmissionImpl(MappedMetadata mappedMetadata,ProjectSubmissionOutput output,RepositoryUploadService uploadService){
+        this.mappedMetadata = mappedMetadata
+        this.output = output
+        this.uploadService = uploadService
+    }
+
+    @Override
+    def prepareSubmissionForProject(String projectCode) {
+        return null
+    }
 }
