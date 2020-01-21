@@ -1,49 +1,42 @@
 package life.qbic.repowiz.select
 
-import life.qbic.repowiz.DatabaseProjectInformation
+import life.qbic.repowiz.ProjectDetails
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import spock.lang.Specification
 
 class SelectRepositorySpecification extends Specification{
 
-    def projectSpecification = Mock(DatabaseProjectInformation)
+    def projectSpecification = Mock(ProjectDetails)
     def repositoryDescription = Mock(RepositoryDescription)
-    def output = Mock(RepositorySpecificationOutput)
+    def output = Mock(SelectRepositoryOutput)
 
     def selectRepository = new SelectRepository(projectSpecification,repositoryDescription,output)
 
-    def "If repository not found an exception is thrown"(){ //meaningful test?
-        when:
-        selectRepository.getRepositoryInfo(null)
 
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-    def "non-matching repository and data produce a warning"(){
+    def "Specified Repository must be one of the suggested repositories"(){
         given:
-        def suggestedRepos = ["ENA","SRA"]
-        def definedRepo = "GEO"
+        Repository ena = new Repository("ena","sequence data",["sequencing","genomics"],true,[])
+        List<Repository> repos = [ena]
+        String repoName = "ena"
 
         when:
-        def result = selectRepository.repoAcceptsProjectData(suggestedRepos,definedRepo)
-
-        then:
-        thrown(IllegalArgumentException)
-
-    }
-
-    def "matching repository and data produce are detected"(){
-        given:
-        def suggestedRepos = ["ENA","SRA"]
-        def definedRepo = "ENA"
-
-        when:
-        def result = selectRepository.repoAcceptsProjectData(suggestedRepos,definedRepo)
+        def result = selectRepository.isSuggestedRepository(repoName,repos)
 
         then:
         result
     }
 
+    def "Any Repository can be chosen if there are no repository suggested"(){
+        given:
+        List<Repository> repos = []
+        String repoName = "ena"
+
+        when:
+        def result = selectRepository.isSuggestedRepository(repoName,repos)
+
+        then:
+        result
+    }
 
 }

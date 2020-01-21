@@ -1,18 +1,43 @@
 package life.qbic.repowiz.find
 
-import life.qbic.repowiz.DatabaseProjectInformation
+
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import spock.lang.Specification
 
 class FindMatchingRepositoriesSpecification extends Specification {
 
     def mockedMatchingRepositoriesOutput = Mock(MatchingRepositoriesOutput)
-    def mockedProjectSpecification = Mock(DatabaseProjectInformation)
     def mockedRepositoryDescription = Mock(RepositoryDescription)
 
-    def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedProjectSpecification,mockedRepositoryDescription)
+    def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedRepositoryDescription)
 
-    def "wrong project identifier is detected as wrong"(){
+    def "valid submission specification produces a list of matching repositories"(){
+        given:
+        HashMap<String,String> submissionSpecification = new HashMap<>() //valid example
+        //todo fill
+
+        when:
+        List<Repository> result = findMatchingRepositories.suggestRepos(submissionSpecification)
+        //todo mock output of repository description
+
+        then:
+        result.size() > 0
+    }
+
+    def "if there is no matching repository the system gives a warning"(){
+        given:
+        HashMap<String,String> submissionSpecification = new HashMap<>()
+
+        when:
+        //something
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+
+   /** def "wrong project identifier is detected as wrong"(){
         given:
         def projectCode = "XXXXX"
 
@@ -51,6 +76,6 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
         then:
         out = null
-    }
+    }*/
 
 }

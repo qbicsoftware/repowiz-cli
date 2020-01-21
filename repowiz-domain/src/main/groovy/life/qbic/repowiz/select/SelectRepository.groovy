@@ -1,32 +1,25 @@
 package life.qbic.repowiz.select
 
-import life.qbic.repowiz.DatabaseProjectInformation
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.SubmissionSpecificationInput
 
-class SelectRepository implements SubmissionSpecificationInput{
+class SelectRepository implements SelectRepositoryInput {
 
-    DatabaseProjectInformation projectSpecification
     RepositoryDescription repositoryDescription
-    RepositorySpecificationOutput output
+    SelectRepositoryOutput output
 
-    SelectRepository(RepositorySpecificationOutput output, RepositoryDescription description, DatabaseProjectInformation project){
-        projectSpecification = project
+    SelectRepository(SelectRepositoryOutput output, RepositoryDescription description) {
         repositoryDescription = description
         this.output = output
     }
 
     @Override
-    def suggestReposForProject(String projectCode) {
+    def selectRepository(String repository) {
         return null
     }
 
     @Override
-    def getRepositoryInfo(String repository) {
+    def isSuggestedRepository(String repo, List<Repository> suggestedRepos) {
         return null
-    }
-
-    def repoAcceptsProjectData(List<String> suggestedRepos, String selectedRepo){ //check if chosen repository accepts the data of the project
-
     }
 }

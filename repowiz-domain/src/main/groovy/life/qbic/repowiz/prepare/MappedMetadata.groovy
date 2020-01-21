@@ -2,6 +2,7 @@ package life.qbic.repowiz.prepare
 
 interface MappedMetadata {
 
-    List<String> mapMetadataToRepository(String repository, List<String> metadataIdentifier)
+    String mapMetadataTerm(String repository, String metadataTerm)
+    //or from database term to repowiz term and from repowiz term to repository term
 
 }

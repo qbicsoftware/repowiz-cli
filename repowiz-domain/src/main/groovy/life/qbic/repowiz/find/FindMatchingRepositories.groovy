@@ -1,33 +1,20 @@
 package life.qbic.repowiz.find
 
-import life.qbic.repowiz.DatabaseProjectInformation
-import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.SubmissionSpecificationInput
 
-class FindMatchingRepositories implements SubmissionSpecificationInput{
+import life.qbic.repowiz.RepositoryDescription
+
+class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
     MatchingRepositoriesOutput output
-    DatabaseProjectInformation projectInformation
     RepositoryDescription repositoryDescription
 
-    FindMatchingRepositories(MatchingRepositoriesOutput output, DatabaseProjectInformation projectInfo, RepositoryDescription repoDescription){
+    FindMatchingRepositories(MatchingRepositoriesOutput output, RepositoryDescription repoDescription){
         this.output = output
-        this.projectInformation = projectInfo
         this.repositoryDescription = repoDescription
     }
 
     @Override
-    def suggestReposForProject(String projectID) {
-        return null
-    }
-
-    def isProjectIdValid(String projectID){
-
-        false
-    }
-
-    @Override
-    def getRepositoryInfo(String repository) {
+    def suggestRepos(HashMap<String,String> submissionSpecification) {
         return null
     }
 }

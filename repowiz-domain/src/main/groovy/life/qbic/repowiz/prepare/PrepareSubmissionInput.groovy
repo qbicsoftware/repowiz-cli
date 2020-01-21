@@ -1,6 +1,8 @@
 package life.qbic.repowiz.prepare
 
+import life.qbic.repowiz.Repository
+
 interface PrepareSubmissionInput {
 
-    def prepareSubmissionForProject(String projectCode) //need ProjectCode?
+    def prepareSubmissionToRepository(Repository repository)
 }
