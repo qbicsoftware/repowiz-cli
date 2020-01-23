@@ -4,6 +4,6 @@ import life.qbic.repowiz.Repository
 
 interface MatchingRepositoriesOutput {
 
-    def repositoryList(List<Repository>repositories)
+    def transferRepositoryList(List<Repository>repositories)
 
 }

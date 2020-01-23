@@ -1,6 +1,7 @@
 package life.qbic.repowiz.application.cli;
 
 import life.qbic.cli.AbstractCommand;
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 /**
@@ -10,6 +11,9 @@ import picocli.CommandLine.Command;
    name="Repowiz",
    description="Command-line utility to...")
 public class RepowizCommand extends AbstractCommand {
+    @CommandLine.Option(names={"-conf", "--config"}, description="RepoWiz config file", required=true)
+    String conf;
+
     // TODO: add your command-line options as members of this class using picocli's annotations, for instance:
     //
     // @Option(names={"-u", "--url"}, description="openBIS server URL.", required=true)

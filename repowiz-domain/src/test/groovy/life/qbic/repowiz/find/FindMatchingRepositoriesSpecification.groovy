@@ -12,7 +12,8 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedRepositoryDescription)
 
-    def "valid submission specification produces a list of matching repositories"(){
+    /**
+     * def "valid submission specification produces a list of matching repositories"(){
         given:
         HashMap<String,String> submissionSpecification = new HashMap<>() //valid example
         //todo fill
@@ -23,9 +24,10 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
         then:
         result.size() > 0
-    }
+    }*/
 
-    def "if there is no matching repository the system gives a warning"(){
+   /**
+    * def "if there is no matching repository the system gives a warning"(){
         given:
         HashMap<String,String> submissionSpecification = new HashMap<>()
 
@@ -34,10 +36,11 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
         then:
         thrown(IllegalArgumentException)
-    }
+    }*/
 
 
-   /** def "wrong project identifier is detected as wrong"(){
+   /**
+    * def "wrong project identifier is detected as wrong"(){
         given:
         def projectCode = "XXXXX"
 
@@ -77,5 +80,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         then:
         out = null
     }*/
+
+
 
 }

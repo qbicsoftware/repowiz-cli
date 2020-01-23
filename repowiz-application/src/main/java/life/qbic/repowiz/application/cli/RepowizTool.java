@@ -25,9 +25,8 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         // get the parsed command-line arguments
         final RepowizCommand command = super.getCommand();
 
-        // TODO: do something useful with the obtained command.
-        //
-        
+        //command.conf
+
     }
 
     // TODO: override the shutdown() method if you are implementing a daemon and want to take advantage of a shutdown hook for clean-up tasks
