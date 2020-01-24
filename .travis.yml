@@ -58,7 +58,9 @@ deploy:
   # the version string and version of dependencies are validated (no snapshots allowed)
 - skip_cleanup: true
   provider: script
-  script: mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy -DskipITs
+  script: mvn build-helper:parse-version versions:set -DnewVersion=$TRAVIS_TAG -DprocessAllModules && mvn versions:commit &&
+    mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy -DskipITs
+  #mvn --quiet --activate-profiles !development-build,release-build --settings .travis.settings.xml deploy -DskipITs
   on:
     condition: '"$TRAVIS_EVENT_TYPE" = "push"'
     tags: true
