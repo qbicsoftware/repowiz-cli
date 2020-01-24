@@ -19,7 +19,7 @@ class SelectRepository implements SelectRepositoryInput {
     }
 
     @Override
-    def isSuggestedRepository(String repo, List<Repository> suggestedRepos) {
+    boolean suggestedRepository(List<Repository> suggestedRepos) {
         return null
     }
 }
