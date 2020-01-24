@@ -7,7 +7,7 @@ class FinaliseSubmissionSpecification extends Specification{
     def submissionOut = Mock(SubmissionOutput)
     def finaliseSubmission = new FinaliseSubmissionImpl(submissionOut)
 
-    def "Notification for failed submission"(){
+   /** def "Notification for failed submission"(){
         when:
         finaliseSubmission.submitData()
 
@@ -25,8 +25,7 @@ class FinaliseSubmissionSpecification extends Specification{
         then:
         result
     }
-
-
+ */
     
 
 }
