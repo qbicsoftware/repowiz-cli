@@ -10,7 +10,7 @@ class SelectRepositorySpecification extends Specification{
     def repositoryDescription = Mock(RepositoryDescription)
     def output = Mock(SelectRepositoryOutput)
 
-    def selectRepository = new SelectRepository(repositoryDescription,output)
+    def selectRepository = new SelectRepository(output,repositoryDescription)
 
 
 }

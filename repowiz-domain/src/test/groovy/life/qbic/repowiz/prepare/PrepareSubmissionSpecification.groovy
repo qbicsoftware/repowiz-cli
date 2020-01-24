@@ -12,9 +12,9 @@ class PrepareSubmissionSpecification extends Specification{
 
     def prepareSubmission = new PrepareSubmissionImpl(mockedMappedMetadata,mockedOutput,details)
 
-    def "Each project sample needs an output file"(){
+    /**def "Each project sample needs an output file"(){
 
-    }
+    }*/
 
 
 }
