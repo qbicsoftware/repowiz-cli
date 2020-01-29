@@ -3,6 +3,7 @@ package life.qbic.repowiz.find
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
+import life.qbic.repowiz.tree.DecisionTree
 import spock.lang.Specification
 
 class FindMatchingRepositoriesSpecification extends Specification {
@@ -11,6 +12,24 @@ class FindMatchingRepositoriesSpecification extends Specification {
     def mockedRepositoryDescription = Mock(RepositoryDescription)
 
     def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedRepositoryDescription)
+
+    def "decision tree is valid"(){
+        given:
+        DecisionTree tree = new DecisionTree()
+        tree.buildTree()
+
+        HashMap<String,String> map = new HashMap<>()
+        map.put("organism","human")
+        map.put("access_type","open")
+        map.put("data_type","dna_rna")
+        map.put("experiment_type","raw_reads")
+
+        when:
+        tree.getRepository(map)
+
+        then:
+        "ena"
+    }
 
     /**
      * def "valid submission specification produces a list of matching repositories"(){

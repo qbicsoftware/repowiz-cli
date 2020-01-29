@@ -14,10 +14,10 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
     @Override
-    def suggestRepos(HashMap<String,String> submissionSpecification) {
+    def suggestRepos(List<SubmissionTypes> submissionSpecification) {
         //find repositories for submission specification
         List<Repository> foundRepos = repositoryDescription.findRepository(submissionSpecification)
         //forward found repositories
-        output.repositoryList(foundRepos)
+        output.transferRepositoryList(foundRepos)
     }
 }

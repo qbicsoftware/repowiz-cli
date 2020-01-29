@@ -4,18 +4,18 @@ class Repository {
 
     String name
     String repositoryType
-    List<String> studyType
-    boolean api
-    List<String> minRequirements
+    List<String> studyTypes
+    String uploadType
+    List<String> minRequirements //todo is that really a list or is other data structure more useful?
 
     HashMap<String,String> characteristics
 
 
-    Repository(String name,String repositoryType, List<String> studyType, boolean api, List<String> minimalRequirements){
+    Repository(String name,String repositoryType, List<String> studyTypes, String uploadType, List<String> minimalRequirements){
         this.name = name
         this.repositoryType = repositoryType
-        this.studyType = studyType
-        this.api = api
+        this.studyTypes = studyTypes
+        this.uploadType = uploadType
         this.minRequirements = minimalRequirements
     }
 
@@ -24,5 +24,4 @@ class Repository {
 
     }
 
-    //add getter and setter
 }
