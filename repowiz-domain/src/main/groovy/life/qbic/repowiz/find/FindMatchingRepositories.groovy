@@ -2,6 +2,7 @@ package life.qbic.repowiz.find
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
+import life.qbic.repowiz.tree.DecisionTree
 
 class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
@@ -14,10 +15,12 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
     @Override
-    def suggestRepos(List<SubmissionTypes> submissionSpecification) {
-        //find repositories for submission specification
-        List<Repository> foundRepos = repositoryDescription.findRepository(submissionSpecification)
-        //forward found repositories
-        output.transferRepositoryList(foundRepos)
+    def suggestRepos(HashMap<String,String> submissionSpecification) {
+        DecisionTree tree = new DecisionTree()
+        List<String> matchingRepos = tree.findRepository(submissionSpecification)
+
+        List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
+
+        output.transferRepositoryList(repositories)
     }
 }

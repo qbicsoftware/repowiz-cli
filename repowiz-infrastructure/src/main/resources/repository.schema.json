@@ -1,0 +1,63 @@
+{ "$schema": "http://json-schema.org/schema#",
+  "title": "repository description",
+  "description": "Description schema for different types of repositories for the tool RepoWiz",
+  "type": "object",
+  "properties": {
+    "repositoryName": {
+      "description": "Name of the repository",
+      "type": "string"
+    },
+    "size": {
+      "description": "An estimate about the size of the repository. How many data sets are deposited in the repository?",
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "integer"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "uploadType": {
+      "description": "Upload type of the repository, is there an API or is it a submission based on a template",
+      "type": "string",
+      "enum": [
+        "api",
+        "template"
+      ]
+    },
+    "experimentType": {
+      "description": "List of accepted experiment types like e.g microarray data",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataType": {
+      "description": "List of accepted data types like e.g dna/rna",
+      "type": "string",
+      "enum": [
+        "dna_rna",
+        "protein",
+        "expression_data",
+        "variants"
+      ]
+    },
+    "minimalRequirements": {
+      "description": "Minimal requirements for an upload",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subsequentSteps": {
+      "description": "What is to be done after a submission with RepoWiz",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
+

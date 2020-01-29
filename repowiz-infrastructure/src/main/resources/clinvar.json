@@ -1,0 +1,8 @@
+{
+  "repositoryName": "ClinVar",
+  "uploadType": "template",
+  "experimentType": ["clinical variants", "single variants", "list of variants"],
+  "dataType": "variants",
+  "minimalRequirements": ["",""],
+  "subsequentSteps": ["",""]
+}
