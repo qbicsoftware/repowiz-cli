@@ -2,7 +2,11 @@ package life.qbic.repowiz.tree
 
 class DecisionTree {
 
-    Node<String> root
+    private Node<String> root
+
+    DecisionTree(){
+        buildTree()
+    }
 
     void buildTree(){
         root = new Node<String>("Root");
@@ -179,35 +183,56 @@ class DecisionTree {
 
     }
 
-    def getRepository(HashMap<String,String> submissionType){
+    def findRepository(HashMap<String,String> submissionType){
 
+        if(submissionType.get("organism") == "human"){
+            return getRepository(leafNodeForHuman(submissionType))
+        }
+        getRepository(leafNodeForNoneHuman(submissionType))
+    }
+
+    List<String> getRepository(Node<String> leafNode){
+        List<String> repos = []
+
+        leafNode.children.each {
+            repos << it.data
+        }
+        repos
+    }
+
+    Node<String> leafNodeForHuman(HashMap<String,String> submissionType) throws NullPointerException{
         String org = submissionType.get("organism")
         String access = submissionType.get("access_type")
         String data = submissionType.get("data_type")
         String experiment = submissionType.get("experiment_type")
 
-        try{
-            Node<String> org_ = findNode(root,org)
-            Node<String> access_ = findNode(org_,access)
-            Node<String> data_ = findNode(access_,data)
-            Node<String> exp_ = findNode(data_,experiment)
+        Node<String> org_ = findMatchingNode(root,org)
+        Node<String> access_ = findMatchingNode(org_,access)
+        Node<String> data_ = findMatchingNode(access_,data)
+        Node<String> exp_ = findMatchingNode(data_,experiment)
 
-            exp_.data
-        }catch(NullPointerException e){
-            System.err.println "No repository found for required submission type"
-            e.printStackTrace()
-        }
-
+        exp_
     }
 
-    Node<String> findNode(Node<String> start, String type) throws NullPointerException{
+    Node<String> leafNodeForNoneHuman(HashMap<String,String> submissionType) throws NullPointerException{
+        String org = submissionType.get("organism")
+        String data = submissionType.get("data_type")
+        String experiment = submissionType.get("experiment_type")
+
+        Node<String> org_ = findMatchingNode(root,org)
+        Node<String> data_ = findMatchingNode(org_,data)
+        Node<String> exp_ = findMatchingNode(data_,experiment)
+
+        exp_
+    }
+
+    Node<String> findMatchingNode(Node<String> parentNode, String submissionType) throws NullPointerException{
         Node<String> match = null
 
-        List<Node<String>> childrenNodes = start.children
+        List<Node<String>> childrenNodes = parentNode.children
 
         childrenNodes.each {
-            if(it.data == type){
-                print "return "+it.data
+            if(it.data == submissionType){
                 match = it
             }
         }
