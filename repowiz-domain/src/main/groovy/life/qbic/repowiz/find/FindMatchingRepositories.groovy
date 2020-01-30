@@ -57,6 +57,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
             decisionPossibilities << it.data
         }
 
+        output.transferDecisionStack(decisionStack)
         output.transferAnswerPossibilities(decisionPossibilities)
     }
 
