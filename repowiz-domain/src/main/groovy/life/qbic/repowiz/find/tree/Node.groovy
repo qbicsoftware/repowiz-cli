@@ -1,4 +1,4 @@
-package life.qbic.repowiz.tree
+package life.qbic.repowiz.find.tree
 
 class Node<T> {
 

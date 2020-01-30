@@ -1,0 +1,10 @@
+{
+  "repositoryName": "Geo",
+  "uploadType": "template",
+  "experimentType": ["Microarray","HTS","other (NanoString, RT-PCR, SAGE)"],
+  "dataType": "dna_rna",
+  "keyInfo": ["miame",""],
+  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"],
+  "size": {"number":5 , "unit":"ddd"}
+}
+

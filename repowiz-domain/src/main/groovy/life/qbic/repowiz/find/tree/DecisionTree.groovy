@@ -1,4 +1,4 @@
-package life.qbic.repowiz.tree
+package life.qbic.repowiz.find.tree
 
 class DecisionTree {
 
@@ -183,6 +183,24 @@ class DecisionTree {
 
     }
 
+    List<Node> getFirstDecisionLevel(){
+        root.children
+    }
+
+    def getRoot(){
+        root
+    }
+
+    def getChildrenData(Node parent){
+        List childrenData = []
+
+        parent.children.each {
+            childrenData << it.data
+        }
+        childrenData
+    }
+
+    /**
     def findRepository(HashMap<String,String> submissionType){
 
         if(submissionType.get("organism") == "human"){
@@ -237,6 +255,8 @@ class DecisionTree {
             }
         }
         match
-    }
+    }*/
+
+
 
 }

@@ -1,9 +1,0 @@
-{
-  "repositoryName": "Geo - Gene Expression Omnibus",
-  "uploadType": "template",
-  "experimentType": ["Microarray","HTS","other (NanoString, RT-PCR, SAGE)"],
-  "dataType": "dna_rna",
-  "minimalRequirements": ["miame",""],
-  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
-}
-

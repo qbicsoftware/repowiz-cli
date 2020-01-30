@@ -2,7 +2,7 @@ package life.qbic.repowiz.find
 
 
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.tree.DecisionTree
+import life.qbic.repowiz.find.tree.DecisionTree
 import spock.lang.Specification
 
 class FindMatchingRepositoriesSpecification extends Specification {
@@ -12,6 +12,67 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedRepositoryDescription)
 
+    def "suggests the correct organisms"(){
+        when:
+        findMatchingRepositories.startGuide()
+        def node = findMatchingRepositories.currentDecisionLevel
+        def res = findMatchingRepositories.tree.getChildrenData(node)
+
+        then:
+        res.sort() == ["human", "other", "environmental community", "plants"].sort()
+    }
+
+    def "suggest access type for human as organism"(){
+        when:
+        findMatchingRepositories.nextAnswerPossibility("human")
+        def node = findMatchingRepositories.currentDecisionLevel
+        def res = findMatchingRepositories.tree.getChildrenData(node)
+
+        then:
+        res.sort() == ["open","controlled"].sort()
+    }
+
+    def "suggest data type for other as organism"(){
+        when:
+        findMatchingRepositories.nextAnswerPossibility("other")
+        def node = findMatchingRepositories.currentDecisionLevel
+        def res = findMatchingRepositories.tree.getChildrenData(node)
+
+        then:
+        res.sort() == ["variants","expression_data","dna_rna","protein"].sort()
+    }
+
+    def "suggest experiment type for other"(){
+        given:
+        findMatchingRepositories.nextAnswerPossibility("other")
+
+        when:
+        findMatchingRepositories.nextAnswerPossibility("variants")
+
+        def node = findMatchingRepositories.currentDecisionLevel
+        def res = findMatchingRepositories.tree.getChildrenData(node)
+
+        then:
+        res.sort() == ["structural_variants","genomic_variants"].sort()
+    }
+
+    def "suggest repository type for other,variants,structural"(){
+        given:
+        findMatchingRepositories.nextAnswerPossibility("other")
+        findMatchingRepositories.nextAnswerPossibility("variants")
+
+        when:
+        findMatchingRepositories.nextAnswerPossibility("structural_variants")
+
+        def node = findMatchingRepositories.currentDecisionLevel
+        def res = findMatchingRepositories.tree.getChildrenData(node)
+
+        then:
+        res.sort() == ["eva","dbvar"].sort()
+    }
+
+
+    /**
     def "correct submission type specifications leads to correct repository"(){
         given:
         DecisionTree tree = new DecisionTree()
@@ -29,7 +90,9 @@ class FindMatchingRepositoriesSpecification extends Specification {
         ["ena","sra"].sort() == res.sort()
     }
 
-    def "wrong submission type specification leads to error"(){
+
+
+     def "wrong submission type specification leads to error"(){
         given:
         DecisionTree tree = new DecisionTree()
 
@@ -45,8 +108,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         thrown(NullPointerException)
     }
 
-   /**
-    * def "wrong project identifier is detected as wrong"(){
+    def "wrong project identifier is detected as wrong"(){
         given:
         def projectCode = "XXXXX"
 

@@ -12,6 +12,16 @@ class SubmissionHandler implements MatchingRepositoriesOutput{
     }
 
     @Override
+    def transferAnswerPossibilities(List<String> choices) {
+        return null
+    }
+
+    @Override
+    def transferDecisionStack(List<String> decisions) {
+        return null
+    }
+
+    @Override
     def transferRepositoryList(List<Repository> repositories) { //
         //user choose valid repository
         repositoryInput.suggestedRepository(repositories)

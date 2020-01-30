@@ -34,18 +34,8 @@
         "type": "string"
       }
     },
-    "dataType": {
-      "description": "List of accepted data types like e.g dna/rna",
-      "type": "string",
-      "enum": [
-        "dna_rna",
-        "protein",
-        "expression_data",
-        "variants"
-      ]
-    },
-    "minimalRequirements": {
-      "description": "Minimal requirements for an upload",
+    "keyInfo": {
+      "description": "Information about essential/absolute requirements for a successful upload",
       "type": "array",
       "items": {
         "type": "string"
