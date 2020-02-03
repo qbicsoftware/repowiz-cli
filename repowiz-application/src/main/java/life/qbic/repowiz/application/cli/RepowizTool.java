@@ -2,14 +2,14 @@ package life.qbic.repowiz.application.cli;
 
 import life.qbic.cli.QBiCTool;
 import life.qbic.repowiz.*;
+import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.find.FindMatchingRepositories;
+import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.find.RepositoryDatabaseConnector;
-import life.qbic.repowiz.select.SelectRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
-import java.net.URL;
+import java.util.Scanner;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -32,23 +32,37 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         // get the parsed command-line arguments
         final RepowizCommand command = super.getCommand();
 
-        CommandlineOutput commandlineOutput = new CommandlineOutput();
-        SubmissionPresenter presenter = new SubmissionPresenter(commandlineOutput);
+        // set up infrastructure classes
+        CommandlineView commandlineView = new RepoWizView();
+        SubmissionPresenter presenter = new SubmissionPresenter(commandlineView);
 
-        SubmissionHandler handler = new SubmissionHandler(presenter);
+        MatchingRepositoriesOutput matchingRepositoriesOutput = new SubmissionHandler(presenter);
 
+        // set up database
         String db = "/repositories";
         RepositoryDescription repoDescription = new RepositoryDatabaseConnector(db);
 
-        FindMatchingRepositories findRepository = new FindMatchingRepositories(handler,repoDescription);
+        //set up first use case
+        FindMatchingRepositories findRepository = new FindMatchingRepositories(matchingRepositoriesOutput,repoDescription);
 
         //#############
         SubmissionController controller = new SubmissionController(command.conf,findRepository);
 
-        controller.findRepository();
+       // Scanner scan = new Scanner(System.in);
+      //  System.out.println("please say something: ");
+      //  String out = scan.nextLine();
 
-        // transfer conf content about login stuff to the right class
-        // command.conf
+      //  System.out.println(out);
+
+        if(command.guide){
+            //input
+            controller.findRepository();
+            //output
+        }else{
+            //controller.chooseRepo(command.selectedRepository)
+        }
+
+
 
     }
 }

@@ -18,12 +18,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput{
     }
 
     @Override
-    def transferAnswerPossibilities(List<String> choices) {
+    String transferAnswerPossibilities(List<String> choices) {
         presenter.displayChoice(choices)
     }
 
     @Override
-    def transferDecisionStack(List<String> decisions) {
+    String transferDecisionStack(List<String> decisions) {
         presenter.displayDecisions(decisions)
     }
 

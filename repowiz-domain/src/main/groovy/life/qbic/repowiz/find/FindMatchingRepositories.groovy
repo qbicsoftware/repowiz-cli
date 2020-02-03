@@ -29,14 +29,15 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         tree.getFirstDecisionLevel().each {
             organisms << it.data
         }
-        output.transferAnswerPossibilities(organisms)
 
-        organisms
+        String user_answer = output.transferAnswerPossibilities(organisms)
+        nextAnswerPossibility(user_answer)
     }
 
     @Override
     def nextAnswerPossibility(String answer) {
         decisionStack.add(answer)
+        output.transferDecisionStack(decisionStack)
 
         if(currentDecisionLevel.getChildren().get(0).leaf){
             leafDecision()
@@ -57,8 +58,8 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
             decisionPossibilities << it.data
         }
 
-        output.transferDecisionStack(decisionStack)
-        output.transferAnswerPossibilities(decisionPossibilities)
+        String answer = output.transferAnswerPossibilities(decisionPossibilities)
+        nextAnswerPossibility(answer)
     }
 
     def leafDecision(){
@@ -67,7 +68,6 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
 
-        output.transferDecisionStack(decisionStack)
         output.transferRepositoryList(repositories)
     }
 

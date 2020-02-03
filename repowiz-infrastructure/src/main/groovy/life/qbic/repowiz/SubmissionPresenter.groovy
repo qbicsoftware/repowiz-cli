@@ -2,21 +2,23 @@ package life.qbic.repowiz
 
 class SubmissionPresenter {
 
-    CommandlineOutput output
+    CommandlineView output
 
-    SubmissionPresenter(CommandlineOutput output){
+    SubmissionPresenter(CommandlineView output){
         this.output = output
     }
 
-    def displayChoice(List<String> choices){
+    String displayChoice(List<String> choices){
 
         String formattedChoices = "Please choose one of the following options: \n"
 
         choices.each {
-            formattedChoices << "$it "
+            formattedChoices += "$it "
         }
         
-        output.displayText(formattedChoices)
+        String answer = output.displayQuestion(formattedChoices)
+
+        return answer
     }
 
     def displayDecisions(List<String> decisions){
@@ -24,10 +26,10 @@ class SubmissionPresenter {
         String formattedDecisions = "You selected: "
 
         decisions.each {
-            formattedDecisions << "$it "
+            formattedDecisions += "$it "
         }
 
-        output.displayText(formattedDecisions)
+        output.displayDecisions(formattedDecisions)
     }
 
 
