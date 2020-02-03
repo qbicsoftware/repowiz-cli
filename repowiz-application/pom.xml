@@ -43,7 +43,7 @@
                             </descriptorRefs>
                             <archive>
                                 <manifest>
-                                    <mainClass>life.qbic.application.cli.RepoWizEntryPoint</mainClass>
+                                    <mainClass>life.qbic.repowiz.application.cli.RepowizEntryPoint</mainClass>
                                 </manifest>
                             </archive>
                         </configuration>

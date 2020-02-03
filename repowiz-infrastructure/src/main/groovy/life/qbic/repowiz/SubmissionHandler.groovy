@@ -6,24 +6,29 @@ import life.qbic.repowiz.select.SelectRepositoryInput
 class SubmissionHandler implements MatchingRepositoriesOutput{
 
     SelectRepositoryInput repositoryInput
+    SubmissionPresenter presenter
 
-    SubmissionHandler(SelectRepositoryInput repositoryInput){
+    SubmissionHandler(SubmissionPresenter presenter){
+        this.presenter = presenter
+    }
+
+    SubmissionHandler(SelectRepositoryInput repositoryInput, SubmissionPresenter presenter){
         this.repositoryInput = repositoryInput
+        this.presenter = presenter
     }
 
     @Override
     def transferAnswerPossibilities(List<String> choices) {
-        return null
+        presenter.displayChoice(choices)
     }
 
     @Override
     def transferDecisionStack(List<String> decisions) {
-        return null
+        presenter.displayDecisions(decisions)
     }
 
     @Override
-    def transferRepositoryList(List<Repository> repositories) { //
-        //user choose valid repository
+    def transferRepositoryList(List<Repository> repositories) {
         repositoryInput.suggestedRepository(repositories)
     }
 

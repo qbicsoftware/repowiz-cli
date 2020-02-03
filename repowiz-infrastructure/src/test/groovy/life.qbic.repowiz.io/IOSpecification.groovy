@@ -7,11 +7,10 @@ class IOSpecification extends Specification {
 
     def "finds all files in directory"(){
         given:
-        def dirURL = getClass().getResource("/repositories")
-        File repoDir = new File(dirURL.toURI())
+        InputStream dirURL = getClass().getResourceAsStream("/repositories")
 
         when:
-        def res = IO.getFilesFromDirectory(repoDir)
+        def res = IO.getFilesFromDirectory(dirURL)
 
         then:
         res.size() == 3

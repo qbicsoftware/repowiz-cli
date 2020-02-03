@@ -1,8 +1,15 @@
 package life.qbic.repowiz.application.cli;
 
 import life.qbic.cli.QBiCTool;
+import life.qbic.repowiz.*;
+import life.qbic.repowiz.find.FindMatchingRepositories;
+import life.qbic.repowiz.find.RepositoryDatabaseConnector;
+import life.qbic.repowiz.select.SelectRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.net.URL;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -25,9 +32,23 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         // get the parsed command-line arguments
         final RepowizCommand command = super.getCommand();
 
-        //command.conf
+        CommandlineOutput commandlineOutput = new CommandlineOutput();
+        SubmissionPresenter presenter = new SubmissionPresenter(commandlineOutput);
+
+        SubmissionHandler handler = new SubmissionHandler(presenter);
+
+        String db = "/repositories";
+        RepositoryDescription repoDescription = new RepositoryDatabaseConnector(db);
+
+        FindMatchingRepositories findRepository = new FindMatchingRepositories(handler,repoDescription);
+
+        //#############
+        SubmissionController controller = new SubmissionController(command.conf,findRepository);
+
+        controller.findRepository();
+
+        // transfer conf content about login stuff to the right class
+        // command.conf
 
     }
-
-    // TODO: override the shutdown() method if you are implementing a daemon and want to take advantage of a shutdown hook for clean-up tasks
 }

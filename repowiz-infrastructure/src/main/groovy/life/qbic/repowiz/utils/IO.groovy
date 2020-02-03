@@ -5,12 +5,14 @@ import groovy.json.JsonSlurper
 
 class IO {
 
-    def static getFilesFromDirectory(File dir){
+    def static getFilesFromDirectory(InputStream dir){
         def list = []
 
-        dir.eachFileRecurse (FileType.FILES) { file ->
+        dir.eachLine { file ->
             list << file
         }
+
+        dir.close()
 
         list
     }

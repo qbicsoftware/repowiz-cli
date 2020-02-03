@@ -6,11 +6,10 @@ import life.qbic.repowiz.utils.IO
 
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
-    File repoDir
+    InputStream repoDir
 
     RepositoryDatabaseConnector(String pathToRepositoryDirectory){
-        def dirURL = getClass().getResource(pathToRepositoryDirectory)
-        repoDir = new File(dirURL.toURI())
+        repoDir = getClass().getResourceAsStream(pathToRepositoryDirectory)
     }
 
     @Override
