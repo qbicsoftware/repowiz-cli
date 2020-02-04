@@ -39,8 +39,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         MatchingRepositoriesOutput matchingRepositoriesOutput = new SubmissionHandler(presenter);
 
         // set up database
-        String db = "/repositories";
-        RepositoryDescription repoDescription = new RepositoryDatabaseConnector(db);
+        RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
 
         //set up first use case
         FindMatchingRepositories findRepository = new FindMatchingRepositories(matchingRepositoriesOutput,repoDescription);
@@ -58,7 +57,9 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //input
             controller.findRepository();
             //output
-        }else{
+        }
+        else{
+            System.out.println("You selected "+command.selectedRepository);
             //controller.chooseRepo(command.selectedRepository)
         }
 

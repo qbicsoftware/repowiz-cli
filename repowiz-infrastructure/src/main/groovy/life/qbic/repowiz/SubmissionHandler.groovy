@@ -19,7 +19,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput{
 
     @Override
     String transferAnswerPossibilities(List<String> choices) {
-        presenter.displayChoice(choices)
+        presenter.requestAnswer(choices)
     }
 
     @Override

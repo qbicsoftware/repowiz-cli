@@ -6,17 +6,15 @@ import java.util.Scanner;
 
 public class RepoWizView implements CommandlineView {
     @Override
-    public String displayQuestion(String question) {
+    public String userAnswer(String question) {
         System.out.println(question);
         Scanner scan = new Scanner(System.in);
 
-        String answer = scan.nextLine();
-
-        return answer;
+        return scan.nextLine();
     }
 
     @Override
-    public Object displayDecisions(String decisions) {
+    public Object displayDecisionOverview(String decisions) {
         System.out.println(decisions);
         return null;
     }

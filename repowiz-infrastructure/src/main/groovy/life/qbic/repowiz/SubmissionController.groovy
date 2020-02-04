@@ -1,6 +1,6 @@
 package life.qbic.repowiz
 
-import groovy.json.JsonSlurper
+
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
 import life.qbic.repowiz.utils.IO
 
@@ -15,7 +15,7 @@ class SubmissionController {
     }
 
     def parse(){
-        IO.parseJSON(new File(propertiesFile))
+        IO.parseJsonFile(new File(propertiesFile))
     }
 
     def chooseRepo(String repositoryName){

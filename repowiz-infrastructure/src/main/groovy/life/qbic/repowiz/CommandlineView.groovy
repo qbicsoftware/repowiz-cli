@@ -4,8 +4,8 @@ interface CommandlineView {
     //delete??
 
     //handle input
-    String displayQuestion(String question)
+    String userAnswer(String question)
 
     //only display
-    def displayDecisions(String decisions)
+    def displayDecisionOverview(String decisions)
 }

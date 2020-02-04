@@ -8,7 +8,7 @@ class SubmissionPresenter {
         this.output = output
     }
 
-    String displayChoice(List<String> choices){
+    String requestAnswer(List<String> choices){
 
         String formattedChoices = "Please choose one of the following options: \n"
 
@@ -16,7 +16,7 @@ class SubmissionPresenter {
             formattedChoices += "$it "
         }
         
-        String answer = output.displayQuestion(formattedChoices)
+        String answer = output.userAnswer(formattedChoices)
 
         return answer
     }
@@ -29,7 +29,7 @@ class SubmissionPresenter {
             formattedDecisions += "$it "
         }
 
-        output.displayDecisions(formattedDecisions)
+        output.displayDecisionOverview(formattedDecisions)
     }
 
 

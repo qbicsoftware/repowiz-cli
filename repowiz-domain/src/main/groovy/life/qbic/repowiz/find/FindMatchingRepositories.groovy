@@ -39,16 +39,17 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
 
-        if(currentDecisionLevel.getChildren().get(0).leaf){
-            leafDecision()
-        }
-
         currentDecisionLevel.children.each {
             if(it.data == answer){
                 currentDecisionLevel = it
-                nodeDecision()
+                if(it.children.get(0).leaf){
+                    leafDecision()
+                }else{
+                    nodeDecision()
+                }
             }
         }
+
     }
 
     def nodeDecision(){
@@ -64,11 +65,11 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
     def leafDecision(){
 
-        List matchingRepos = tree.getChildrenData(currentDecisionLevel)
+        List<String> matchingRepos = tree.getChildrenData(currentDecisionLevel)
 
         List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
 
-        output.transferRepositoryList(repositories)
+        //output.transferRepositoryList(repositories)
     }
 
 }

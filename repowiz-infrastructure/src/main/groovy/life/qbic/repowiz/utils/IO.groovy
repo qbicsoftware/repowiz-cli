@@ -1,27 +1,31 @@
 package life.qbic.repowiz.utils
 
-import groovy.io.FileType
 import groovy.json.JsonSlurper
 
 class IO {
 
-    def static getFilesFromDirectory(InputStream dir){
+    def static getFilesFromDirectory(String dirPath){
+
+        InputStream repoDir = IO.class.getClassLoader().getResourceAsStream(dirPath)
+        //URL repoDir = IO.class.getClassLoader().getResource(dirPath).getPath()
+        //File dir = new File(repoDir)
+
         def list = []
 
-        dir.eachLine { file ->
+        repoDir.eachLine { file ->
             list << file
         }
 
-        dir.close()
+        repoDir.close()
 
-        list
+        return list
     }
 
-    def static getFileFromFileList(List files, String repository){
-        //find file containing the information for the defined repository
+    def static parseJsonFile(File file){
+        new JsonSlurper().parseText(file.text)
     }
 
-    def static parseJSON(File file){
+    def static parseJsonStream(InputStream file){
         new JsonSlurper().parseText(file.text)
     }
 }

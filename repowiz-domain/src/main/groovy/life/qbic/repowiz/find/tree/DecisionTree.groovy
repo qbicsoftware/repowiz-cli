@@ -56,16 +56,16 @@ class DecisionTree {
         Node<String> raw_reads_other = new Node<String>("raw_reads")
         Node<String> raw_reads_plants = new Node<String>("raw_reads")
 
-        Node<String> genomic_seq_human = new Node<String>("genomic_sequence")
-        Node<String> genomic_seq_env = new Node<String>("genomic_sequence")
-        Node<String> genomic_seq_other = new Node<String>("genomic_sequence")
-        Node<String> genomic_seq_plants = new Node<String>("genomic_sequence")
+        Node<String> genetic_seq_human = new Node<String>("genetic_sequence")
+        Node<String> genetic_seq_env = new Node<String>("genetic_sequence")
+        Node<String> genetic_seq_other = new Node<String>("genetic_sequence")
+        Node<String> genetic_seq_plants = new Node<String>("genetic_sequence")
 
         Node<String> structural_var_other = new Node<String>("structural_variants")
         Node<String> structural_var_plants = new Node<String>("structural_variants")
 
-        Node<String> genomic_var_other = new Node<String>("genomic_variants")
-        Node<String> genomic_var_plants = new Node<String>("genomic_variants")
+        Node<String> genetic_var_other = new Node<String>("genetic_variants")
+        Node<String> genetic_var_plants = new Node<String>("genetic_variants")
 
         //repository node created with .addChild("reponame")
         //human tree
@@ -101,9 +101,9 @@ class DecisionTree {
         dna_rna_human.addChild(raw_reads_human)
         raw_reads_human.addChild("ena")
         raw_reads_human.addChild("sra")
-        dna_rna_human.addChild(genomic_seq_human)
-        genomic_seq_human.addChild("ena")
-        genomic_seq_human.addChild("genbank")
+        dna_rna_human.addChild(genetic_seq_human)
+        genetic_seq_human.addChild("ena")
+        genetic_seq_human.addChild("genbank")
 
         open.addChild(protein_human)
         protein_human.addChild("pride")
@@ -119,9 +119,9 @@ class DecisionTree {
         dna_rna_env.addChild(raw_reads_env)
         raw_reads_env.addChild("ena")
         raw_reads_env.addChild("sra")
-        dna_rna_env.addChild(genomic_seq_env)
-        genomic_seq_env.addChild("genbank")
-        genomic_seq_env.addChild("ena")
+        dna_rna_env.addChild(genetic_seq_env)
+        genetic_seq_env.addChild("genbank")
+        genetic_seq_env.addChild("ena")
 
         env.addChild(protein_env)
         protein_env.addChild("pride")
@@ -130,10 +130,10 @@ class DecisionTree {
         root.addChild(plant)
 
         plant.addChild(variants_plants)
-        variants_plants.addChild(genomic_var_plants)
-        genomic_var_plants.addChild("dbsnp")
-        genomic_var_plants.addChild("eva")
-        genomic_var_plants.addChild("tair")
+        variants_plants.addChild(genetic_var_plants)
+        genetic_var_plants.addChild("dbsnp")
+        genetic_var_plants.addChild("eva")
+        genetic_var_plants.addChild("tair")
         variants_plants.addChild(structural_var_plants)
         structural_var_plants.addChild("dbvar")
         structural_var_plants.addChild("eva")
@@ -147,9 +147,9 @@ class DecisionTree {
         dna_rna_plants.addChild(raw_reads_plants)
         raw_reads_plants.addChild("ena")
         raw_reads_plants.addChild("sra")
-        dna_rna_plants.addChild(genomic_seq_plants)
-        genomic_seq_plants.addChild("ena")
-        genomic_seq_plants.addChild("genbank")
+        dna_rna_plants.addChild(genetic_seq_plants)
+        genetic_seq_plants.addChild("ena")
+        genetic_seq_plants.addChild("genbank")
 
         plant.addChild(protein_plants)
         protein_plants.addChild("pride")
@@ -158,9 +158,9 @@ class DecisionTree {
         root.addChild(other)
 
         other.addChild(variants_other)
-        variants_other.addChild(genomic_var_other)
-        genomic_var_other.addChild("dbsnp")
-        genomic_var_other.addChild("eva")
+        variants_other.addChild(genetic_var_other)
+        genetic_var_other.addChild("dbsnp")
+        genetic_var_other.addChild("eva")
         variants_other.addChild(structural_var_other)
         structural_var_other.addChild("dbvar")
         structural_var_other.addChild("eva")
@@ -174,9 +174,9 @@ class DecisionTree {
         dna_rna_other.addChild(raw_reads_other)
         raw_reads_other.addChild("ena")
         raw_reads_other.addChild("sra")
-        dna_rna_other.addChild(genomic_seq_other)
-        genomic_seq_other.addChild("ena")
-        genomic_seq_other.addChild("genbank")
+        dna_rna_other.addChild(genetic_seq_other)
+        genetic_seq_other.addChild("ena")
+        genetic_seq_other.addChild("genbank")
 
         other.addChild(protein_other)
         protein_other.addChild("pride")
@@ -191,13 +191,14 @@ class DecisionTree {
         root
     }
 
-    def getChildrenData(Node parent){
-        List childrenData = []
+    List<String> getChildrenData(Node<String> parent){
+        List<String> childrenData = []
 
         parent.children.each {
             childrenData << it.data
         }
-        childrenData
+
+        return childrenData
     }
 
     /**

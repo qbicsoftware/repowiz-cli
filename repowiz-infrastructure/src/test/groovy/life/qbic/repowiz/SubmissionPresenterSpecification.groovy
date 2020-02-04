@@ -1,4 +1,4 @@
-package life.qbic.repowiz.io
+package life.qbic.repowiz
 
 import spock.lang.Specification
 

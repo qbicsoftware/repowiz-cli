@@ -6,11 +6,8 @@ import spock.lang.Specification
 class IOSpecification extends Specification {
 
     def "finds all files in directory"(){
-        given:
-        InputStream dirURL = getClass().getResourceAsStream("/repositories")
-
         when:
-        def res = IO.getFilesFromDirectory(dirURL)
+        def res = IO.getFilesFromDirectory("repositories/")
 
         then:
         res.size() == 3
@@ -18,11 +15,11 @@ class IOSpecification extends Specification {
 
     def "parses file"(){
         given:
-        def path = getClass().getResource("/repositories/geo.json")
-        File file = new File(path.toURI())
+        def path = getClass().getResource("/repositories/geo.json").getPath()
+        File file = new File(path)
 
         when:
-        def res = IO.parseJSON(file)
+        def res = IO.parseJsonFile(file)
 
         then:
         res.get("repositoryName") == "Geo"

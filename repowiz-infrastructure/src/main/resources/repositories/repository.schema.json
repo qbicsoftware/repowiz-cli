@@ -34,7 +34,7 @@
         "type": "string"
       }
     },
-    "keyInfo": {
+    "uploadRequirements": {
       "description": "Information about essential/absolute requirements for a successful upload",
       "type": "array",
       "items": {

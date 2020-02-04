@@ -1,27 +1,54 @@
 package life.qbic.repowiz.find
 
+
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.utils.IO
 
+import java.nio.file.DirectoryStream
+import java.nio.file.Path
+
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
-    InputStream repoDir
-
-    RepositoryDatabaseConnector(String pathToRepositoryDirectory){
-        repoDir = getClass().getResourceAsStream(pathToRepositoryDirectory)
-    }
+    String path = "repositories/"
 
     @Override
     List<Repository> findRepository(List<String> repositoryNames) {
 
-        List allRepositories = IO.getFilesFromDirectory(repoDir)
+        List allRepositories = IO.getFilesFromDirectory(path)
 
-        //determine files for repositories
+        List<Repository> repositories = []
 
-        //parse files to Repository Objects and return them
+        //create repository object from repository file
+        allRepositories.each { fileName ->
+            repositories << getRepository(path+fileName)
+        }
 
-        return null
+        return repositories
     }
 
+    Repository getRepository(String fileURL){
+        print fileURL
+
+        def filePath = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
+        def repoInfo = IO.parseJsonStream(filePath)
+
+
+        assert repoInfo instanceof Map
+        createRepoFromJSON(repoInfo)
+    }
+
+    Repository createRepoFromJSON(Map repoMap){
+        String name = repoMap.get("repositoryName")
+        String repositoryType = repoMap.get("repositoryName")
+        List<String> experimentTypes = repoMap.get("experimentType")
+        String uploadType = repoMap.get("uploadType")
+        List<String> uploadRequirements = repoMap.get("uploadRequirements")
+        String size = repoMap.get("size")
+
+        Repository repo = new Repository(name,repositoryType,experimentTypes,uploadType,uploadRequirements)
+        repo.addCharacteristic("size",size)
+
+        return repo
+    }
 }

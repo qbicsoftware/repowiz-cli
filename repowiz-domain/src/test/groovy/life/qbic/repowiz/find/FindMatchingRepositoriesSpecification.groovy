@@ -53,7 +53,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["structural_variants","genomic_variants"].sort()
+        res.sort() == ["structural_variants","genetic_variants"].sort()
     }
 
     def "suggest repository type for other,variants,structural"(){
