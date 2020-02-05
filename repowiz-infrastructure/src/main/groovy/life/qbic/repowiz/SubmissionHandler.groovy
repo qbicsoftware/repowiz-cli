@@ -38,24 +38,19 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     @Override
     def transferRepositoryList(List<Repository> repositories) {
         //let the user decide which repo he wants
-        List<String> repoNames = []
-
-        repositories.each {
-            repoNames << it.name
-        }
-
-        String choice = presenter.chooseRepository(repoNames)
-
-        //or transfer to repository input
-        repositories.each {
-            if(it.name == choice)
-                repositoryInput.suggestedRepository(it)
-        }
+        repositoryInput.selectRepoFromSuggestions()
     }
 
     //selectRepository output
     @Override
+    String chooseRepository(List<String> repositories) {
+        presenter.chooseRepository(repositories)
+    }
+
+    @Override
     def selectedRepository(Repository repository) {
         println "You selected $repository.name"
     }
+
+
 }

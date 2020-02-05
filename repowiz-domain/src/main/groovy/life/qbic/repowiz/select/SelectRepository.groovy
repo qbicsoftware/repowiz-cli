@@ -18,12 +18,45 @@ class SelectRepository implements SelectRepositoryInput {
         //check if repository is in database
         Repository selectedRepository = repositoryDescription.findRepository([repository]).get(0)
 
-        //forward valid repo to output
-        output.selectedRepository(selectedRepository)
+        if(selectedRepository != null){
+            //forward valid repo to output
+            output.selectedRepository(selectedRepository)
+            return true
+        }
+        else{
+            println "No valid repository was selected"
+            return false
+        }
     }
 
     @Override
-    def suggestedRepository(Repository suggestedRepo) {
-        output.selectedRepository(suggestedRepo)
+    def selectRepoFromSuggestions(List<Repository> suggestedRepos) {
+        //validate if repository can be selected?
+        List<String> nameList = getRepositoryNameList(suggestedRepos)
+
+        String user_choice = output.chooseRepository(nameList)
+
+        output.selectedRepository(findMatchingRepository(user_choice,suggestedRepos))
+
+    }
+
+    List<String> getRepositoryNameList(List<Repository> suggestedRepo){
+        List<String> repoNames = []
+        suggestedRepo.each {
+            repoNames << it.name
+        }
+        return repoNames
+    }
+
+    def findMatchingRepository(String user_choice, List<Repository> suggested){
+        Repository validChoice = null
+
+        suggested.each {
+            if(it.name == user_choice){
+               validChoice = it
+            }
+        }
+
+        return validChoice
     }
 }
