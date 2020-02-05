@@ -23,11 +23,7 @@ class SelectRepository implements SelectRepositoryInput {
     }
 
     @Override
-    boolean suggestedRepository(List<Repository> suggestedRepos) {
-        //for a list of repos suggested by the decision tree
-        //let the user select one of them
-
-        //forward the selected repository to the output
-        return null
+    def suggestedRepository(Repository suggestedRepo) {
+        output.selectedRepository(suggestedRepo)
     }
 }

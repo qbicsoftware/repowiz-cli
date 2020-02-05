@@ -25,7 +25,7 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
         //create repository object from repository file
         allRepositoryFiles.each { fileName ->
             //get repo name
-            String repo = fileName.split(".")[0]
+            String repo = fileName.split("\\.")[0]
 
             if(repositoryNames.contains(repo)){
                 repositories << getRepository(path+fileName)

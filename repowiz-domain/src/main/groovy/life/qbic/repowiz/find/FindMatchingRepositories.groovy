@@ -67,6 +67,8 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<String> matchingRepos = tree.getChildrenData(currentDecisionLevel)
 
+        //obtain only repositories that are implemented within the system
+        //all other repos are not visible to the user
         List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
 
         output.transferRepositoryList(repositories)

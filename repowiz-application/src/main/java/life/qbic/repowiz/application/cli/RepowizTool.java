@@ -3,14 +3,14 @@ package life.qbic.repowiz.application.cli;
 import life.qbic.cli.QBiCTool;
 import life.qbic.repowiz.*;
 import life.qbic.repowiz.application.view.RepoWizView;
+import life.qbic.repowiz.cli.CommandlineView;
+import life.qbic.repowiz.cli.SubmissionController;
+import life.qbic.repowiz.cli.SubmissionPresenter;
 import life.qbic.repowiz.find.FindMatchingRepositories;
-import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.find.RepositoryDatabaseConnector;
 import life.qbic.repowiz.select.SelectRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Scanner;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -59,8 +59,6 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             System.out.println(command.selectedRepository);
             controller.chooseRepo(command.selectedRepository);
         }
-
-
 
     }
 }
