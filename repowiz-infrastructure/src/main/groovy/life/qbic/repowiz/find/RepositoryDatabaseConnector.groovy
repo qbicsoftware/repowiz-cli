@@ -5,7 +5,9 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.utils.IO
 
-import java.nio.file.DirectoryStream
+import java.nio.file.FileSystemNotFoundException
+import java.nio.file.FileSystems
+import java.nio.file.Files
 import java.nio.file.Path
 
 class RepositoryDatabaseConnector implements RepositoryDescription{
@@ -15,28 +17,39 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
     @Override
     List<Repository> findRepository(List<String> repositoryNames) {
 
-        List allRepositories = IO.getFilesFromDirectory(path)
+        List<String> allRepositoryFiles = IO.getFilesFromDirectory(path)
+        //println allRepositories.toString()
 
         List<Repository> repositories = []
 
         //create repository object from repository file
-        allRepositories.each { fileName ->
-            repositories << getRepository(path+fileName)
+        allRepositoryFiles.each { fileName ->
+            //get repo name
+            String repo = fileName.split(".")[0]
+
+            if(repositoryNames.contains(repo)){
+                repositories << getRepository(path+fileName)
+            }
         }
 
         return repositories
     }
 
     Repository getRepository(String fileURL){
-        print fileURL
+        //String resourceFile1 = "repositories/geo.json"
 
-        def filePath = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
-        def repoInfo = IO.parseJsonStream(filePath)
+        InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
 
+        if (resourceStream != null) {
+            def json = IO.parseJsonStream(resourceStream)
+            assert json instanceof Map
 
-        assert repoInfo instanceof Map
-        createRepoFromJSON(repoInfo)
+            return createRepoFromJSON(json)
+        }
+
+        return null
     }
+
 
     Repository createRepoFromJSON(Map repoMap){
         String name = repoMap.get("repositoryName")

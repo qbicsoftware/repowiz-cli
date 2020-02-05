@@ -5,13 +5,13 @@ import spock.lang.Specification
 
 class IOSpecification extends Specification {
 
-    def "finds all files in directory"(){
+    /**def "finds all files in directory"(){
         when:
         def res = IO.getFilesFromDirectory("repositories/")
 
         then:
         res.size() == 3
-    }
+    }*/
 
     def "parses file"(){
         given:

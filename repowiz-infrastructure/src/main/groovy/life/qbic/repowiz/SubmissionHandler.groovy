@@ -1,9 +1,12 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
+import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
+import life.qbic.repowiz.select.SelectRepositoryOutput
 
-class SubmissionHandler implements MatchingRepositoriesOutput{
+//todo do i really want to keep one class implementing so many interfaces?
+class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput{
 
     SelectRepositoryInput repositoryInput
     SubmissionPresenter presenter
@@ -17,6 +20,11 @@ class SubmissionHandler implements MatchingRepositoriesOutput{
         this.presenter = presenter
     }
 
+    def addRepositoryInput(SelectRepositoryInput input){
+        this.repositoryInput = input
+    }
+
+    //MatchingRepositories output
     @Override
     String transferAnswerPossibilities(List<String> choices) {
         presenter.requestAnswer(choices)
@@ -32,4 +40,9 @@ class SubmissionHandler implements MatchingRepositoriesOutput{
         repositoryInput.suggestedRepository(repositories)
     }
 
+    //selectRepository output
+    @Override
+    def selectedRepository(Repository repository) {
+        println "You selected $repository.name"
+    }
 }

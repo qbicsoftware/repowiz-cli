@@ -69,7 +69,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
 
-        //output.transferRepositoryList(repositories)
+        output.transferRepositoryList(repositories)
     }
 
 }
