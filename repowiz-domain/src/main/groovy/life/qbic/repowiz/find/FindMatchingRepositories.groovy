@@ -35,12 +35,14 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
     @Override
-    def nextAnswerPossibility(String answer) {
+    def nextAnswerPossibility(String answer){
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
+        boolean validAnswer = false
 
         currentDecisionLevel.children.each {
             if(it.data == answer){
+                validAnswer = true
                 currentDecisionLevel = it
                 if(it.children.get(0).leaf){
                     leafDecision()
@@ -49,7 +51,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
                 }
             }
         }
-
+        validAnswer
     }
 
     def nodeDecision(){

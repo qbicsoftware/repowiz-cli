@@ -22,6 +22,23 @@ class FindMatchingRepositoriesSpecification extends Specification {
         res.sort() == ["human", "other", "environmental community", "plants"].sort()
     }
 
+    def "wrong name"(){
+        when:
+        boolean res = findMatchingRepositories.nextAnswerPossibility("HUUMAN")
+
+        then:
+        !res
+    }
+
+    def "case sensitive"(){
+        when:
+        boolean res = findMatchingRepositories.nextAnswerPossibility("Human")
+
+        then:
+        !res
+    }
+
+
     def "suggest access type for human as organism"(){
         when:
         findMatchingRepositories.nextAnswerPossibility("human")
