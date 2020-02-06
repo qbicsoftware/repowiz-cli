@@ -24,4 +24,36 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
 
 
     }
+
+    def "find repository file"(){
+        when:
+        def res = connector.findRepository(["geo"])
+        then:
+        res.get(0).name == "Geo"
+    }
+
+    def "multiple repositories are found"(){
+        when:
+        def res = connector.findRepository(["clinvar","geo"])
+        then:
+        res.size() == 2
+        res.each {
+            if(it.name == "Geo" ||it.name == "ClinVar")
+                true
+        }
+    }
+
+    def "invalid repository not found"(){
+        when:
+        def res = connector.findRepository(["ega"])
+        then:
+        res.empty
+    }
+
+    def "upper_case repository not found"(){
+        when:
+        def res = connector.findRepository(["GEO"])
+        then:
+        res.empty
+    }
 }

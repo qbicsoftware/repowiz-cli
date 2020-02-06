@@ -1,17 +1,24 @@
-package life.qbic.repowiz
+package life.qbic.repowiz.cli
 
 
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
+import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.utils.IO
 
 class SubmissionController {
 
     String propertiesFile
     FindMatchingRepositoriesInput findRepoInput
+    SelectRepositoryInput selectRepositoryInput
 
     SubmissionController(String propertiesFile, FindMatchingRepositoriesInput findRepoInput){ //see properties file
         //this.propertiesFile = propertiesFile
         this.findRepoInput = findRepoInput
+    }
+
+    SubmissionController(String propertiesFile, SelectRepositoryInput selectRepositoryInput){ //see properties file
+        //this.propertiesFile = propertiesFile
+        this.selectRepositoryInput = selectRepositoryInput
     }
 
     def parse(){
@@ -19,7 +26,7 @@ class SubmissionController {
     }
 
     def chooseRepo(String repositoryName){
-        repositoryName.toLowerCase()
+        selectRepositoryInput.selectRepository(repositoryName.toLowerCase())
     }
 
     def findRepository(){

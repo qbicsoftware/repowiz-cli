@@ -5,6 +5,6 @@ import life.qbic.repowiz.Repository
 interface SelectRepositoryInput {
 
     def selectRepository(String repository)
-    boolean suggestedRepository(List<Repository> suggestedRepos)
+    def selectRepoFromSuggestions(List<Repository> suggestedRepos)
 
 }

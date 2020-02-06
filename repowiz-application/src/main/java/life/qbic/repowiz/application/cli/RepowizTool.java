@@ -3,13 +3,14 @@ package life.qbic.repowiz.application.cli;
 import life.qbic.cli.QBiCTool;
 import life.qbic.repowiz.*;
 import life.qbic.repowiz.application.view.RepoWizView;
+import life.qbic.repowiz.cli.CommandlineView;
+import life.qbic.repowiz.cli.SubmissionController;
+import life.qbic.repowiz.cli.SubmissionPresenter;
 import life.qbic.repowiz.find.FindMatchingRepositories;
-import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.find.RepositoryDatabaseConnector;
+import life.qbic.repowiz.select.SelectRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.Scanner;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -36,34 +37,28 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         CommandlineView commandlineView = new RepoWizView();
         SubmissionPresenter presenter = new SubmissionPresenter(commandlineView);
 
-        MatchingRepositoriesOutput matchingRepositoriesOutput = new SubmissionHandler(presenter);
+        SubmissionHandler handler = new SubmissionHandler(presenter);
 
         // set up database
         RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
+        SelectRepository selectRepository = new SelectRepository(handler,repoDescription);
 
-        //set up first use case
-        FindMatchingRepositories findRepository = new FindMatchingRepositories(matchingRepositoriesOutput,repoDescription);
-
-        //#############
-        SubmissionController controller = new SubmissionController(command.conf,findRepository);
-
-       // Scanner scan = new Scanner(System.in);
-      //  System.out.println("please say something: ");
-      //  String out = scan.nextLine();
-
-      //  System.out.println(out);
 
         if(command.guide){
-            //input
+            //set up first use case
+            FindMatchingRepositories findRepository = new FindMatchingRepositories(handler,repoDescription);
+            SubmissionController controller = new SubmissionController(command.conf,findRepository);
+
             controller.findRepository();
-            //output
+            //handler.addRepositoryInput(selectRepository);
+
         }
         else{
-            System.out.println("You selected "+command.selectedRepository);
-            //controller.chooseRepo(command.selectedRepository)
+            //System.out.println("You selected "+command.selectedRepository);
+            SubmissionController controller = new SubmissionController(command.conf,selectRepository);
+            System.out.println(command.selectedRepository);
+            controller.chooseRepo(command.selectedRepository);
         }
-
-
 
     }
 }

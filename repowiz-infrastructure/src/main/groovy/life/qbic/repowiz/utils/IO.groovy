@@ -4,19 +4,18 @@ import groovy.json.JsonSlurper
 
 class IO {
 
-    def static getFilesFromDirectory(String dirPath){
+    static List<String> getFilesFromDirectory(String dirPath){
 
-        InputStream repoDir = IO.class.getClassLoader().getResourceAsStream(dirPath)
-        //URL repoDir = IO.class.getClassLoader().getResource(dirPath).getPath()
-        //File dir = new File(repoDir)
+        def list = ["clinvar.json","geo.json"]
 
-        def list = []
-
-        repoDir.eachLine { file ->
+        /**
+         * InputStream repoDir = IO.class.getClassLoader().getResourceAsStream(dirPath)
+         * list = []
+         * repoDir.eachLine { file ->
             list << file
         }
-
         repoDir.close()
+         */
 
         return list
     }
