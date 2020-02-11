@@ -18,7 +18,7 @@ public class RepowizCommand extends AbstractCommand {
     @CommandLine.Option(names={"-g", "--guide"}, description="RepoWiz guide to find suitable repository")
     boolean guide;
 
-    @CommandLine.Option(names={"-s", "--select"}, description="RepoWiz config file")
+    @CommandLine.Option(names={"-s", "--select"}, description="Repository for which an upload should be prepared (skips the guide)")
     String selectedRepository;
 
 }

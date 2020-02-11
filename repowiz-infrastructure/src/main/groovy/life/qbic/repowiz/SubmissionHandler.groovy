@@ -6,13 +6,16 @@ import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
+import life.qbic.repowiz.submit.FinaliseSubmission
 
 //todo do i really want to keep one class implementing so many interfaces?
 class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput{
 
-    SelectRepositoryInput repositoryInput
     SubmissionPresenter presenter
-    PrepareSubmissionInput prepareSubmission
+
+    SelectRepositoryInput repositoryInput
+    PrepareSubmissionInput prepareSubmissionInput
+    FinaliseSubmission finaliseSubmissionInput
 
     SubmissionHandler(SubmissionPresenter presenter){
         this.presenter = presenter
@@ -23,13 +26,16 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         this.presenter = presenter
     }
 
-    def addRepositoryInput(SelectRepositoryInput input){
-        this.repositoryInput = input
+    SubmissionHandler(PrepareSubmissionInput prepareSubmissionInput, SubmissionPresenter presenter){
+        this.prepareSubmissionInput = prepareSubmissionInput
+        this.presenter = presenter
     }
 
-    def addPrepareSubmissionInput(PrepareSubmissionInput input){
-        prepareSubmission = input
+    SubmissionHandler(FinaliseSubmission finaliseSubmissionInput, SubmissionPresenter presenter){
+        this.finaliseSubmissionInput = finaliseSubmissionInput
+        this.presenter = presenter
     }
+
 
     //MatchingRepositories output
     @Override
@@ -45,7 +51,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     @Override
     def transferRepositoryList(List<Repository> repositories) {
         //let the user decide which repo he wants
-        repositoryInput.selectRepoFromSuggestions()
+        repositoryInput.selectRepoFromSuggestions(repositories)
     }
 
     //selectRepository output
@@ -56,17 +62,17 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def selectedRepository(Repository repository) {
-        //println "You selected $repository.name"
-        prepareSubmission.prepareSubmissionToRepository(repository)
+        println "You selected $repository.name"
+        prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
     @Override
-    List<String> transferProjectFiles() {
+    def transferProjectFiles(List<String> files) {
         return null
     }
 
     @Override
-    def transferProjectMetadata() {
+    def transferProjectMetadata(List<File> filledTemplates) {
         return null
     }
 }

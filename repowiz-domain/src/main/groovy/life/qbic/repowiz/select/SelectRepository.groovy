@@ -13,6 +13,10 @@ class SelectRepository implements SelectRepositoryInput {
         this.output = output
     }
 
+    SelectRepository(SelectRepositoryOutput output) {
+        this.output = output
+    }
+
     @Override
     def selectRepository(String repository) {
         //check if repository is in database

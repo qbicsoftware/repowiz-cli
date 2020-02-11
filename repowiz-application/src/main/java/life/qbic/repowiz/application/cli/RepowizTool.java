@@ -4,13 +4,25 @@ import life.qbic.cli.QBiCTool;
 import life.qbic.repowiz.*;
 import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
-import life.qbic.repowiz.cli.SubmissionController;
 import life.qbic.repowiz.cli.SubmissionPresenter;
 import life.qbic.repowiz.find.FindMatchingRepositories;
+import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
+import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.find.RepositoryDatabaseConnector;
+import life.qbic.repowiz.prepare.MappedMetadata;
+import life.qbic.repowiz.prepare.PrepareSubmissionImpl;
+import life.qbic.repowiz.prepare.PrepareSubmissionInput;
+import life.qbic.repowiz.prepare.PrepareSubmissionOutput;
 import life.qbic.repowiz.select.SelectRepository;
+
+import life.qbic.repowiz.select.SelectRepositoryInput;
+import life.qbic.repowiz.select.SelectRepositoryOutput;
+import life.qbic.repowiz.submit.FinaliseSubmissionImpl;
+import life.qbic.repowiz.submit.SubmissionOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -37,27 +49,55 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         CommandlineView commandlineView = new RepoWizView();
         SubmissionPresenter presenter = new SubmissionPresenter(commandlineView);
 
-        SubmissionHandler handler = new SubmissionHandler(presenter);
 
         // set up database
         RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
-        SelectRepository selectRepository = new SelectRepository(handler,repoDescription);
+
+        //set up mapping
+        MappedMetadata mappedMetadata = new OpenBisMapper();
+
+        /*
+        def parse(){
+            IO.parseJsonFile(new File(propertiesFile))
+        }
+        */
 
 
         if(command.guide){
-            //set up first use case
-            FindMatchingRepositories findRepository = new FindMatchingRepositories(handler,repoDescription);
-            SubmissionController controller = new SubmissionController(command.conf,findRepository);
-
-            controller.findRepository();
+            //SubmissionController controller = new SubmissionController(command.conf,findRepository);
+            //controller.findRepository();
             //handler.addRepositoryInput(selectRepository);
+
+            //FinaliseSubmissionImpl finaliseSubmission = new FinaliseSubmissionImpl(presenter);
+            //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
+            PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
+
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler);
+            SelectRepositoryOutput prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+
+            SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
+            MatchingRepositoriesOutput selectHandler = new SubmissionHandler(selectRepositoryInput, presenter);
+
+            FindMatchingRepositoriesInput findRepository = new FindMatchingRepositories(selectHandler,repoDescription);
+            findRepository.startGuide();
 
         }
         else{
             //System.out.println("You selected "+command.selectedRepository);
-            SubmissionController controller = new SubmissionController(command.conf,selectRepository);
-            System.out.println(command.selectedRepository);
-            controller.chooseRepo(command.selectedRepository);
+            //SubmissionController controller = new SubmissionController(command.conf,selectRepository);
+            //System.out.println(command.selectedRepository);
+            //controller.chooseRepo(command.selectedRepository);
+
+            //FinaliseSubmissionImpl finaliseSubmission = new FinaliseSubmissionImpl(presenter);
+            //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
+            SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
+
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler);
+            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+
+            SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
+
+            selectRepository.selectRepository(command.selectedRepository.toLowerCase());
         }
 
     }

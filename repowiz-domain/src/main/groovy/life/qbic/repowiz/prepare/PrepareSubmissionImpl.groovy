@@ -7,12 +7,10 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSpecificat
 
     MappedMetadata mappedMetadata
     PrepareSubmissionOutput output
-    ProjectDetails projectDetails
 
-    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output, ProjectDetails projectDetails){
+    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output){
         this.mappedMetadata = mappedMetadata
         this.output = output
-        this.projectDetails = projectDetails
     }
 
     @Override
@@ -24,8 +22,10 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSpecificat
         return null
     }
 
+    //get the project code from somewhere.. controller structure!
     @Override
     def getProject(String projectID) {
+        //connect to local database to retrieve data
         return null
     }
 

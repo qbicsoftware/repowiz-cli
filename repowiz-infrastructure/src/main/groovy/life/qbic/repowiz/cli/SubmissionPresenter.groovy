@@ -1,8 +1,8 @@
 package life.qbic.repowiz.cli
 
-import life.qbic.repowiz.cli.CommandlineView
+import life.qbic.repowiz.submit.SubmissionOutput
 
-class SubmissionPresenter {
+class SubmissionPresenter implements SubmissionOutput{
 
     CommandlineView output
 
@@ -46,5 +46,33 @@ class SubmissionPresenter {
         return answer.toLowerCase()
     }
 
+    @Override
+    def getSampleIds(List<String> sampleIDs) {
+        return null
+    }
 
+    @Override
+    def getMetaDataForSamples(HashMap<String, String> metadata, String sampleID) {
+        return null
+    }
+
+    @Override
+    def getFilesForSamples(List<String> filePaths, String sampleID) {
+        return null
+    }
+
+    @Override
+    def uploadFormat(String type) {
+        return null
+    }
+
+    @Override
+    List<String> subsequentSteps() {
+        return null
+    }
+
+    @Override
+    String submissionIdentifier() {
+        return null
+    }
 }
