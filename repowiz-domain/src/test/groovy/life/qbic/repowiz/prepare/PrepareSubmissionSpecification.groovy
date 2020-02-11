@@ -1,7 +1,6 @@
 package life.qbic.repowiz.prepare
 
-import life.qbic.repowiz.ProjectDetails
-import life.qbic.repowiz.RepositoryUploadService
+
 import spock.lang.Specification
 
 class PrepareSubmissionSpecification extends Specification{

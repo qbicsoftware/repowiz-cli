@@ -2,7 +2,7 @@ package life.qbic.repowiz.prepare
 
 interface PrepareSubmissionOutput {
 
-    def getProjectSubmissionFilePaths()
-    def getProjectSubmissionMetadata()
+    def transferProjectFiles(List<String> files)
+    def transferProjectMetadata(List<File> filledTemplates) //File??
 
 }
