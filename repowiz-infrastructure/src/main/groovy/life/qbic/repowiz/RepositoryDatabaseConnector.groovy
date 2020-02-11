@@ -1,14 +1,7 @@
-package life.qbic.repowiz.find
+package life.qbic.repowiz
 
 
-import life.qbic.repowiz.Repository
-import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.utils.IO
-
-import java.nio.file.FileSystemNotFoundException
-import java.nio.file.FileSystems
-import java.nio.file.Files
-import java.nio.file.Path
 
 class RepositoryDatabaseConnector implements RepositoryDescription{
 

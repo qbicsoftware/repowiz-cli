@@ -21,4 +21,6 @@ public class RepowizCommand extends AbstractCommand {
     @CommandLine.Option(names={"-s", "--select"}, description="Repository for which an upload should be prepared (skips the guide)")
     String selectedRepository;
 
+    @CommandLine.Option(names={"-p", "--projectId"}, required = true, description="Project for which the submission is prepared")
+    String projectID;
 }

@@ -3,14 +3,18 @@ package life.qbic.repowiz.prepare
 
 import life.qbic.repowiz.Repository
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSpecification{
+class PrepareSubmissionImpl implements PrepareSubmissionInput{
 
     MappedMetadata mappedMetadata
     PrepareSubmissionOutput output
+    String project
+    ProjectDetails projectDetails
 
-    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output){
+    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output, String projectID, ProjectDetails projectDetails){
         this.mappedMetadata = mappedMetadata
         this.output = output
+        this.project = projectID
+        this.projectDetails = projectDetails
     }
 
     @Override
@@ -18,15 +22,8 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSpecificat
         //project data
         //transfer to output
         //output.transferProjectFiles()
+        projectDetails.getProjectMetadata(project)
 
         return null
     }
-
-    //get the project code from somewhere.. controller structure!
-    @Override
-    def getProject(String projectID) {
-        //connect to local database to retrieve data
-        return null
-    }
-
 }

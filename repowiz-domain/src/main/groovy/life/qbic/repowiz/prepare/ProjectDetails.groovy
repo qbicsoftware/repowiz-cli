@@ -6,7 +6,7 @@ interface ProjectDetails {
 
     HashMap<String,String> getProjectMetadata(String projectID)
     HashMap<String,String> getExperimentMetadata(String experimentID)
-    HashMap<String,String> getSampleMetaData(String projectID)
+    HashMap<String,String> getSampleMetadata(String projectID)
     Path getFilesForSamples(String sampleID)
 
 }

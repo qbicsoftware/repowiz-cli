@@ -15,7 +15,7 @@ class SubmissionPresenter implements SubmissionOutput{
         String formattedChoices = "> Please choose one of the following options: \n> "
 
         choices.each {
-            formattedChoices += "$it, "
+            formattedChoices += "|$it "
         }
         
         String answer = output.userAnswer(formattedChoices)
@@ -45,6 +45,9 @@ class SubmissionPresenter implements SubmissionOutput{
 
         return answer.toLowerCase()
     }
+
+
+    //keep it like that? does it make sense to show this content to the presenter?
 
     @Override
     def getSampleIds(List<String> sampleIDs) {

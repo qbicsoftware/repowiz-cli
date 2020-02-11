@@ -8,21 +8,14 @@ import life.qbic.repowiz.cli.SubmissionPresenter;
 import life.qbic.repowiz.find.FindMatchingRepositories;
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
 import life.qbic.repowiz.find.MatchingRepositoriesOutput;
-import life.qbic.repowiz.find.RepositoryDatabaseConnector;
-import life.qbic.repowiz.prepare.MappedMetadata;
-import life.qbic.repowiz.prepare.PrepareSubmissionImpl;
-import life.qbic.repowiz.prepare.PrepareSubmissionInput;
-import life.qbic.repowiz.prepare.PrepareSubmissionOutput;
+import life.qbic.repowiz.RepositoryDatabaseConnector;
+import life.qbic.repowiz.prepare.*;
 import life.qbic.repowiz.select.SelectRepository;
 
 import life.qbic.repowiz.select.SelectRepositoryInput;
 import life.qbic.repowiz.select.SelectRepositoryOutput;
-import life.qbic.repowiz.submit.FinaliseSubmissionImpl;
-import life.qbic.repowiz.submit.SubmissionOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -56,6 +49,11 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         //set up mapping
         MappedMetadata mappedMetadata = new OpenBisMapper();
 
+        //local database connection
+        //instantiate session and v3 api
+        ProjectDetails projectDetails = new OpenBisConnector();
+
+
         /*
         def parse(){
             IO.parseJsonFile(new File(propertiesFile))
@@ -72,7 +70,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectDetails);
             SelectRepositoryOutput prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
@@ -92,7 +90,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectDetails);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
