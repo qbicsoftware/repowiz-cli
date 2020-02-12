@@ -1,6 +1,6 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.utils.IO
+
 import spock.lang.Specification
 
 class IOSpecification extends Specification {
@@ -19,7 +19,7 @@ class IOSpecification extends Specification {
         File file = new File(path)
 
         when:
-        def res = IO.parseJsonFile(file)
+        def res = JsonParser.parseFile(file)
 
         then:
         res.get("repositoryName") == "Geo"

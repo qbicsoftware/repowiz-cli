@@ -2,7 +2,7 @@ package life.qbic.repowiz.prepare
 
 import java.nio.file.Path
 
-class OpenBisConnector implements ProjectDetails{
+class ProjectSearchConnector implements ProjectSearchService{
 
 
 

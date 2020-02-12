@@ -1,7 +1,7 @@
-package life.qbic.repowiz.utils
+package life.qbic.repowiz.io
 
-import groovy.json.JsonSlurper
 
+//TODO do i really need this?
 class IO {
 
     static List<String> getFilesFromDirectory(String dirPath){
@@ -18,13 +18,5 @@ class IO {
          */
 
         return list
-    }
-
-    def static parseJsonFile(File file){
-        new JsonSlurper().parseText(file.text)
-    }
-
-    def static parseJsonStream(InputStream file){
-        new JsonSlurper().parseText(file.text)
     }
 }

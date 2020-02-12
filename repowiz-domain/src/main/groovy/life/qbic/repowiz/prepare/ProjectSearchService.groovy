@@ -2,7 +2,7 @@ package life.qbic.repowiz.prepare
 
 import java.nio.file.Path
 
-interface ProjectDetails {
+interface ProjectSearchService {
 
     HashMap<String,String> getProjectMetadata(String projectID)
     HashMap<String,String> getExperimentMetadata(String experimentID)

@@ -8,13 +8,13 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput{
     MappedMetadata mappedMetadata
     PrepareSubmissionOutput output
     String project
-    ProjectDetails projectDetails
+    ProjectSearchService projectSearch
 
-    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output, String projectID, ProjectDetails projectDetails){
+    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch){
         this.mappedMetadata = mappedMetadata
         this.output = output
         this.project = projectID
-        this.projectDetails = projectDetails
+        this.projectSearch = projectSearch
     }
 
     @Override
@@ -22,7 +22,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput{
         //project data
         //transfer to output
         //output.transferProjectFiles()
-        projectDetails.getProjectMetadata(project)
+        projectSearch.getProjectMetadata(project)
 
         return null
     }

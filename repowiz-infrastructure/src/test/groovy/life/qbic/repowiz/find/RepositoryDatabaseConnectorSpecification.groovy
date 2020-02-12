@@ -2,7 +2,7 @@ package life.qbic.repowiz.find
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDatabaseConnector
-import life.qbic.repowiz.utils.IO
+import life.qbic.repowiz.io.JsonParser
 import spock.lang.Specification
 
 class RepositoryDatabaseConnectorSpecification extends Specification{
@@ -12,7 +12,7 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
     def "valid repo file parsing"(){
         given:
         InputStream fileStream = connector.getClass().getResourceAsStream("/repositories/geo.json")
-        def repoInfo = IO.parseJsonStream(fileStream)
+        def repoInfo = JsonParser.parseStream(fileStream)
 
         when:
         assert repoInfo instanceof Map

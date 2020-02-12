@@ -1,7 +1,7 @@
 package life.qbic.repowiz
 
-
-import life.qbic.repowiz.utils.IO
+import life.qbic.repowiz.io.JsonParser
+import life.qbic.repowiz.io.IO
 
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
@@ -34,7 +34,7 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
         InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
 
         if (resourceStream != null) {
-            def json = IO.parseJsonStream(resourceStream)
+            def json = JsonParser.parseStream(resourceStream)
             assert json instanceof Map
 
             return createRepoFromJSON(json)

@@ -51,7 +51,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
 
         //local database connection
         //instantiate session and v3 api
-        ProjectDetails projectDetails = new OpenBisConnector();
+        ProjectSearchService projectSearchService = new ProjectSearchConnector();
 
 
         /*
@@ -70,7 +70,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectDetails);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectSearchService);
             SelectRepositoryOutput prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
@@ -90,7 +90,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectDetails);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectSearchService);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
