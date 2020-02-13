@@ -15,11 +15,12 @@ class IOSpecification extends Specification {
 
     def "parses file"(){
         given:
-        def path = getClass().getResource("/repositories/geo.json").getPath()
-        File file = new File(path)
+        //def path = getClass().getResource("/repositories/geo.json").getPath()
+        //File file = new File(path)
+        JsonParser parser = new JsonParser("/repositories/geo.json")
 
         when:
-        def res = JsonParser.parseFile(file)
+        def res = parser.parseAsFile()
 
         then:
         res.get("repositoryName") == "Geo"
