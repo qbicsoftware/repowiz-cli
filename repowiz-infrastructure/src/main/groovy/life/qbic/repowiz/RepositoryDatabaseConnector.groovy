@@ -34,7 +34,8 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
         InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
 
         if (resourceStream != null) {
-            def json = JsonParser.parseStream(resourceStream)
+            JsonParser parser = new JsonParser(fileURL)
+            def json = parser.parseAsStream()
             assert json instanceof Map
 
             return createRepoFromJSON(json)

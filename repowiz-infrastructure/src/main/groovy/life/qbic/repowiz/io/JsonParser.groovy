@@ -2,13 +2,23 @@ package life.qbic.repowiz.io
 
 import groovy.json.JsonSlurper
 
+import java.nio.file.Path
+
 class JsonParser implements TemplateParser{
 
-    def static parseFile(File file){
-        new JsonSlurper().parseText(file.text)
+    String jsonFile
+
+    JsonParser(String file){
+        jsonFile = file
     }
 
-    def static parseStream(InputStream file){
-        new JsonSlurper().parseText(file.text)
+    def parseAsFile(){
+        String file = getClass().getResource(jsonFile).getPath()
+        new JsonSlurper().parseText(new File (file).text)
+    }
+
+    def parseAsStream(){
+        InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream(jsonFile)
+        new JsonSlurper().parseText(stream.text)
     }
 }

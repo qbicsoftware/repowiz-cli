@@ -1,9 +1,8 @@
 package life.qbic.repowiz.io
 
-
 import spock.lang.Specification
 
-class IOSpecification extends Specification {
+class JsonParserSpecification extends Specification {
 
     /**def "finds all files in directory"(){
         when:
