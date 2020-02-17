@@ -2,16 +2,15 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.Repository
+import life.qbic.repowiz.prepare.mapping.MapInfoInput
 
 class PrepareSubmissionImpl implements PrepareSubmissionInput{
 
-    MappedMetadata mappedMetadata
     PrepareSubmissionOutput output
     String project
     ProjectSearchService projectSearch
 
-    PrepareSubmissionImpl(MappedMetadata mappedMetadata, PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch){
-        this.mappedMetadata = mappedMetadata
+    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch){
         this.output = output
         this.project = projectID
         this.projectSearch = projectSearch
@@ -19,10 +18,14 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput{
 
     @Override
     def prepareSubmissionToRepository(Repository repository) {
+        //ask for submission type
+        //e.g geo --> hts, affymetrix microarray
+        //what fields are required
+        // --> use mapper based on repository eg geo --> geo mapper
         //project data
+        projectSearch.getProjectMetadata(project)
         //transfer to output
         //output.transferProjectFiles()
-        projectSearch.getProjectMetadata(project)
 
         return null
     }

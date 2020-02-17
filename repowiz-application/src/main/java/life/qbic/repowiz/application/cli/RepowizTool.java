@@ -10,6 +10,7 @@ import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
 import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.RepositoryDatabaseConnector;
 import life.qbic.repowiz.prepare.*;
+import life.qbic.repowiz.prepare.mapping.MapInfoInput;
 import life.qbic.repowiz.select.SelectRepository;
 
 import life.qbic.repowiz.select.SelectRepositoryInput;
@@ -47,7 +48,6 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
 
         //set up mapping
-        MappedMetadata mappedMetadata = new OpenBisMapper();
 
         //local database connection
         //instantiate session and v3 api
@@ -70,7 +70,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectSearchService);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService);
             SelectRepositoryOutput prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
@@ -90,7 +90,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(mappedMetadata, finaliseHandler, command.projectID, projectSearchService);
+            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
 
             SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
