@@ -25,20 +25,17 @@ class GeoMapper implements MapInfoInput{
             case "affymetrix_GE":
                 //whole gene expression
                 //todo ask for platform accession number, if not provided chose template with platform fillout
-                //
                 templateName = ""
-                sheets.add()
+                sheets.add("")
                 break
         }
 
-        //load template fields --> xlsx parser since all geo templates have this format
-        //parser.parseAsStream(
         parser.parseTemplate(templateName)
-
+        HashMap<String,HashMap> fieldsPerSheet = new HashMap<>()
         sheets.each { sheet ->
-            parser.parseSheetByColor(sheet)
+            fieldsPerSheet.put(sheet,parser.parseSheetByColor(sheet))
         }
 
-        return null
+        return fieldsPerSheet
     }
 }
