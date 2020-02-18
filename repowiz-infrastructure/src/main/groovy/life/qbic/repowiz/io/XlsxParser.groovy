@@ -17,6 +17,8 @@ class XlsxParser implements TemplateParser, GeoParser {
     XSSFWorkbook wb
 
     final String comment = '#'
+    final byte[] rgbLevelColor = [-1, 0, 0]
+    final byte[] rgbFieldColor = [0, 0, -1]
 
 
     XlsxParser(String filePath) {
@@ -49,51 +51,46 @@ class XlsxParser implements TemplateParser, GeoParser {
 
     @Override
     def parseSheetByColor(String sheetName) {
-        byte[] header = [-1, 0, 0]
-        byte[] field = [0, 0, -1]
         HashMap test = null
 
         wb.sheetIterator().each { sheet ->
             if (sheet.sheetName.strip() == sheetName) { //need to strip succeeding whitespaces
-                test = getMetaDataFieldsByColor(sheet, header, field)
+                test = getMetaDataFieldsByColor(sheet)
             }
         }
         return test
     }
 
-    def getMetaDataFieldsByColor(Sheet sheet, byte[] header, byte[] field) {
+    def getMetaDataFieldsByColor(Sheet sheet) {
 
         HashMap<String, List<String>> classWithFields = new HashMap<>()
+        int column = 0
 
         sheet.each { row ->
 
-                XSSFCell cell = (XSSFCell) row.getCell(0)
+            XSSFCell cell = (XSSFCell) row.getCell(column)
 
-                if (cell != null && cell.stringCellValue != "" && !containsComment(cell)) {
+            if (cell != null && cell.stringCellValue != "" && !containsComment(cell)) {
 
-                    //get the style
-                    XSSFCellStyle cellStyle = cell.cellStyle
-                    XSSFFont res = cellStyle.font
+                byte[] color = getRGBColor(cell)
 
-                    if (res.XSSFColor != null) {
-                        byte[] color = res.XSSFColor.getRGB()
-                        if (color == header) {
-                            String level = cell.stringCellValue
-                            List<String> fields = getMetaFieldsForLevel(row.rowNum, sheet, header, field)
-                            classWithFields.put(level, fields)
-                        }
-                    }
-
+                if (isLevel(color,column)) {
+                    String level = cell.stringCellValue.strip()
+                    List<String> fields = getMetaFieldsForExperimentLevel(row.rowNum, sheet)
+                    //level is all fields assigned to a section in the metadata sheet
+                    classWithFields.put(level, fields)
+                }
             }
         }
         return classWithFields
     }
 
-    List<String> getMetaFieldsForLevel(int headerRow, Sheet sheet, byte[] header, byte[] field) {
-        boolean nextHeader = false
+    List<String> getMetaFieldsForExperimentLevel(int headerRow, Sheet sheet) {
+        boolean nextLevel = false
         List<String> metaFields = []
-        //iterate until a new header appears
-        while (!nextHeader) {
+
+        //iterate up to next level
+        while (!nextLevel) {
             headerRow += 1
             Row row = sheet.getRow(headerRow)
 
@@ -104,30 +101,42 @@ class XlsxParser implements TemplateParser, GeoParser {
             for (int col = 0; col < row.size(); col++) {
                 XSSFCell cell = (XSSFCell) row.getCell(col)
 
-                if (cell != null && cell.stringCellValue != "" && !containsComment(cell)) {
-                    println cell.stringCellValue
+                if (isValidCell(cell)) {
+                    byte[] color = getRGBColor(cell)
 
-                    //get the style
-                    XSSFCellStyle cellStyle = cell.cellStyle
-                    XSSFFont res = cellStyle.font
-
-                    if (res.XSSFColor != null) {
-                        byte[] color = res.XSSFColor.getRGB()
-
-                        if (color == header && col == 0) {
-                            nextHeader = true
-                        }
-                        if (color == field || col > 0) {
-                            metaFields.add(cell.stringCellValue)
-                        }
+                    if (isLevel(color,col)) {
+                        nextLevel = true
+                    }
+                    if (isField(color,col)) {
+                        metaFields.add(cell.stringCellValue.strip())
                     }
                 }
             }
         }
-
         return metaFields
     }
 
+    def isLevel(byte[] color, int col){
+        return color != null && color == rgbLevelColor && col == 0
+    }
+
+    def isField(byte[] color, int col){
+        return color != null && color == rgbFieldColor || col > 0
+    }
+
+    def isValidCell(XSSFCell cell){
+        return cell != null && cell.stringCellValue != "" && !containsComment(cell)
+    }
+
+    def getRGBColor(XSSFCell cell) {
+        XSSFCellStyle cellStyle = cell.cellStyle
+        XSSFFont res = cellStyle.font
+
+        if (res.XSSFColor != null) {
+            return res.XSSFColor.getRGB()
+        }
+        return null
+    }
 
     def getFieldsFromColumn(int col, int sheetNum) { //save row values --> default write to col 1
 
@@ -167,8 +176,8 @@ class XlsxParser implements TemplateParser, GeoParser {
         XSSFSheet sheet = wb.getSheetAt(sheetNum)
 
         sheet.getRow(row).each { cell ->
-                def val = cell.stringCellValue
-                if (val != null) metadataFields << val
+            def val = cell.stringCellValue
+            if (val != null) metadataFields << val
 
         }
 
