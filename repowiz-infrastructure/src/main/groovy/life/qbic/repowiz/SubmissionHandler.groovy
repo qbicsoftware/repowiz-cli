@@ -4,7 +4,6 @@ import life.qbic.repowiz.cli.SubmissionPresenter
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
-import life.qbic.repowiz.prepare.UserInputController
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
 import life.qbic.repowiz.submit.FinaliseSubmission
@@ -13,12 +12,10 @@ import life.qbic.repowiz.submit.FinaliseSubmission
 class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput{
 
     SubmissionPresenter presenter
-    UserInputController controller
 
     SelectRepositoryInput repositoryInput
     PrepareSubmissionInput prepareSubmissionInput
     FinaliseSubmission finaliseSubmissionInput
-
 
     SubmissionHandler(SubmissionPresenter presenter){
         this.presenter = presenter

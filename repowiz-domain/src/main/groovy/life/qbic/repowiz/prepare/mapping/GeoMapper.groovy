@@ -1,14 +1,18 @@
 package life.qbic.repowiz.prepare.mapping
 
-
-import life.qbic.repowiz.prepare.GeoParser
-
 class GeoMapper implements MapInfoInput{
 
     GeoParser parser
+    MapInfoOutput output
 
     GeoMapper(GeoParser parser){
         this.parser = parser
+    }
+
+
+    @Override
+    def addOutput(MapInfoOutput output) {
+        this.output = output
     }
 
     @Override
@@ -38,7 +42,10 @@ class GeoMapper implements MapInfoInput{
             fieldsPerSheet.put(sheet,parser.parseSheetByColor(sheet))
         }
 
-       // out.transferFields(fieldsPerSheet)
+        //todo only do one of these!
+        output.transferFields(fieldsPerSheet)
+
         return fieldsPerSheet
     }
+
 }

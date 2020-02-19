@@ -1,4 +1,4 @@
-package life.qbic.repowiz
+package life.qbic.repowiz.prepare.projectSearch
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.systemsx.cisd.common.spring.HttpInvokerUtils

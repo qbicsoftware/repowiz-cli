@@ -1,5 +1,7 @@
 package life.qbic.repowiz.prepare
 
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService
+
 
 class ProjectSearchConnector implements ProjectSearchService{
 

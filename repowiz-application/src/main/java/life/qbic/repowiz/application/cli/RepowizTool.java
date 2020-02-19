@@ -12,11 +12,12 @@ import life.qbic.repowiz.RepositoryDatabaseConnector;
 import life.qbic.repowiz.io.XlsxParser;
 import life.qbic.repowiz.prepare.*;
 import life.qbic.repowiz.prepare.mapping.GeoMapper;
+import life.qbic.repowiz.prepare.mapping.GeoParser;
 import life.qbic.repowiz.prepare.mapping.MapInfoInput;
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService;
 import life.qbic.repowiz.select.SelectRepository;
 
 import life.qbic.repowiz.select.SelectRepositoryInput;
-import life.qbic.repowiz.select.SelectRepositoryOutput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -81,10 +82,10 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
             presenter.setControllerUI(uic);
 
-            SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
-            //UserInputController uic = new UserInputController(prepareSubmission);
-            MatchingRepositoriesOutput selectHandler = new SubmissionHandler(selectRepositoryInput, presenter);
-            //prepareHandler.setController(uic);
+            SelectRepository selectRepositoryInput = new SelectRepository(prepareHandler);
+            //UserInputController uic2 = new UserInputController(selectRepositoryInput);
+            SubmissionHandler selectHandler = new SubmissionHandler(selectRepositoryInput, presenter);
+            //presenter.setControllerUI(uic2);
 
 
             FindMatchingRepositoriesInput findRepository = new FindMatchingRepositories(selectHandler,repoDescription);
@@ -107,6 +108,8 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             presenter.setControllerUI(uic);
 
             SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
+            //UserInputController uic2 = new UserInputController(selectRepository);
+            //presenter.setControllerUI(uic2);
 
             selectRepository.selectRepository(command.selectedRepository.toLowerCase());
         }

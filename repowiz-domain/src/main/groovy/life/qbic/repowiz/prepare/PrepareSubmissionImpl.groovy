@@ -4,8 +4,9 @@ package life.qbic.repowiz.prepare
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer{
+class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapInfoOutput{
 
     PrepareSubmissionOutput output
     String project
@@ -23,6 +24,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer{
     @Override
     def prepareSubmissionToRepository(Repository repository) {
         //ask the user for upload type
+        mapInfo.addOutput(this)
         output.transferQuestion(repository.uploadTypes)
 
         //project data
@@ -41,11 +43,15 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer{
     }
 
     def getRequiredFields(String uploadType){
-        //what fields are required
-        //todo transfer data to the right repository
+        mapInfo.getFields(uploadType) //add (String repositoryName)
+        //todo
         //mapInfo soll ein "übermapper" sein der alle anderen mapper beinhalted
-        HashMap<String,HashMap> fields = mapInfo.getFields(uploadType) //add (String repositoryName)
-        print fields
-        print "i received the answer"
+    }
+
+    @Override
+    def transferFields(HashMap fields) {
+        println "received the field values"
+        //todo handle the fields
+        return null
     }
 }

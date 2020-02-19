@@ -12,16 +12,14 @@ class SelectRepositorySpecification extends Specification{
 
     def selectRepository = new SelectRepository(output,repositoryDescription)
 
-   /**
-    * todo test that
-    * def "typo in repository name gives a warning"(){
-
-    }*/
-
     def "defining non suggested repository returns null"(){
+        given:
         Repository repo = new Repository("clinvar","",[""],"",[""])
+        selectRepository.setSuggestedRepos([repo])
+
         when:
-        def res = selectRepository.findMatchingRepository("clinvaar",[repo])
+        def res = selectRepository.isValidRepository("clinvaar")
+
         then:
         res == null
     }

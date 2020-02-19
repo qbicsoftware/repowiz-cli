@@ -1,6 +1,6 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.prepare.GeoParser
+import life.qbic.repowiz.prepare.mapping.GeoParser
 
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
