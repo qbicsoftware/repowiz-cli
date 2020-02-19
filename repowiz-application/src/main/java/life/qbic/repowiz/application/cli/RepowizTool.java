@@ -9,7 +9,9 @@ import life.qbic.repowiz.find.FindMatchingRepositories;
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
 import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.RepositoryDatabaseConnector;
+import life.qbic.repowiz.io.XlsxParser;
 import life.qbic.repowiz.prepare.*;
+import life.qbic.repowiz.prepare.mapping.GeoMapper;
 import life.qbic.repowiz.prepare.mapping.MapInfoInput;
 import life.qbic.repowiz.select.SelectRepository;
 
@@ -43,16 +45,20 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         CommandlineView commandlineView = new RepoWizView();
         SubmissionPresenter presenter = new SubmissionPresenter(commandlineView);
 
+        //parser
+        GeoParser parser = new XlsxParser();
+
+        //set up mapping
+        MapInfoInput map = new GeoMapper(parser);
 
         // set up database
         RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
-
-        //set up mapping
 
         //local database connection
         //instantiate session and v3 api
         ProjectSearchService projectSearchService = new ProjectSearchConnector();
 
+        //
 
         /*
         def parse(){
@@ -70,11 +76,16 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService);
-            SelectRepositoryOutput prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService, map);
+            UserInputController uic = new UserInputController(prepareSubmission);
+            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+            presenter.setControllerUI(uic);
 
             SelectRepositoryInput selectRepositoryInput = new SelectRepository(prepareHandler);
+            //UserInputController uic = new UserInputController(prepareSubmission);
             MatchingRepositoriesOutput selectHandler = new SubmissionHandler(selectRepositoryInput, presenter);
+            //prepareHandler.setController(uic);
+
 
             FindMatchingRepositoriesInput findRepository = new FindMatchingRepositories(selectHandler,repoDescription);
             findRepository.startGuide();
@@ -90,13 +101,16 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionInput prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService);
+            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService, map);
+            UserInputController uic = new UserInputController(prepareSubmission);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+            presenter.setControllerUI(uic);
 
             SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
 
             selectRepository.selectRepository(command.selectedRepository.toLowerCase());
         }
+
 
     }
 }

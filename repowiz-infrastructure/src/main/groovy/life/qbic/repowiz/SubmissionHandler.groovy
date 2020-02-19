@@ -4,6 +4,7 @@ import life.qbic.repowiz.cli.SubmissionPresenter
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
+import life.qbic.repowiz.prepare.UserInputController
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
 import life.qbic.repowiz.submit.FinaliseSubmission
@@ -12,10 +13,12 @@ import life.qbic.repowiz.submit.FinaliseSubmission
 class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput{
 
     SubmissionPresenter presenter
+    UserInputController controller
 
     SelectRepositoryInput repositoryInput
     PrepareSubmissionInput prepareSubmissionInput
     FinaliseSubmission finaliseSubmissionInput
+
 
     SubmissionHandler(SubmissionPresenter presenter){
         this.presenter = presenter
@@ -35,7 +38,6 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         this.finaliseSubmissionInput = finaliseSubmissionInput
         this.presenter = presenter
     }
-
 
     //MatchingRepositories output
     @Override
@@ -66,6 +68,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
+    //prepare submission use case
     @Override
     def transferProjectFiles(List<String> files) {
         return null
@@ -74,5 +77,15 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     @Override
     def transferProjectMetadata(List<File> filledTemplates) {
         return null
+    }
+
+    @Override
+    def transferQuestion(List<String> question) {
+        presenter.requestAnswer(question)
+    }
+
+    @Override
+    def displayAnswer(String answer) {
+        presenter.displayDecisions([answer])
     }
 }

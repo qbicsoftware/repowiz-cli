@@ -1,10 +1,7 @@
 package life.qbic.repowiz.prepare
 
-import java.nio.file.Path
 
 class ProjectSearchConnector implements ProjectSearchService{
-
-
 
     @Override
     HashMap<String, String> getProjectMetadata(String projectID) {
@@ -22,7 +19,7 @@ class ProjectSearchConnector implements ProjectSearchService{
     }
 
     @Override
-    Path getFilesForSamples(String sampleID) {
+    def getFilesForSamples(String sampleID) {
         return null
     }
 }

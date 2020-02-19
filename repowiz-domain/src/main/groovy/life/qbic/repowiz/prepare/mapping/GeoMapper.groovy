@@ -12,7 +12,7 @@ class GeoMapper implements MapInfoInput{
     }
 
     @Override
-    def getFields(String uploadType) {
+    HashMap<String,HashMap> getFields(String uploadType) { //, MapInfoOutput out
         String templateName = ""
         List<String> sheets = []
 
@@ -31,11 +31,13 @@ class GeoMapper implements MapInfoInput{
         }
 
         parser.parseTemplate(templateName)
+
         HashMap<String,HashMap> fieldsPerSheet = new HashMap<>()
         sheets.each { sheet ->
             fieldsPerSheet.put(sheet,parser.parseSheetByColor(sheet))
         }
 
+       // out.transferFields(fieldsPerSheet)
         return fieldsPerSheet
     }
 }

@@ -1,7 +1,7 @@
 {
   "repositoryName": "Geo",
-  "uploadType": "template",
-  "experimentType": ["Microarray","HTS","other (NanoString, RT-PCR, SAGE)"],
+  "uploadFormat": "template",
+  "uploadTypes": ["affymetrix_GE","hts"],
   "dataType": "dna_rna",
   "uploadRequirements": ["miame",""],
   "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"],

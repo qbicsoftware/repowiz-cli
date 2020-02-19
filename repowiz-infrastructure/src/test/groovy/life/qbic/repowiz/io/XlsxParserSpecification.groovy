@@ -1,7 +1,5 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.prepare.GeoParser
-import life.qbic.repowiz.prepare.mapping.GeoMapper
 import org.apache.poi.xssf.usermodel.XSSFCell
 import spock.lang.Specification
 
@@ -9,12 +7,11 @@ class XlsxParserSpecification extends Specification{
 
     def "Geo Parser returns all Fields from Template"(){
         given:
-        GeoParser parser = new XlsxParser()
+        XlsxParser parser = new XlsxParser()
         parser.parseTemplate("templates/seq_template_v2.1.xlsx")
 
         when:
         def res = parser.parseSheetByColor("METADATA TEMPLATE")
-        print res
 
         then:
         res.keySet().size() == 7
@@ -30,7 +27,7 @@ class XlsxParserSpecification extends Specification{
 
     def "Finds correct Level RGB color"(){
         given:
-        GeoParser parser = new XlsxParser()
+        XlsxParser parser = new XlsxParser()
         parser.parseTemplate("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(6).getCell(0)
@@ -44,7 +41,7 @@ class XlsxParserSpecification extends Specification{
     }
     def "Finds correct Field RGB color"(){
         given:
-        GeoParser parser = new XlsxParser()
+        XlsxParser parser = new XlsxParser()
         parser.parseTemplate("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(8).getCell(0)

@@ -10,9 +10,8 @@ import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 
-class XlsxParser implements TemplateParser, GeoParser {
+class XlsxParser implements TemplateParser, GeoParser{
 
-    String file
     XSSFWorkbook wb
 
     final String comment = '#'
@@ -20,22 +19,13 @@ class XlsxParser implements TemplateParser, GeoParser {
     final byte[] rgbFieldColor = [0, 0, -1]
 
 
-    XlsxParser(String filePath) {
-        file = filePath
-    }
-
-    XlsxParser() {
-
-    }
-
-    //todo clean up this mess --> keep all these methods or stick with only one type of template parsing (template with constructor/template with method)
     @Override
-    def parseAsStream() {
+    def parseAsStream(String file) {
         InputStream stream = XlsxParser.class.getClassLoader().getResourceAsStream(file)
         wb = new XSSFWorkbook(stream)
     }
 
-    def parseAsFile() {
+    def parseAsFile(String file) {
         String f = XlsxParser.class.getClassLoader().getResource(file).path
         wb = new XSSFWorkbook(new File(f))
     }
@@ -44,8 +34,7 @@ class XlsxParser implements TemplateParser, GeoParser {
     //for geo it is required to parse the sheet by color
     @Override
     def parseTemplate(String template) {
-        InputStream stream = XlsxParser.class.getClassLoader().getResourceAsStream(template)
-        wb = new XSSFWorkbook(stream)
+        parseAsStream(template)
     }
 
     @Override
@@ -53,7 +42,7 @@ class XlsxParser implements TemplateParser, GeoParser {
         HashMap res = null
 
         wb.sheetIterator().each { sheet ->
-            if (sheet.sheetName.strip() == sheetName) { //need to strip succeeding whitespaces
+            if (sheet.sheetName.trim() == sheetName) { //need to strip succeeding whitespaces
                 res = getExperimentLevels(sheet)
             }
         }
@@ -74,7 +63,7 @@ class XlsxParser implements TemplateParser, GeoParser {
                 byte[] color = getRGBColor(cell)
 
                 if (isLevel(color,column)) {
-                    String level = cell.stringCellValue.strip()
+                    String level = cell.stringCellValue.trim()
                     List<String> fields = getExperimentFields(row.rowNum, sheet)
                     //level is all fields assigned to a section in the metadata sheet
                     classWithFields.put(level, fields)
@@ -107,7 +96,7 @@ class XlsxParser implements TemplateParser, GeoParser {
                         nextLevel = true
                     }
                     if (isField(color,col)) {
-                        metaFields.add(cell.stringCellValue.strip())
+                        metaFields.add(cell.stringCellValue.trim())
                     }
                 }
             }

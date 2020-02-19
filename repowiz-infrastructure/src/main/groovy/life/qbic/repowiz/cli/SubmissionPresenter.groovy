@@ -1,14 +1,17 @@
 package life.qbic.repowiz.cli
 
+import life.qbic.repowiz.prepare.UserInputController
 import life.qbic.repowiz.submit.SubmissionOutput
 
 class SubmissionPresenter implements SubmissionOutput{
 
     CommandlineView output
+    UserInputController controllerUI
 
     SubmissionPresenter(CommandlineView output){
         this.output = output
     }
+
 
     String requestAnswer(List<String> choices){
 
@@ -19,6 +22,7 @@ class SubmissionPresenter implements SubmissionOutput{
         }
         
         String answer = output.userAnswer(formattedChoices)
+        controllerUI.transferUserAnswer(answer)
 
         return answer.toLowerCase()
     }
@@ -42,6 +46,7 @@ class SubmissionPresenter implements SubmissionOutput{
         }
 
         String answer = output.userAnswer(choose)
+        controllerUI.transferUserAnswer(answer)
 
         return answer.toLowerCase()
     }

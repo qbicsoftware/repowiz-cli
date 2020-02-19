@@ -4,6 +4,7 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.find.tree.DecisionTree
 import life.qbic.repowiz.find.tree.Node
+import life.qbic.repowiz.prepare.UserAnswer
 
 class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 

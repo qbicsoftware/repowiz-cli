@@ -11,19 +11,18 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
 
     def "valid repo file parsing"(){
         given:
-        InputStream fileStream = connector.getClass().getResourceAsStream("/repositories/geo.json")
-        def repoInfo = JsonParser.parseStream(fileStream)
+        //InputStream fileStream = connector.getClass().getResourceAsStream("/repositories/geo.json")
+        JsonParser parser = new JsonParser()
+        def repoInfo = parser.parseAsStream("repositories/geo.json")
 
         when:
         assert repoInfo instanceof Map
         Repository repo = connector.createRepoFromJSON(repoInfo)
-        print repoInfo
+        //print repoInfo
 
         then:
         repo.name == "Geo"
-        repo.experimentTypes == ["Microarray","HTS","other (NanoString, RT-PCR, SAGE)"]
-
-
+        repo.uploadTypes == ["affymetrix_GE", "hts"]
     }
 
     def "find repository file"(){

@@ -16,10 +16,10 @@ class JsonParserSpecification extends Specification {
         given:
         //def path = getClass().getResource("/repositories/geo.json").getPath()
         //File file = new File(path)
-        JsonParser parser = new JsonParser("/repositories/geo.json")
+        JsonParser parser = new JsonParser()
 
         when:
-        def res = parser.parseAsFile()
+        def res = parser.parseAsFile("/repositories/geo.json")
 
         then:
         res.get("repositoryName") == "Geo"

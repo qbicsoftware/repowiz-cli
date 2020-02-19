@@ -1,6 +1,7 @@
 package life.qbic.repowiz.application.view;
 
 import life.qbic.repowiz.cli.CommandlineView;
+import life.qbic.repowiz.prepare.UserInputController;
 
 import java.util.Scanner;
 

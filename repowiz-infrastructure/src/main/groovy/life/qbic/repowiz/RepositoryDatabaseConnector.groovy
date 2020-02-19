@@ -34,8 +34,8 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
         InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
 
         if (resourceStream != null) {
-            JsonParser parser = new JsonParser(fileURL)
-            def json = parser.parseAsStream()
+            JsonParser parser = new JsonParser()
+            def json = parser.parseAsStream(fileURL)
             assert json instanceof Map
 
             return createRepoFromJSON(json)
@@ -48,12 +48,12 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
     Repository createRepoFromJSON(Map repoMap){
         String name = repoMap.get("repositoryName")
         String repositoryType = repoMap.get("repositoryName")
-        List<String> experimentTypes = repoMap.get("experimentType")
-        String uploadType = repoMap.get("uploadType")
+        List<String> uploadTypes = repoMap.get("uploadTypes")
+        String uploadFormat = repoMap.get("uploadFormat")
         List<String> uploadRequirements = repoMap.get("uploadRequirements")
         String size = repoMap.get("size")
 
-        Repository repo = new Repository(name,repositoryType,experimentTypes,uploadType,uploadRequirements)
+        Repository repo = new Repository(name,repositoryType,uploadTypes,uploadFormat,uploadRequirements)
         repo.addCharacteristic("size",size)
 
         return repo
