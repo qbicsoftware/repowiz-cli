@@ -5,14 +5,15 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput,UserAnswer{
+class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer{
 
     PrepareSubmissionOutput output
     String project
     ProjectSearchService projectSearch
     MapInfoInput mapInfo
 
-    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch,MapInfoInput mapInfo){
+
+    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch, MapInfoInput mapInfo){
         this.output = output
         this.project = projectID
         this.projectSearch = projectSearch
@@ -21,15 +22,8 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput,UserAnswer{
 
     @Override
     def prepareSubmissionToRepository(Repository repository) {
-        //ask for submission type
-        //e.g geo --> hts, affymetrix microarray
+        //ask the user for upload type
         output.transferQuestion(repository.uploadTypes)
-
-        //what fields are required
-        // --> use mapper based on repository eg geo --> geo mapper
-        //HashMap<String,HashMap> fields = mapInfo.getFields(uploadType)
-        //answer of fields is transferred with "transferFields" with mapInfoOutput
-        //print fields
 
         //project data
         //projectSearch.getProjectMetadata(project)
@@ -43,5 +37,15 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput,UserAnswer{
     @Override
     def handleUserAnswer(String answer) {
         output.displayAnswer(answer)
+        getRequiredFields(answer)
+    }
+
+    def getRequiredFields(String uploadType){
+        //what fields are required
+        //todo transfer data to the right repository
+        //mapInfo soll ein "übermapper" sein der alle anderen mapper beinhalted
+        HashMap<String,HashMap> fields = mapInfo.getFields(uploadType) //add (String repositoryName)
+        print fields
+        print "i received the answer"
     }
 }

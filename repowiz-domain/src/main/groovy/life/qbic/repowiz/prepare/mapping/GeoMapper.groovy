@@ -13,13 +13,13 @@ class GeoMapper implements MapInfoInput{
 
     @Override
     HashMap<String,HashMap> getFields(String uploadType) { //, MapInfoOutput out
-        String templateName = ""
+        String templateName = "templates/"
         List<String> sheets = []
 
         switch (uploadType){
             case "hts":
                 //call method for hts template
-                templateName = "seq_template_v2.1.xlsx"
+                templateName += "seq_template_v2.1.xlsx"
                 sheets.add("METADATA TEMPLATE")
                 break
             case "affymetrix_GE":
@@ -30,6 +30,7 @@ class GeoMapper implements MapInfoInput{
                 break
         }
 
+        println templateName
         parser.parseTemplate(templateName)
 
         HashMap<String,HashMap> fieldsPerSheet = new HashMap<>()

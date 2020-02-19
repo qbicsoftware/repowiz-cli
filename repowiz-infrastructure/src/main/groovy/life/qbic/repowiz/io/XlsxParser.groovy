@@ -1,6 +1,7 @@
 package life.qbic.repowiz.io
 
 import life.qbic.repowiz.prepare.GeoParser
+
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -22,7 +23,8 @@ class XlsxParser implements TemplateParser, GeoParser{
     @Override
     def parseAsStream(String file) {
         InputStream stream = XlsxParser.class.getClassLoader().getResourceAsStream(file)
-        wb = new XSSFWorkbook(stream)
+
+        wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
 
     def parseAsFile(String file) {
