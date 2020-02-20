@@ -1,9 +1,9 @@
 package life.qbic.repowiz.prepare
 
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 
 
-class ProjectSearchConnector implements ProjectSearchService{
+class ProjectSearchConnector implements ProjectSearchInput{
 
     @Override
     HashMap<String, String> getProjectMetadata(String projectID) {
@@ -21,7 +21,7 @@ class ProjectSearchConnector implements ProjectSearchService{
     }
 
     @Override
-    def getFilesForSamples(String sampleID) {
+    def getDataForSamples(String sampleID) {
         return null
     }
 }

@@ -1,5 +1,6 @@
 package life.qbic.repowiz.application.cli;
 
+import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi;
 import life.qbic.cli.QBiCTool;
 import life.qbic.repowiz.*;
 import life.qbic.repowiz.application.view.RepoWizView;
@@ -7,17 +8,15 @@ import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionPresenter;
 import life.qbic.repowiz.find.FindMatchingRepositories;
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
-import life.qbic.repowiz.find.MatchingRepositoriesOutput;
 import life.qbic.repowiz.RepositoryDatabaseConnector;
 import life.qbic.repowiz.io.XlsxParser;
 import life.qbic.repowiz.prepare.*;
 import life.qbic.repowiz.prepare.mapping.GeoMapper;
 import life.qbic.repowiz.prepare.mapping.GeoParser;
 import life.qbic.repowiz.prepare.mapping.MapInfoInput;
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService;
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput;
 import life.qbic.repowiz.select.SelectRepository;
 
-import life.qbic.repowiz.select.SelectRepositoryInput;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +56,9 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
 
         //local database connection
         //instantiate session and v3 api
-        ProjectSearchService projectSearchService = new ProjectSearchConnector();
+        String sessionToken = "";
+        IApplicationServerApi v3 = null;
+        ProjectSearchInput projectSearchInput = new ProjectSearchConnector();//v3,sessionToken);
 
         //
 
@@ -77,7 +78,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService, map);
+            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchInput, map);
             UserInputController uic = new UserInputController(prepareSubmission);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
             presenter.setControllerUI(uic);
@@ -102,7 +103,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
             SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
 
-            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchService, map);
+            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, command.projectID, projectSearchInput, map);
             UserInputController uic = new UserInputController(prepareSubmission);
             SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
             presenter.setControllerUI(uic);

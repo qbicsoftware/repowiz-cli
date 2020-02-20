@@ -4,17 +4,22 @@ package life.qbic.repowiz.prepare
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchService
+import life.qbic.repowiz.prepare.model.RepoWizData
+import life.qbic.repowiz.prepare.model.RepoWizExperiment
+import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapInfoOutput{
+class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapInfoOutput, ProjectSearchOutput{
 
     PrepareSubmissionOutput output
     String project
-    ProjectSearchService projectSearch
+    ProjectSearchInput projectSearch
     MapInfoInput mapInfo
 
 
-    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchService projectSearch, MapInfoInput mapInfo){
+    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch, MapInfoInput mapInfo){
         this.output = output
         this.project = projectID
         this.projectSearch = projectSearch
@@ -53,5 +58,31 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapIn
         println "received the field values"
         //todo handle the fields
         return null
+    }
+
+    //project search output
+    @Override
+    def transferProjectMetadata(List<RepoWizProject> meta) {
+        return null
+    }
+
+    @Override
+    def transferExperimentMetadata(List<RepoWizExperiment> meta) {
+        return null
+    }
+
+    @Override
+    def transferSampleMetadata(List<RepoWizSample> meta) {
+        return null
+    }
+
+    @Override
+    def transferDataForSamples(List<RepoWizData> meta) {
+        return null
+    }
+
+    @Override
+    def userNotification(String message) {
+        output.displayAnswer(message)
     }
 }

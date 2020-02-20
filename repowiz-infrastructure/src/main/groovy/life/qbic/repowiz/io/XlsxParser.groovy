@@ -39,6 +39,8 @@ class XlsxParser implements TemplateParser, GeoParser{
         parseAsStream(template)
     }
 
+    //todo for geo bold terms are required! the thin ones are optional!! --> encode that in repowiz structure??!?
+
     @Override
     HashMap<String,List<String>> parseSheetByColor(String sheetName) {
         HashMap res = null
