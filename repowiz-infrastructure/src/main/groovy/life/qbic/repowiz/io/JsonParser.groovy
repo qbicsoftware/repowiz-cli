@@ -13,7 +13,7 @@ class JsonParser {//implements TemplateParser{
     }*/
 
     def parseAsFile(String jsonFile){
-        String file = getClass().getResource(jsonFile).getPath()
+        String file = JsonParser.class.getClassLoader().getResource(jsonFile).getPath()
         new JsonSlurper().parseText(new File (file).text)
     }
 
