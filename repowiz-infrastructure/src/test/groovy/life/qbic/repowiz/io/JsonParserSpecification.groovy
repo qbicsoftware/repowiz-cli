@@ -19,7 +19,7 @@ class JsonParserSpecification extends Specification {
         JsonParser parser = new JsonParser()
 
         when:
-        def res = parser.parseAsFile("/repositories/geo.json")
+        def res = parser.parseAsFile("repositories/geo.json")
 
         then:
         res.get("repositoryName") == "Geo"

@@ -97,6 +97,7 @@ class ProjectSearchMapper implements ProjectSearchInput{
         fetchOptions.withProperties()
         fetchOptions.withExperiment().withProperties()
         fetchOptions.withExperiment().withProject()
+        fetchOptions.withChildrenUsing(fetchOptions)
 
 
         SampleSearchCriteria sampleSearchCriteria = new SampleSearchCriteria()

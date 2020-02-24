@@ -13,7 +13,7 @@ class OpenBisSessionSpecification extends Specification{
     ProjectSearchOutput out = Mock(ProjectSearchOutput)
 
 
-    def setup(){
+  /*  def setup(){
         JsonParser props = new JsonParser()
         Map cred = (Map) props.parseAsFile("credentials.json.properties")
         session = new OpenBisSession((String) cred.get("user"), (String) cred.get("password"), (String) cred.get("as_url"))
@@ -31,7 +31,7 @@ class OpenBisSessionSpecification extends Specification{
 
         then:
         res.size() == 13 //13 experiments
-    }
+    }*/
 
 
 

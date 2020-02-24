@@ -22,7 +22,7 @@ class SubmissionPresenter implements SubmissionOutput{
         }
         
         String answer = output.userAnswer(formattedChoices)
-        controllerUI.transferUserAnswer(answer)
+        //controllerUI.transferUserAnswer(answer)
 
         return answer.toLowerCase()
     }
@@ -46,7 +46,7 @@ class SubmissionPresenter implements SubmissionOutput{
         }
 
         String answer = output.userAnswer(choose)
-        controllerUI.transferUserAnswer(answer)
+        //controllerUI.transferUserAnswer(answer)
 
         return answer.toLowerCase()
     }
