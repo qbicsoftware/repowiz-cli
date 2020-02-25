@@ -1,19 +1,20 @@
 package life.qbic.repowiz.cli
 
-import life.qbic.repowiz.prepare.UserInputController
+
 import life.qbic.repowiz.submit.SubmissionOutput
 
 class SubmissionPresenter implements SubmissionOutput{
 
     CommandlineView output
-    UserInputController controllerUI
+    SubmissionController controller
 
-    SubmissionPresenter(CommandlineView output){
+    SubmissionPresenter(CommandlineView output, SubmissionController controller){
         this.output = output
+        this.controller = controller
     }
 
 
-    String requestAnswer(List<String> choices){
+    def requestAnswer(List<String> choices, String type){
 
         String formattedChoices = "> Please choose one of the following options: \n> "
 
@@ -21,10 +22,15 @@ class SubmissionPresenter implements SubmissionOutput{
         formattedChoices += numberMapToString(map)
 
         int answerNumber = output.userAnswer(formattedChoices)
-        String answer = map.get(answerNumber)
-        //controllerUI.transferUserAnswer(answer)
+        String answer = map.get(answerNumber).toLowerCase()
 
-        return answer.toLowerCase()
+        if(type == "find"){
+            controller.transferDecision(answer)
+        }
+        if(type == "prepare"){
+            controller.transferUploadType(answer)
+        }
+
     }
 
     def displayDecisions(List<String> decisions){
@@ -46,11 +52,9 @@ class SubmissionPresenter implements SubmissionOutput{
         choose += numberMapToString(map)
 
         int answerNum = output.userAnswer(choose)
-        String answer = map.get(answerNum)
+        String answer = map.get(answerNum).toLowerCase()
 
-        //controllerUI.transferUserAnswer(answer)
-
-        return answer.toLowerCase()
+        controller.transferRepositoryName(answer)
     }
 
     def mapWithNumber(List elements){
@@ -72,7 +76,6 @@ class SubmissionPresenter implements SubmissionOutput{
 
         return text
     }
-
 
     //keep it like that? does it make sense to show this content to the presenter?
 

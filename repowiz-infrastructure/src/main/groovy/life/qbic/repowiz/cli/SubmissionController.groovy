@@ -8,13 +8,16 @@ import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
 import life.qbic.repowiz.io.XlsxParser
 import life.qbic.repowiz.prepare.PrepareSubmissionImpl
+import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
-import life.qbic.repowiz.prepare.UserInputController
+
 import life.qbic.repowiz.prepare.mapping.GeoMapper
 import life.qbic.repowiz.prepare.mapping.GeoParser
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchMapper
 import life.qbic.repowiz.select.SelectRepository
+import life.qbic.repowiz.select.SelectRepositoryInput
+import life.qbic.repowiz.submit.FinaliseSubmission
 
 class SubmissionController {
 
@@ -23,21 +26,28 @@ class SubmissionController {
     RepositoryDescription repoDescription
     MapInfoInput map
     GeoParser parser
+
     SubmissionPresenter presenter
+
+    //use cases
+    FindMatchingRepositoriesInput findRepository
+    SelectRepositoryInput selectRepository
+    PrepareSubmissionInput prepareSubmission
+    FinaliseSubmission finaliseSubmission
 
     SubmissionController(CommandlineView view, String projectID){
         this.projectID = projectID
         // set up infrastructure classes
-        presenter = new SubmissionPresenter(view);
+        presenter = new SubmissionPresenter(view,this)
 
         //parser
-        parser = new XlsxParser();
+        parser = new XlsxParser()
 
         //set up mapping
-        map = new GeoMapper(parser);
+        map = new GeoMapper(parser)
 
         // set up database
-        repoDescription = new RepositoryDatabaseConnector();
+        repoDescription = new RepositoryDatabaseConnector()
 
         //local database connection
         //instantiate session and v3 api from config file (given by command?)
@@ -47,9 +57,9 @@ class SubmissionController {
         }
         */
 
-        String sessionToken = "";
-        IApplicationServerApi v3 = null;
-        projectSearch = new ProjectSearchMapper(v3,sessionToken);
+        String sessionToken = ""
+        IApplicationServerApi v3 = null
+        projectSearch = new ProjectSearchMapper(v3,sessionToken)
 
 
     }
@@ -57,50 +67,52 @@ class SubmissionController {
 
     def init(String repo){
 
-            //FinaliseSubmissionImpl finaliseSubmission = new FinaliseSubmissionImpl(presenter);
+            //finaliseSubmission = new FinaliseSubmissionImpl(presenter);
             //SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
-            SubmissionHandler finaliseHandler = new SubmissionHandler(presenter);
+            SubmissionHandler finaliseHandler = new SubmissionHandler(presenter)
 
-            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch, map);
-            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+            prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch, map)
+            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter)
 
-            UserInputController uic = new UserInputController(prepareSubmission);
-            presenter.setControllerUI(uic);
+            projectSearch.addProjectSearchOutput(prepareSubmission)
 
-            projectSearch.addProjectSearchOutput(prepareSubmission);
+            selectRepository = new SelectRepository(prepareHandler,repoDescription)
 
-            SelectRepository selectRepository = new SelectRepository(prepareHandler,repoDescription);
-            //UserInputController uic2 = new UserInputController(selectRepository);
-            //presenter.setControllerUI(uic2);
-
-            selectRepository.selectRepository(repo.toLowerCase());
+            selectRepository.selectRepository(repo.toLowerCase())
     }
 
     def initGuide(){
 
-            //FinaliseSubmissionImpl finaliseSubmission = new FinaliseSubmissionImpl(presenter);
-            //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter);
-            PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter);
+            //finaliseSubmission = new FinaliseSubmissionImpl(presenter)
+            //PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
+            PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(presenter)
 
-            PrepareSubmissionImpl prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch, map);
-            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter);
+            prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch, map)
+            SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter)
 
-            UserInputController uic = new UserInputController(prepareSubmission);
-            presenter.setControllerUI(uic);
-
-            projectSearch.addProjectSearchOutput(prepareSubmission);
+            projectSearch.addProjectSearchOutput(prepareSubmission)
 
 
-            SelectRepository selectRepositoryInput = new SelectRepository(prepareHandler);
-            //UserInputController uic2 = new UserInputController(selectRepositoryInput);
-            SubmissionHandler selectHandler = new SubmissionHandler(selectRepositoryInput, presenter);
-            //presenter.setControllerUI(uic2);
+            SelectRepository selectRepositoryInput = new SelectRepository(prepareHandler)
+            SubmissionHandler selectHandler = new SubmissionHandler(selectRepositoryInput, presenter)
 
-            FindMatchingRepositoriesInput findRepository = new FindMatchingRepositories(selectHandler,repoDescription);
-            findRepository.startGuide();
+            findRepository = new FindMatchingRepositories(selectHandler,repoDescription)
+            findRepository.startGuide()
 
     }
 
+    def transferDecision(String decision){
+        findRepository.processUserAnswer(decision)
+    }
 
+    def transferRepositoryName(String repository){
+        selectRepository.processUserAnswer(repository)
+    }
+
+    def transferUploadType(String type){
+        prepareSubmission.processUserAnswer(type)
+    }
+
+    //need this method for each use case .. need a method for each use case?
 
 }

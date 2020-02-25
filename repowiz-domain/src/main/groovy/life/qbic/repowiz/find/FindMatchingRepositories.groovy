@@ -4,7 +4,6 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.find.tree.DecisionTree
 import life.qbic.repowiz.find.tree.Node
-import life.qbic.repowiz.prepare.UserAnswer
 
 class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
@@ -27,19 +26,19 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     def startGuide() {
         def organisms = []
 
-
         tree.getFirstDecisionLevel().each {
             organisms << it.data
         }
 
         String user_answer = output.transferAnswerPossibilities(organisms)
-        nextAnswerPossibility(user_answer)
+        processUserAnswer(user_answer)
     }
 
     @Override
-    def nextAnswerPossibility(String answer){
+    def processUserAnswer(String answer){
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
+
         boolean validAnswer = false
 
         currentDecisionLevel.children.each {
@@ -56,6 +55,8 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         validAnswer
     }
 
+
+
     def nodeDecision(){
         def decisionPossibilities = []
 
@@ -64,7 +65,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         }
 
         String answer = output.transferAnswerPossibilities(decisionPossibilities)
-        nextAnswerPossibility(answer)
+        processUserAnswer(answer)
     }
 
     def leafDecision(){

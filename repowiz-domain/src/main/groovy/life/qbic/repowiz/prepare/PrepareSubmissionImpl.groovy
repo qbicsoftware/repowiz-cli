@@ -2,6 +2,7 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.Repository
+import life.qbic.repowiz.UserAnswer
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
 import life.qbic.repowiz.prepare.model.RepoWizData
@@ -11,7 +12,7 @@ import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapInfoOutput, ProjectSearchOutput{
+class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, ProjectSearchOutput{
 
     PrepareSubmissionOutput output
     String project
@@ -42,10 +43,11 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, UserAnswer, MapIn
     }
 
     @Override
-    def handleUserAnswer(String answer) {
+    def processUserAnswer(String answer) {
         output.displayAnswer(answer)
         getRequiredFields(answer)
     }
+
 
     def getRequiredFields(String uploadType){
         mapInfo.getFields(uploadType) //add (String repositoryName)

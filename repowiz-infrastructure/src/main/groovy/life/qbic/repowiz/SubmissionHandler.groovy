@@ -38,12 +38,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //MatchingRepositories output
     @Override
-    String transferAnswerPossibilities(List<String> choices) {
-        presenter.requestAnswer(choices)
+    def transferAnswerPossibilities(List<String> choices) {
+        presenter.requestAnswer(choices,"find")
     }
 
     @Override
-    String transferDecisionStack(List<String> decisions) {
+    def transferDecisionStack(List<String> decisions) {
         presenter.displayDecisions(decisions)
     }
 
@@ -55,7 +55,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //selectRepository output
     @Override
-    String chooseRepository(List<String> repositories) {
+    def chooseRepository(List<String> repositories) {
         presenter.chooseRepository(repositories)
     }
 
@@ -78,7 +78,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def transferQuestion(List<String> question) {
-        presenter.requestAnswer(question)
+        presenter.requestAnswer(question,"prepare")
     }
 
     @Override

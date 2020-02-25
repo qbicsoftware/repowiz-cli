@@ -45,6 +45,7 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         CommandlineView commandlineView = new RepoWizView();
         SubmissionController controller = new SubmissionController(commandlineView,command.projectID);
 
+        //start point of the application
         if(command.guide){
             controller.initGuide();
         }

@@ -2,7 +2,6 @@ package life.qbic.repowiz.find
 
 
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.find.tree.DecisionTree
 import spock.lang.Specification
 
 class FindMatchingRepositoriesSpecification extends Specification {
@@ -24,7 +23,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "wrong name"(){
         when:
-        boolean res = findMatchingRepositories.nextAnswerPossibility("HUUMAN")
+        boolean res = findMatchingRepositories.processUserAnswer("HUUMAN")
 
         then:
         !res
@@ -32,7 +31,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "case sensitive"(){
         when:
-        boolean res = findMatchingRepositories.nextAnswerPossibility("Human")
+        boolean res = findMatchingRepositories.processUserAnswer("Human")
 
         then:
         !res
@@ -41,7 +40,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest access type for human as organism"(){
         when:
-        findMatchingRepositories.nextAnswerPossibility("human")
+        findMatchingRepositories.processUserAnswer("human")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
@@ -51,7 +50,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest data type for other as organism"(){
         when:
-        findMatchingRepositories.nextAnswerPossibility("other")
+        findMatchingRepositories.processUserAnswer("other")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
@@ -61,10 +60,10 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest experiment type for other"(){
         given:
-        findMatchingRepositories.nextAnswerPossibility("other")
+        findMatchingRepositories.processUserAnswer("other")
 
         when:
-        findMatchingRepositories.nextAnswerPossibility("variants")
+        findMatchingRepositories.processUserAnswer("variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
@@ -75,11 +74,11 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest repository type for other,variants,structural"(){
         given:
-        findMatchingRepositories.nextAnswerPossibility("other")
-        findMatchingRepositories.nextAnswerPossibility("variants")
+        findMatchingRepositories.processUserAnswer("other")
+        findMatchingRepositories.processUserAnswer("variants")
 
         when:
-        findMatchingRepositories.nextAnswerPossibility("structural variants")
+        findMatchingRepositories.processUserAnswer("structural variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)

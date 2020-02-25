@@ -2,7 +2,6 @@ package life.qbic.repowiz.select
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.prepare.UserAnswer
 
 class SelectRepository implements SelectRepositoryInput{
 
@@ -43,11 +42,12 @@ class SelectRepository implements SelectRepositoryInput{
 
         this.suggestedRepos = suggestedRepos
 
-        //output.chooseRepository(nameList)
+        output.chooseRepository(nameList)
+    }
 
-        String user_choice = output.chooseRepository(nameList)
-        output.selectedRepository(isValidRepository(user_choice))
-
+    @Override
+    def processUserAnswer(String answer) {
+        output.selectedRepository(isValidRepository(answer))
     }
 
     List<String> getRepositoryNameList(List<Repository> suggestedRepo){
@@ -70,8 +70,4 @@ class SelectRepository implements SelectRepositoryInput{
         return validChoice
     }
 
-    /*@Override
-    def handleUserAnswer(String answer) {
-        output.selectedRepository(isValidRepository(answer))
-    }*/
 }
