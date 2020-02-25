@@ -13,18 +13,18 @@ class SubmissionPresenter implements SubmissionOutput{
     }
 
 
-    String requestAnswer(List<String> choices){
+    String requestAnswer(HashMap<Integer,String> choices){
 
         String formattedChoices = "> Please choose one of the following options: \n> "
 
-        choices.each {
-            formattedChoices += "|$it "
+        choices.each {num,choice ->
+            formattedChoices += "$choice ($num) "
         }
         
-        String answer = output.userAnswer(formattedChoices)
+        int answerNumber = output.userAnswer(formattedChoices)
         //controllerUI.transferUserAnswer(answer)
 
-        return answer.toLowerCase()
+        return choices.get(answerNumber)
     }
 
     def displayDecisions(List<String> decisions){
@@ -32,7 +32,7 @@ class SubmissionPresenter implements SubmissionOutput{
         String formattedDecisions = "> You selected: "
 
         decisions.each {
-            formattedDecisions += "$it "
+            formattedDecisions += "$it -> "
         }
 
         output.displayDecisionOverview(formattedDecisions)

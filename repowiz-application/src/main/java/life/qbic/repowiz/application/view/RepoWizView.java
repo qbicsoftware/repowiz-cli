@@ -8,11 +8,11 @@ import java.util.Scanner;
 public class RepoWizView implements CommandlineView {
 
     @Override
-    public String userAnswer(String question) {
+    public int userAnswer(String question) {
         System.out.println(question);
         Scanner scan = new Scanner(System.in);
 
-        return scan.nextLine();
+        return scan.nextInt();
     }
 
     @Override
