@@ -19,8 +19,8 @@ class DecisionTree {
 
 
         //access type:
-        Node<String> controlled = new Node<String>("controlled")
-        Node<String> open = new Node<String>("open")
+        Node<String> controlled = new Node<String>("controlled access")
+        Node<String> open = new Node<String>("open access")
 
         //data type:
         Node<String> dna_rna_human = new Node<String>("dna_rna")
@@ -35,10 +35,10 @@ class DecisionTree {
 
         Node<String> other_data_human = new Node<String>("other")
 
-        Node<String> expression_data_human = new Node<String>("expression_data")
-        Node<String> expression_data_env = new Node<String>("expression_data")
-        Node<String> expression_data_other = new Node<String>("expression_data")
-        Node<String> expression_data_plants = new Node<String>("expression_data")
+        Node<String> expression_data_human = new Node<String>("expression data")
+        Node<String> expression_data_env = new Node<String>("expression data")
+        Node<String> expression_data_other = new Node<String>("expression data")
+        Node<String> expression_data_plants = new Node<String>("expression data")
 
         Node<String> protein_human = new Node<String>("protein")
         Node<String> protein_env = new Node<String>("protein")
@@ -47,25 +47,25 @@ class DecisionTree {
 
 
         //experiment type:
-        Node<String> clinical_var = new Node<String>("clinical_variants")
-        Node<String> cancer_var = new Node<String>("cancer_variants")
-        Node<String> other_var = new Node<String>("other_variants")
+        Node<String> clinical_var = new Node<String>("clinical variants")
+        Node<String> cancer_var = new Node<String>("cancer variants")
+        Node<String> other_var = new Node<String>("other variants")
 
-        Node<String> raw_reads_human = new Node<String>("raw_reads")
-        Node<String> raw_reads_env = new Node<String>("raw_reads")
-        Node<String> raw_reads_other = new Node<String>("raw_reads")
-        Node<String> raw_reads_plants = new Node<String>("raw_reads")
+        Node<String> raw_reads_human = new Node<String>("raw reads")
+        Node<String> raw_reads_env = new Node<String>("raw reads")
+        Node<String> raw_reads_other = new Node<String>("raw reads")
+        Node<String> raw_reads_plants = new Node<String>("raw reads")
 
-        Node<String> genetic_seq_human = new Node<String>("genetic_sequence")
-        Node<String> genetic_seq_env = new Node<String>("genetic_sequence")
-        Node<String> genetic_seq_other = new Node<String>("genetic_sequence")
-        Node<String> genetic_seq_plants = new Node<String>("genetic_sequence")
+        Node<String> genetic_seq_human = new Node<String>("genetic sequence")
+        Node<String> genetic_seq_env = new Node<String>("genetic sequence")
+        Node<String> genetic_seq_other = new Node<String>("genetic sequence")
+        Node<String> genetic_seq_plants = new Node<String>("genetic sequence")
 
-        Node<String> structural_var_other = new Node<String>("structural_variants")
-        Node<String> structural_var_plants = new Node<String>("structural_variants")
+        Node<String> structural_var_other = new Node<String>("structural variants")
+        Node<String> structural_var_plants = new Node<String>("structural variants")
 
-        Node<String> genetic_var_other = new Node<String>("genetic_variants")
-        Node<String> genetic_var_plants = new Node<String>("genetic_variants")
+        Node<String> genetic_var_other = new Node<String>("genetic variants")
+        Node<String> genetic_var_plants = new Node<String>("genetic variants")
 
         //repository node created with .addChild("reponame")
         //human tree
