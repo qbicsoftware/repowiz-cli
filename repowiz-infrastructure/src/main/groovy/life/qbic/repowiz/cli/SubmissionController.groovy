@@ -93,8 +93,8 @@ class SubmissionController {
             projectSearch.addProjectSearchOutput(prepareSubmission)
 
 
-            SelectRepository selectRepositoryInput = new SelectRepository(prepareHandler)
-            SubmissionHandler selectHandler = new SubmissionHandler(selectRepositoryInput, presenter)
+            selectRepository = new SelectRepository(prepareHandler)
+            SubmissionHandler selectHandler = new SubmissionHandler(selectRepository, presenter)
 
             findRepository = new FindMatchingRepositories(selectHandler,repoDescription)
             findRepository.startGuide()
@@ -112,7 +112,5 @@ class SubmissionController {
     def transferUploadType(String type){
         prepareSubmission.processUserAnswer(type)
     }
-
-    //need this method for each use case .. need a method for each use case?
 
 }

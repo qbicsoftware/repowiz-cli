@@ -13,27 +13,35 @@ class SubmissionPresenter implements SubmissionOutput{
         this.controller = controller
     }
 
-
-    def requestAnswer(List<String> choices, String type){
-
+    String requestAnswer(List<String> choices){
         String formattedChoices = "> Please choose one of the following options: \n> "
 
-        HashMap map = mapWithNumber(choices)
-        formattedChoices += numberMapToString(map)
+        HashMap map = listToMap(choices) //todo rename: adds numbers for the users choice
+
+        formattedChoices += mapToString(map) //todo rename: creates string from map for view
 
         int answerNumber = output.userAnswer(formattedChoices)
+
         String answer = map.get(answerNumber).toLowerCase()
-
-        if(type == "find"){
-            controller.transferDecision(answer)
-        }
-        if(type == "prepare"){
-            controller.transferUploadType(answer)
-        }
-
+        return answer
     }
 
-    def displayDecisions(List<String> decisions){
+    def requestDecision(List<String> choices){
+        String answer = requestAnswer(choices)
+        controller.transferDecision(answer) //transferToFindRepository
+    }
+
+    def requestRepository(List<String> repos){
+        String answer = requestAnswer(repos)
+        controller.transferRepositoryName(answer)
+    }
+
+    def requestUploadType(List<String> uploadTypes){
+        String answer = requestAnswer(uploadTypes)
+        controller.transferUploadType(answer) //transferToSelectRepository
+    }
+
+    def displayUserChoices(List<String> decisions){ //choice
 
         String formattedDecisions = "> You selected: "
 
@@ -44,20 +52,8 @@ class SubmissionPresenter implements SubmissionOutput{
         output.displayDecisionOverview(formattedDecisions)
     }
 
-    def chooseRepository(List<String> repos){
-        String choose = "> Please choose one of the following repositories: \n>"
 
-        HashMap<Integer,String> map = mapWithNumber(repos)
-
-        choose += numberMapToString(map)
-
-        int answerNum = output.userAnswer(choose)
-        String answer = map.get(answerNum).toLowerCase()
-
-        controller.transferRepositoryName(answer)
-    }
-
-    def mapWithNumber(List elements){
+    def listToMap(List elements){
         HashMap map = new HashMap()
         int counter = 1
 
@@ -68,7 +64,7 @@ class SubmissionPresenter implements SubmissionOutput{
         return map
     }
 
-    def numberMapToString(HashMap<Integer,String> map){
+    def mapToString(HashMap<Integer,String> map){
         String text = ""
         map.each {num, val ->
             text += " $val ($num)"

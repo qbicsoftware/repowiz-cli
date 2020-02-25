@@ -39,12 +39,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //MatchingRepositories output
     @Override
     def transferAnswerPossibilities(List<String> choices) {
-        presenter.requestAnswer(choices,"find")
+        presenter.requestDecision(choices)
     }
 
     @Override
     def transferDecisionStack(List<String> decisions) {
-        presenter.displayDecisions(decisions)
+        presenter.displayUserChoices(decisions)
     }
 
     @Override
@@ -56,16 +56,26 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //selectRepository output
     @Override
     def chooseRepository(List<String> repositories) {
-        presenter.chooseRepository(repositories)
+        presenter.requestRepository(repositories)
     }
 
     @Override
     def selectedRepository(Repository repository) {
-        presenter.displayDecisions([repository.name])
+        presenter.displayUserChoices([repository.name])
         prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
     //prepare submission use case
+    @Override
+    def transferQuestion(List<String> uploadTypes) { //todo rename: transfer uploadtypes from usecase to handler
+        presenter.requestUploadType(uploadTypes)
+    }
+
+    @Override
+    def displayAnswer(String choice) { //todo rename: selected uploadtype is shown
+        presenter.displayUserChoices([choice])
+    }
+
     @Override
     def transferProjectFiles(List<String> files) {
         return null
@@ -76,13 +86,5 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         return null
     }
 
-    @Override
-    def transferQuestion(List<String> question) {
-        presenter.requestAnswer(question,"prepare")
-    }
 
-    @Override
-    def displayAnswer(String answer) {
-        presenter.displayDecisions([answer])
-    }
 }
