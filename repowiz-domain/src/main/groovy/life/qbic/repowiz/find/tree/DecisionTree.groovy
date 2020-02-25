@@ -23,10 +23,10 @@ class DecisionTree {
         Node<String> open = new Node<String>("open access")
 
         //data type:
-        Node<String> dna_rna_human = new Node<String>("dna_rna")
-        Node<String> dna_rna_env = new Node<String>("dna_rna")
-        Node<String> dna_rna_other = new Node<String>("dna_rna")
-        Node<String> dna_rna_plants = new Node<String>("dna_rna")
+        Node<String> dna_rna_human = new Node<String>("dna/rna")
+        Node<String> dna_rna_env = new Node<String>("dna/rna")
+        Node<String> dna_rna_other = new Node<String>("dna/rna")
+        Node<String> dna_rna_plants = new Node<String>("dna/rna")
 
         Node<String> variants_open_human = new Node<String>("variants")
         Node<String> variants_controlled_human = new Node<String>("variants")

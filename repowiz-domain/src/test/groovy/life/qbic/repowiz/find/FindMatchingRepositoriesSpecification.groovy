@@ -46,7 +46,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["open","controlled"].sort()
+        res.sort() == ["open access","controlled access"].sort()
     }
 
     def "suggest data type for other as organism"(){
@@ -56,7 +56,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["variants","expression_data","dna_rna","protein"].sort()
+        res.sort() == ["variants","expression data","dna/rna","protein"].sort()
     }
 
     def "suggest experiment type for other"(){
@@ -70,7 +70,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["structural_variants","genetic_variants"].sort()
+        res.sort() == ["structural variants","genetic variants"].sort()
     }
 
     def "suggest repository type for other,variants,structural"(){
@@ -79,7 +79,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         findMatchingRepositories.nextAnswerPossibility("variants")
 
         when:
-        findMatchingRepositories.nextAnswerPossibility("structural_variants")
+        findMatchingRepositories.nextAnswerPossibility("structural variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
