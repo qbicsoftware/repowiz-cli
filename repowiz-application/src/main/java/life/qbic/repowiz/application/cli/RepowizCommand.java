@@ -9,7 +9,7 @@ import picocli.CommandLine.Command;
  */
 @Command(
    name="Repowiz",
-   description="Command-line utility to determine a suitable repository for a data set and create a submission")
+   description="RepoWiz helps you to find a suitable repository for your data and prepares your submission")
 
 public class RepowizCommand extends AbstractCommand {
     @CommandLine.Option(names={"-conf", "--config"}, description="RepoWiz config file")

@@ -25,13 +25,11 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
     @Override
     def startGuide() {
-        def organisms = new HashMap()
-        int counter = 1
+        def organisms = []
 
 
         tree.getFirstDecisionLevel().each {
-            organisms.put(counter, it.data)
-            counter ++
+            organisms << it.data
         }
 
         String user_answer = output.transferAnswerPossibilities(organisms)
@@ -59,12 +57,10 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
     def nodeDecision(){
-        def decisionPossibilities = new HashMap()
-        int counter = 1
+        def decisionPossibilities = []
 
         currentDecisionLevel.children.each {
-            decisionPossibilities.put(counter,it.data)
-            counter ++
+            decisionPossibilities << it.data
         }
 
         String answer = output.transferAnswerPossibilities(decisionPossibilities)

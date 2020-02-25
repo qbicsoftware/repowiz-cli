@@ -13,18 +13,18 @@ class SubmissionPresenter implements SubmissionOutput{
     }
 
 
-    String requestAnswer(HashMap<Integer,String> choices){
+    String requestAnswer(List<String> choices){
 
         String formattedChoices = "> Please choose one of the following options: \n> "
 
-        choices.each {num,choice ->
-            formattedChoices += "$choice ($num) "
-        }
-        
+        HashMap map = mapWithNumber(choices)
+        formattedChoices += numberMapToString(map)
+
         int answerNumber = output.userAnswer(formattedChoices)
+        String answer = map.get(answerNumber)
         //controllerUI.transferUserAnswer(answer)
 
-        return choices.get(answerNumber)
+        return answer.toLowerCase()
     }
 
     def displayDecisions(List<String> decisions){
@@ -32,23 +32,45 @@ class SubmissionPresenter implements SubmissionOutput{
         String formattedDecisions = "> You selected: "
 
         decisions.each {
-            formattedDecisions += "$it -> "
+            formattedDecisions += "-> $it "
         }
 
         output.displayDecisionOverview(formattedDecisions)
     }
 
     def chooseRepository(List<String> repos){
-        String choose = "> Please choose one of the following repositories: "
+        String choose = "> Please choose one of the following repositories: \n>"
 
-        repos.each {
-            choose += "\n> $it"
-        }
+        HashMap<Integer,String> map = mapWithNumber(repos)
 
-        String answer = output.userAnswer(choose)
+        choose += numberMapToString(map)
+
+        int answerNum = output.userAnswer(choose)
+        String answer = map.get(answerNum)
+
         //controllerUI.transferUserAnswer(answer)
 
         return answer.toLowerCase()
+    }
+
+    def mapWithNumber(List elements){
+        HashMap map = new HashMap()
+        int counter = 1
+
+        elements.each {
+            map.put(counter, it)
+            counter ++
+        }
+        return map
+    }
+
+    def numberMapToString(HashMap<Integer,String> map){
+        String text = ""
+        map.each {num, val ->
+            text += " $val ($num)"
+        }
+
+        return text
     }
 
 

@@ -4,7 +4,7 @@ import life.qbic.repowiz.Repository
 
 interface MatchingRepositoriesOutput {
 
-    def transferAnswerPossibilities(HashMap<Integer,String> choices)
+    def transferAnswerPossibilities(List<String> choices)
     def transferDecisionStack(List<String> decisions)
     def transferRepositoryList(List<Repository>repositories)
 

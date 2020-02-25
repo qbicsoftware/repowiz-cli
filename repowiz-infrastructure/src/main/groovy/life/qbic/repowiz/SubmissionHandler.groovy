@@ -38,7 +38,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //MatchingRepositories output
     @Override
-    String transferAnswerPossibilities(HashMap<Integer,String> choices) {
+    String transferAnswerPossibilities(List<String> choices) {
         presenter.requestAnswer(choices)
     }
 
