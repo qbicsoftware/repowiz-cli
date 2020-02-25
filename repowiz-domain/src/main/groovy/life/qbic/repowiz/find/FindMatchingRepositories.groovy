@@ -31,11 +31,11 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         }
 
         String user_answer = output.transferAnswerPossibilities(organisms)
-        processUserAnswer(user_answer)
+        processDesicion(user_answer)
     }
 
     @Override
-    def processUserAnswer(String answer){
+    def processDesicion(String answer){
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
 
@@ -65,7 +65,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         }
 
         String answer = output.transferAnswerPossibilities(decisionPossibilities)
-        processUserAnswer(answer)
+        processDesicion(answer)
     }
 
     def leafDecision(){

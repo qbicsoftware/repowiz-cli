@@ -102,15 +102,15 @@ class SubmissionController {
     }
 
     def transferDecision(String decision){
-        findRepository.processUserAnswer(decision)
+        findRepository.processDesicion(decision)
     }
 
     def transferRepositoryName(String repository){
-        selectRepository.processUserAnswer(repository)
+        selectRepository.processRepository(repository)
     }
 
     def transferUploadType(String type){
-        prepareSubmission.processUserAnswer(type)
+        prepareSubmission.processUploadType(type)
     }
 
 }

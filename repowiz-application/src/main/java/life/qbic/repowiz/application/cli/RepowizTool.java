@@ -1,22 +1,10 @@
 package life.qbic.repowiz.application.cli;
 
-import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi;
 import life.qbic.cli.QBiCTool;
-import life.qbic.repowiz.*;
+import life.qbic.repowiz.application.cli.subcommands.RepositoryGuideCommand;
 import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
-import life.qbic.repowiz.cli.SubmissionPresenter;
-import life.qbic.repowiz.find.FindMatchingRepositories;
-import life.qbic.repowiz.find.FindMatchingRepositoriesInput;
-import life.qbic.repowiz.RepositoryDatabaseConnector;
-import life.qbic.repowiz.io.XlsxParser;
-import life.qbic.repowiz.prepare.*;
-import life.qbic.repowiz.prepare.mapping.GeoMapper;
-import life.qbic.repowiz.prepare.mapping.GeoParser;
-import life.qbic.repowiz.prepare.mapping.MapInfoInput;
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchMapper;
-import life.qbic.repowiz.select.SelectRepository;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,11 +34,11 @@ public class RepowizTool extends QBiCTool<RepowizCommand> {
         SubmissionController controller = new SubmissionController(commandlineView,command.projectID);
 
         //start point of the application
-        if(command.guide){
+       /* if(command.guide){
             controller.initGuide();
         }
         else{
             controller.init(command.selectedRepository);
-        }
+        }*/
     }
 }

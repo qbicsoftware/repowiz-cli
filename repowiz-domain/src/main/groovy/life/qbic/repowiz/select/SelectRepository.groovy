@@ -46,7 +46,7 @@ class SelectRepository implements SelectRepositoryInput{
     }
 
     @Override
-    def processUserAnswer(String answer) {
+    def processRepository(String answer) {
         output.selectedRepository(isValidRepository(answer))
     }
 

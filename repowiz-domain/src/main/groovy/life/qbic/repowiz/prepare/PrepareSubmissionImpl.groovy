@@ -43,7 +43,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
     }
 
     @Override
-    def processUserAnswer(String answer) {
+    def processUploadType(String answer) {
         output.displayAnswer(answer)
         getRequiredFields(answer)
     }
