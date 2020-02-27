@@ -2,8 +2,13 @@ package life.qbic.repowiz.select
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
+import life.qbic.repowiz.prepare.model.RepoWizData
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class SelectRepository implements SelectRepositoryInput{
+
+    private static final Logger LOG = LogManager.getLogger(SelectRepository.class);
 
     RepositoryDescription repositoryDescription
     SelectRepositoryOutput output
@@ -30,7 +35,8 @@ class SelectRepository implements SelectRepositoryInput{
             return true
         }
         else{
-            println "No valid repository was selected"
+            LOG.error "No valid repository was selected"
+            System.exit(-1) //do that this way? which code to use?
             return false
         }
     }
@@ -47,7 +53,15 @@ class SelectRepository implements SelectRepositoryInput{
 
     @Override
     def processRepository(String answer) {
-        output.selectedRepository(isValidRepository(answer))
+        Repository repo
+
+        if(repo = isValidRepository(answer)){
+            output.selectedRepository(repo)
+        }
+        else {
+            LOG.error "No valid repository was selected"
+            System.exit(-1)
+        }
     }
 
     List<String> getRepositoryNameList(List<Repository> suggestedRepo){

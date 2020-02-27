@@ -11,8 +11,12 @@ import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, ProjectSearchOutput{
+
+    private static final Logger LOG = LogManager.getLogger(PrepareSubmissionImpl.class);
 
     PrepareSubmissionOutput output
     String project
@@ -30,10 +34,13 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
     @Override
     def prepareSubmissionToRepository(Repository repository) {
         //ask the user for upload type
+        LOG.info "Preparing submission "
         mapInfo.addOutput(this)
+        LOG.info "Request upload type "
         output.transferQuestion(repository.uploadTypes)
 
         //project data
+        LOG.info "Fetch Project Data"
         //projectSearch.getProjectMetadata(project)
         //method like: get project field list for project
 

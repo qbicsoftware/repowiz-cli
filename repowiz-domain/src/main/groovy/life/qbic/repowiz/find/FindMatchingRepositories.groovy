@@ -4,15 +4,18 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.find.tree.DecisionTree
 import life.qbic.repowiz.find.tree.Node
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class FindMatchingRepositories implements FindMatchingRepositoriesInput{
+
+    private static final Logger LOG = LogManager.getLogger(FindMatchingRepositories.class);
 
     MatchingRepositoriesOutput output
     RepositoryDescription repositoryDescription
     DecisionTree tree
     Node currentDecisionLevel
     List<String> decisionStack = new ArrayList<>()
-
 
     FindMatchingRepositories(MatchingRepositoriesOutput output, RepositoryDescription repoDescription){
         this.output = output
@@ -24,6 +27,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
     @Override
     def startGuide() {
+        LOG.info "Starting the RepoWiz guide ..."
         def organisms = []
 
         tree.getFirstDecisionLevel().each {
