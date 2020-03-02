@@ -4,10 +4,15 @@ class RepoWizProject {
     String projectID
     HashMap<String,String> metadata
     List<String> requiredFields //fields required in order to validate the object?
-    List<RepoWizExperiment> experiments
+    List<RepoWizSample> samples = []
 
-    RepoWizProject(String project){
+    RepoWizProject(String project, HashMap meta){
         projectID = project
+        metadata = meta
+    }
+
+    def addSample(RepoWizSample sample){
+        samples << sample
     }
 
 }

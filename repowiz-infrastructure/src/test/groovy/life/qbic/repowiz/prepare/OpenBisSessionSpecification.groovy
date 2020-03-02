@@ -17,7 +17,6 @@ class OpenBisSessionSpecification extends Specification{
         JsonParser props = new JsonParser()
         Map cred = (Map) props.parseAsFile("credentials.json.properties")
         session = new OpenBisSession((String) cred.get("user"), (String) cred.get("password"), (String) cred.get("server_url"))
-        //todo need dss to download data! --> add to openbis session
     }
 
     def "experiment"(){
@@ -27,7 +26,7 @@ class OpenBisSessionSpecification extends Specification{
 
         when:
         mapper.loadProjectInformation("QFSVI")
-        mapper.loadOpenBisExperimentInfo()
+        mapper.loadOpenBisSampleInfo()
 
         then:
         true //13 experiments
@@ -38,14 +37,15 @@ class OpenBisSessionSpecification extends Specification{
         ProjectSearchMapper mapper = new ProjectSearchMapper(session.v3,session.dss,session.sessionToken)
         mapper.addProjectSearchOutput(out)
 
-        println session.dss
-
         when:
         mapper.loadProjectInformation("QFSVI")
-        mapper.loadOpenBisSampleInfo()
+        def res = mapper.loadOpenBisDataSetInfo("NGS01QFSVI009AM","fastq")
 
         then:
-        true //13 experiments
+        res.sort() == ["I16R019a02_01_S3_L001_R1_001.fastq.gz",
+        "I16R019a02_01_S3_L002_R1_001.fastq.gz",
+        "I16R019a02_01_S3_L003_R1_001.fastq.gz",
+        "I16R019a02_01_S3_L004_R1_001.fastq.gz"].sort()
     }
 
 }

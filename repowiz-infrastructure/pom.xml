@@ -39,6 +39,12 @@
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
         </dependency> -->
+        <!-- for xml study parser -->
+        <dependency>
+            <groupId>life.qbic</groupId>
+            <artifactId>data-model-lib</artifactId>
+            <version>1.7.0</version>
+        </dependency>
         <dependency>
             <groupId>life.qbic</groupId>
             <artifactId>postman-core-lib</artifactId>
