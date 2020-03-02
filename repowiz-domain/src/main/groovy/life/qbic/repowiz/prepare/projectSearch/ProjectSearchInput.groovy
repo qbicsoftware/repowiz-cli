@@ -3,6 +3,6 @@ package life.qbic.repowiz.prepare.projectSearch
 
 interface ProjectSearchInput {
 
-    def loadProject(String projectID)
+    def loadProjectInformation(String projectID)
 
 }

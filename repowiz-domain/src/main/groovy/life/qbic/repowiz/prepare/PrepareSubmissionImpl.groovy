@@ -2,7 +2,6 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.UserAnswer
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
 import life.qbic.repowiz.prepare.model.RepoWizData
@@ -41,6 +40,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
 
         //project data
         LOG.info "Fetch Project Data"
+        projectSearch.loadProjectInformation(project)
         //projectSearch.getProjectMetadata(project)
         //method like: get project field list for project
 
@@ -64,7 +64,8 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
 
     @Override
     def transferFields(HashMap fields) {
-        println "received the field values"
+        LOG.debug "Received the field values from template"
+        LOG.debug fields
         //todo handle the fields
         return null
     }

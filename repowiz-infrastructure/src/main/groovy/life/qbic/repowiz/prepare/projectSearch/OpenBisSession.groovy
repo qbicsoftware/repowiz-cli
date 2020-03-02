@@ -1,22 +1,26 @@
 package life.qbic.repowiz.prepare.projectSearch
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
+import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import ch.systemsx.cisd.common.spring.HttpInvokerUtils
 
 class OpenBisSession {
 
-    String user
-    String password
-    String as_url
+
     String sessionToken
     IApplicationServerApi v3
+    IDataStoreServerApi dss
 
-    OpenBisSession(String user, String password, as_url){
-        this.user = user
-        this.password = password
-        this.as_url = as_url + IApplicationServerApi.SERVICE_URL
+    OpenBisSession(String user, String password, url){
 
-        v3 = HttpInvokerUtils.createServiceStub(IApplicationServerApi.class, this.as_url, 10000)
+        String ass = url + "/openbis/openbis" + IApplicationServerApi.SERVICE_URL
+        String ds = url + ":444" + "/datastore_server" + IDataStoreServerApi.SERVICE_URL
+
+        v3 = HttpInvokerUtils.createServiceStub(IApplicationServerApi.class, ass, 10000)
+
+        this.dss = HttpInvokerUtils.createStreamSupportingServiceStub(IDataStoreServerApi.class,
+                       ds, 10000)
+
         sessionToken = v3.login(user, password)
     }
 

@@ -33,11 +33,16 @@
             <artifactId>spreadsheet-builder-poi</artifactId>
             <version>2.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl -->
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.jexcelapi/jxl
         <dependency>
             <groupId>net.sourceforge.jexcelapi</groupId>
             <artifactId>jxl</artifactId>
             <version>2.6.12</version>
+        </dependency> -->
+        <dependency>
+            <groupId>life.qbic</groupId>
+            <artifactId>postman-core-lib</artifactId>
+            <version>1.0.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

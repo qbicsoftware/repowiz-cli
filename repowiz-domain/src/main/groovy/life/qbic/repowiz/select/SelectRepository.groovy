@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger
 
 class SelectRepository implements SelectRepositoryInput{
 
-    private static final Logger LOG = LogManager.getLogger(SelectRepository.class);
+    private static final Logger LOG = LogManager.getLogger(SelectRepository.class)
 
     RepositoryDescription repositoryDescription
     SelectRepositoryOutput output
@@ -55,7 +55,7 @@ class SelectRepository implements SelectRepositoryInput{
     def processRepository(String answer) {
         Repository repo
 
-        if(repo = isValidRepository(answer)){
+        if((repo = isValidRepository(answer))!= null){
             output.selectedRepository(repo)
         }
         else {

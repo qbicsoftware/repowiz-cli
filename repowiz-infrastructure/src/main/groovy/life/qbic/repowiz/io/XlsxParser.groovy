@@ -1,7 +1,8 @@
 package life.qbic.repowiz.io
 
 import life.qbic.repowiz.prepare.mapping.GeoParser
-
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
@@ -26,12 +27,6 @@ class XlsxParser implements TemplateParser, GeoParser{
 
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
-
-    def parseAsFile(String file) {
-        String f = XlsxParser.class.getClassLoader().getResource(file).path
-        wb = new XSSFWorkbook(new File(f))
-    }
-
 
     //for geo it is required to parse the sheet by color
     @Override

@@ -1,6 +1,11 @@
 package life.qbic.repowiz.prepare.mapping
 
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
 class GeoMapper implements MapInfoInput{
+
+    private static final Logger LOG = LogManager.getLogger(GeoMapper.class)
 
     GeoParser parser
     MapInfoOutput output
@@ -9,14 +14,13 @@ class GeoMapper implements MapInfoInput{
         this.parser = parser
     }
 
-
     @Override
     def addOutput(MapInfoOutput output) {
         this.output = output
     }
 
     @Override
-    HashMap<String,HashMap> getFields(String uploadType) { //, MapInfoOutput out
+    def getFields(String uploadType) {
         String templateName = "templates/"
         List<String> sheets = []
 
@@ -34,18 +38,17 @@ class GeoMapper implements MapInfoInput{
                 break
         }
 
-        println templateName
+        LOG.info "Parsing GEO template ..."
         parser.parseTemplate(templateName)
 
         HashMap<String,HashMap> fieldsPerSheet = new HashMap<>()
+
         sheets.each { sheet ->
             fieldsPerSheet.put(sheet,parser.parseSheetByColor(sheet))
         }
 
-        //todo only do one of these!
         output.transferFields(fieldsPerSheet)
-
-        return fieldsPerSheet
     }
+
 
 }

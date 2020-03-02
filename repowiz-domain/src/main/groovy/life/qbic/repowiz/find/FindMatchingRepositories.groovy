@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger
 
 class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
-    private static final Logger LOG = LogManager.getLogger(FindMatchingRepositories.class);
+    private static final Logger LOG = LogManager.getLogger(FindMatchingRepositories.class)
 
     MatchingRepositoriesOutput output
     RepositoryDescription repositoryDescription
