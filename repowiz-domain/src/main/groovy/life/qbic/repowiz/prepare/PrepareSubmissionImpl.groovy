@@ -4,8 +4,7 @@ package life.qbic.repowiz.prepare
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
-import life.qbic.repowiz.prepare.model.RepoWizData
-import life.qbic.repowiz.prepare.model.RepoWizExperiment
+
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
@@ -76,18 +75,9 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
         return null
     }
 
-    @Override
-    def transferExperimentMetadata(List<RepoWizExperiment> meta) {
-        return null
-    }
 
     @Override
     def transferSampleMetadata(List<RepoWizSample> meta) {
-        return null
-    }
-
-    @Override
-    def transferDataForSamples(List<RepoWizData> meta) {
         return null
     }
 

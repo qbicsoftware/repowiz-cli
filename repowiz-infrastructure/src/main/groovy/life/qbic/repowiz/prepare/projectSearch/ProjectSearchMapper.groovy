@@ -147,6 +147,12 @@ class ProjectSearchMapper implements ProjectSearchInput {
             repoWizProject.addSample(new RepoWizSample("Sample "+counter, sampleProperties))
             counter ++
         }
+
+        println repoWizProject.
+        repoWizProject.samples.each {
+            println it.sampleName
+            println it.properties
+        }
     }
 
     def collectProperties(Sample sample){
@@ -155,37 +161,37 @@ class ProjectSearchMapper implements ProjectSearchInput {
         allProperties << fetchChildSamples(sample)
 
         //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
-        /*mapper.maskFiles()
-        allProperties.put("rawFiles",loadOpenBisDataSetInfo(sample.code, "fastq"))
+        allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
 
-        mapper.maskProperties()
-        allProperties << mapper.maskDuplicateProperties(sample)*/
+
+        allProperties << mapper.maskProperties(mapper.maskDuplicateProperties(sample.type.code,sample.properties))
 
         //add conditions
         if(expDesign != null){
             def res = getSampleCondition(sample.code)
-            println res
-
+            allProperties << mapper.maskConditions(res)
         }
         return allProperties
     }
 
     //load the RepoWiz data set info
-    def loadOpenBisDataSetInfo(String sampleCode, String type) {
+    HashMap loadOpenBisDataSetInfo(String sampleCode, String type) {
         LOG.info "Fetching Data Set ..."
 
         output.userNotification("Fetching Data Set ...")
 
         PostmanDataFinder finder = new PostmanDataFinder(v3, dss, new PostmanDataFilterer(), sessionToken)
 
-        List<String> dataFiles = []
+        HashMap allDataSets = new HashMap()
 
-        finder.findAllDatasetsRecursive(sampleCode).each {
+        finder.findAllDatasetsRecursive(sampleCode).each { dataSet ->
             DataSetFileSearchCriteria criteria = new DataSetFileSearchCriteria()
-            criteria.withDataSet().withPermId().thatEquals(it.permId.permId)
+            criteria.withDataSet().withPermId().thatEquals(dataSet.permId.permId)
 
             SearchResult<DataSetFile> result = dss.searchFiles(sessionToken, criteria, new DataSetFileFetchOptions())
             List<DataSetFile> files = result.getObjects()
+
+            List<String> dataFiles = []
 
             for (DataSetFile file : files) {
                 if (file.getPermId().toString().contains("." + type)
@@ -195,8 +201,9 @@ class ProjectSearchMapper implements ProjectSearchInput {
                     dataFiles << path[path.size() - 1]
                 }
             }
+            allDataSets << mapper.maskFiles(dataFiles, dataSet.type.code)
         }
-        return dataFiles
+        return allDataSets
     }
 
     HashMap fetchChildSamples(Sample sample) {

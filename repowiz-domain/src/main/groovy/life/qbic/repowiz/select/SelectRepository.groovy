@@ -2,7 +2,7 @@ package life.qbic.repowiz.select
 
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.prepare.model.RepoWizData
+
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

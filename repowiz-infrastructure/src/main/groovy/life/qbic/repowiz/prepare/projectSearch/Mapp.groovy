@@ -19,7 +19,7 @@ class Mapp {
         toRepoWiz = temp.openBisToRepoWiz
     }
 
-    HashMap maskProperties(HashMap properties){
+    HashMap maskProperties(Map properties){
         HashMap repoWizTerms = new HashMap()
 
         properties.each {key, value ->
