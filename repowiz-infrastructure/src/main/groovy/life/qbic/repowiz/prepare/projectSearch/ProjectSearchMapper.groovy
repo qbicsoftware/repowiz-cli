@@ -2,7 +2,6 @@ package life.qbic.repowiz.prepare.projectSearch
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.Experiment
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.fetchoptions.ExperimentFetchOptions
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.project.Project
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.project.fetchoptions.ProjectFetchOptions
@@ -34,9 +33,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
 
     private static final Logger LOG = LogManager.getLogger(ProjectSearchMapper.class)
 
-
     Project project
-    HashMap mappingDB
 
     IApplicationServerApi v3
     IDataStoreServerApi dss
@@ -45,6 +42,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
     //output
     ProjectSearchOutput output
     RepoWizProject repoWizProject
+    Mapp mapper = new Mapp()
 
     //condition parsing
     StudyXMLParser studyParser = new StudyXMLParser()
@@ -56,9 +54,6 @@ class ProjectSearchMapper implements ProjectSearchInput {
         this.dss = dss
 
         sessionToken = session
-
-        TemporaryDatabase temp = new TemporaryDatabase()
-        mappingDB = temp.openBisToRepoWiz
     }
 
     def addProjectSearchOutput(ProjectSearchOutput out) {
@@ -68,7 +63,6 @@ class ProjectSearchMapper implements ProjectSearchInput {
     @Override
     def loadProjectInformation(String projectID) {
         loadOpenBisProjectInfo(projectID)
-
     }
 
     def loadOpenBisProjectInfo(String projectID) {
@@ -94,13 +88,8 @@ class ProjectSearchMapper implements ProjectSearchInput {
         checkSpaceAvailability()
 
 
-        //todo get rid of this mapping code in this class
-        HashMap projectData = new HashMap()
-        String repoKey = mappingDB.get("Q_PROJECT_DETAILS")
-        String value = project.description
-        println project.properties
-        projectData.put(repoKey, value)
-        repoWizProject = new RepoWizProject(projectID, projectData)
+        //todo how to get rid of code here?
+        repoWizProject = new RepoWizProject(projectID, mapper.maskProperties(["Q_PROJECT_DETAILS":project.description]))
 
         //prepare condition parse for samples
         project.experiments.each {
@@ -152,7 +141,10 @@ class ProjectSearchMapper implements ProjectSearchInput {
 
         int counter = 1
         samples.objects.each { sample ->
-            repoWizProject.addSample(new RepoWizSample("Sample "+counter, collectProperties(sample)))
+            //todo mapp the terms before adding to project!!!!!
+            HashMap sampleProperties = collectProperties(sample)
+
+            repoWizProject.addSample(new RepoWizSample("Sample "+counter, sampleProperties))
             counter ++
         }
     }
@@ -163,22 +155,17 @@ class ProjectSearchMapper implements ProjectSearchInput {
         allProperties << fetchChildSamples(sample)
 
         //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
+        /*mapper.maskFiles()
         allProperties.put("rawFiles",loadOpenBisDataSetInfo(sample.code, "fastq"))
 
-        allProperties << maskDuplicateProperties(sample)
+        mapper.maskProperties()
+        allProperties << mapper.maskDuplicateProperties(sample)*/
 
         //add conditions
         if(expDesign != null){
             def res = getSampleCondition(sample.code)
-            if (res != null) {
-                res.each { sampleProp ->
-                    String value = sampleProp.value
-                    String label = sampleProp.label
-                    allProperties.put("condition:" + label, value)
+            println res
 
-                    if (allProperties.containsKey("condition:" + label)) LOG.error("the condition $label is assigned to times to this sample $sample.code")
-                }
-            }
         }
         return allProperties
     }
@@ -208,7 +195,6 @@ class ProjectSearchMapper implements ProjectSearchInput {
                     dataFiles << path[path.size() - 1]
                 }
             }
-
         }
         return dataFiles
     }
@@ -216,9 +202,8 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchChildSamples(Sample sample) {
         HashMap childProperties = new HashMap()
         sample.children.each {child ->
-            childProperties << getSampleCondition(child.code) //what if duplicates? for samples
-            childProperties << experimentalProperties(child)
-            childProperties << maskDuplicateProperties(child)
+            childProperties << mapper.maskConditions(getSampleCondition(child.code))
+            childProperties << mapper.maskDuplicateProperties(child.type.code, child.properties)
             childProperties << fetchChildSamples(child)
         }
         return childProperties
@@ -227,41 +212,13 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchParentSamples(Sample sample){
         HashMap parentProperties = new HashMap()
         sample.parents.each {parent ->
-            parentProperties << getSampleCondition(parent.code) //keep that?
-            parentProperties << experimentalProperties(parent)
-            parentProperties << maskDuplicateProperties(parent)
+            parentProperties << mapper.maskConditions(getSampleCondition(parent.code))
+            parentProperties << mapper.maskDuplicateProperties(parent.type.code, parent.properties)
             parentProperties << fetchParentSamples(parent)
         }
         return parentProperties
     }
 
-    def experimentalProperties(Sample sample){
-        maskDuplicateProperties(sample.experiment)
-    }
-
-    HashMap maskDuplicateProperties(Sample sample) {
-        HashMap masked = new HashMap()
-
-        sample.properties.each { key, value ->
-            if (key == "Q_SECONDARY_NAME") masked.put("Q_SECONDARY_NAME_" + sample.type.code, value)
-            else {
-                masked.put(key, value)
-            }
-        }
-        return masked
-    }
-
-    HashMap maskDuplicateProperties(Experiment exp) {
-        HashMap masked = new HashMap()
-
-        exp.properties.each { key, value ->
-            if (key == "Q_SECONDARY_NAME") masked.put("Q_ADDITIONAL_INFO_" + exp.type.code, value)
-            else {
-                masked.put(key, value)
-            }
-        }
-        return masked
-    }
 
     private void checkSpaceAvailability() {
 
