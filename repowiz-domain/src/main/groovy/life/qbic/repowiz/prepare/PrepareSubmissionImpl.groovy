@@ -71,13 +71,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
 
     //project search output
     @Override
-    def transferProjectMetadata(List<RepoWizProject> meta) {
-        return null
-    }
-
-
-    @Override
-    def transferSampleMetadata(List<RepoWizSample> meta) {
+    def transferProjectMetadata(RepoWizProject meta) {
         return null
     }
 

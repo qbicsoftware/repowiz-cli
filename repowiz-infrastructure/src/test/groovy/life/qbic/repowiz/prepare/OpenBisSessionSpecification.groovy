@@ -26,7 +26,6 @@ class OpenBisSessionSpecification extends Specification{
 
         when:
         mapper.loadProjectInformation("QFSVI")
-        mapper.loadOpenBisSampleInfo()
 
         then:
         true //13 experiments

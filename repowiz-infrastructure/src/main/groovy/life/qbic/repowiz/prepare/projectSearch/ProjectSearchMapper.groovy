@@ -9,7 +9,9 @@ import ch.ethz.sis.openbis.generic.asapi.v3.dto.project.search.ProjectSearchCrit
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.sample.Sample
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.sample.fetchoptions.SampleFetchOptions
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.sample.search.SampleSearchCriteria
-
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.VocabularyTerm
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.fetchoptions.VocabularyTermFetchOptions
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.search.VocabularyTermSearchCriteria
 import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.DataSetFile
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSetFileFetchOptions
@@ -22,6 +24,7 @@ import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.xml.manager.StudyXMLParser
 import life.qbic.xml.properties.Property
 import life.qbic.xml.study.Qexperiment
+import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -44,10 +47,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
     RepoWizProject repoWizProject
     Mapp mapper = new Mapp()
 
-    //condition parsing
-    StudyXMLParser studyParser = new StudyXMLParser()
-    JAXBElement<Qexperiment> expDesign
-
+    ConditionParser conditionParser
 
     ProjectSearchMapper(IApplicationServerApi v3, IDataStoreServerApi dss, String session) {
         this.v3 = v3
@@ -63,10 +63,13 @@ class ProjectSearchMapper implements ProjectSearchInput {
     @Override
     def loadProjectInformation(String projectID) {
         loadOpenBisProjectInfo(projectID)
+        loadOpenBisSampleInfo()
+
+        output.transferProjectMetadata(repoWizProject)
     }
 
     def loadOpenBisProjectInfo(String projectID) {
-        LOG.info "Fetching Project Information "
+        LOG.info "Fetching Project Information ..."
 
         // invoke other API methods using the session token, for instance search for spaces
         ProjectSearchCriteria projectSearchCriteria = new ProjectSearchCriteria()
@@ -92,34 +95,17 @@ class ProjectSearchMapper implements ProjectSearchInput {
         repoWizProject = new RepoWizProject(projectID, mapper.maskProperties(["Q_PROJECT_DETAILS":project.description]))
 
         //prepare condition parse for samples
-        project.experiments.each {
-            if(it.type.code == "Q_PROJECT_DETAILS") {
-                conditionParser(it.properties)
+        project.experiments.each {exp ->
+            if(exp.type.code == "Q_PROJECT_DETAILS"){
+                conditionParser = new ConditionParser(exp.properties)
+                conditionParser.parse()
             }
         }
     }
 
-    List<Property> getSampleCondition(String sample){
-        studyParser.getFactorsAndPropertiesForSampleCode(expDesign,sample)
-    }
-
-    def conditionParser(Map experimentalDesign){
-
-        String xmlString = experimentalDesign.get("Q_EXPERIMENTAL_SETUP")
-
-            try {
-                LOG.info "Parsing experiment conditions"
-                expDesign = studyParser.parseXMLString(xmlString)
-            }
-            catch (JAXBException e) {
-                LOG.info "Could not create new experimental design xml from experiment."
-                //e.printStackTrace()
-            }
-    }
-
     //load the RepoWiz sample info
     def loadOpenBisSampleInfo() { //do that for a experiment or generally?? Experiment experiment
-        LOG.info "Fetching Sample Information "
+        LOG.info "Fetching Sample Information ..."
         output.userNotification("Fetching Sample Information ...")
 
         SampleFetchOptions fetchOptions = new SampleFetchOptions()
@@ -127,6 +113,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
         fetchOptions.withProject()
         fetchOptions.withSpace()
         fetchOptions.withProperties()
+        fetchOptions.withExperiment().withType()
         fetchOptions.withExperiment().withProperties()
         fetchOptions.withExperiment().withProject()
         fetchOptions.withChildrenUsing(fetchOptions)
@@ -148,37 +135,37 @@ class ProjectSearchMapper implements ProjectSearchInput {
             counter ++
         }
 
-        println repoWizProject.
-        repoWizProject.samples.each {
-            println it.sampleName
-            println it.properties
-        }
     }
 
     def collectProperties(Sample sample){
-        HashMap allProperties = new HashMap()
+        HashMap<String,String> allProperties = new HashMap()
+
+        //todo mask openbis terms tissue, ncbi organism
+
         allProperties << fetchParentSamples(sample)
         allProperties << fetchChildSamples(sample)
 
         //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
+        output.userNotification("Fetching Data Set ...")
+        LOG.info "Fetching Data Set ..."
         allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
-
 
         allProperties << mapper.maskProperties(mapper.maskDuplicateProperties(sample.type.code,sample.properties))
 
         //add conditions
-        if(expDesign != null){
-            def res = getSampleCondition(sample.code)
-            allProperties << mapper.maskConditions(res)
+        List<Property> res = conditionParser.getSampleCondition(sample.code)
+        allProperties << mapper.maskConditions(res)
+
+        //map openBis vocabulary to readable names
+        allProperties.each {key, value ->
+            if (StringUtils.isNumeric(value.toString())) getVocabulary(value.toString())
         }
+
         return allProperties
     }
 
     //load the RepoWiz data set info
     HashMap loadOpenBisDataSetInfo(String sampleCode, String type) {
-        LOG.info "Fetching Data Set ..."
-
-        output.userNotification("Fetching Data Set ...")
 
         PostmanDataFinder finder = new PostmanDataFinder(v3, dss, new PostmanDataFilterer(), sessionToken)
 
@@ -209,8 +196,9 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchChildSamples(Sample sample) {
         HashMap childProperties = new HashMap()
         sample.children.each {child ->
-            childProperties << mapper.maskConditions(getSampleCondition(child.code))
-            childProperties << mapper.maskDuplicateProperties(child.type.code, child.properties)
+            childProperties << mapper.maskConditions(conditionParser.getSampleCondition(child.code))
+            childProperties << mapper.maskProperties(mapper.maskDuplicateProperties(child.type.code, child.properties))
+            childProperties << mapper.maskProperties(mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties))
             childProperties << fetchChildSamples(child)
         }
         return childProperties
@@ -219,13 +207,25 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchParentSamples(Sample sample){
         HashMap parentProperties = new HashMap()
         sample.parents.each {parent ->
-            parentProperties << mapper.maskConditions(getSampleCondition(parent.code))
-            parentProperties << mapper.maskDuplicateProperties(parent.type.code, parent.properties)
+            parentProperties << mapper.maskConditions(conditionParser.getSampleCondition(parent.code))
+            parentProperties << mapper.maskProperties(mapper.maskDuplicateProperties(parent.type.code, parent.properties))
+            parentProperties << mapper.maskProperties(mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties))
             parentProperties << fetchParentSamples(parent)
         }
         return parentProperties
     }
 
+
+    def getVocabulary(String code){
+        VocabularyTermSearchCriteria vocabularyTermSearchCriteria = new VocabularyTermSearchCriteria()
+        vocabularyTermSearchCriteria.withCode().thatEquals(code)
+
+        SearchResult<VocabularyTerm> vocabularyTermSearchResult = v3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
+
+        String term =  vocabularyTermSearchResult.objects.get(0).label
+
+        return term
+    }
 
     private void checkSpaceAvailability() {
 

@@ -1,7 +1,11 @@
 package life.qbic.repowiz.prepare.projectSearch
 
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.Experiment
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.sample.Sample
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.VocabularyTerm
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.fetchoptions.VocabularyTermFetchOptions
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.search.VocabularyTermSearchCriteria
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
@@ -42,7 +46,9 @@ class Mapp {
             properties.each { sampleProp ->
                 String value = sampleProp.value
                 String label = sampleProp.label
-                map.put(repoWizTerm + " " + label + ":", value)
+
+                //if(sampleProp.unit) //todo what if there is a unit?
+                map.put(repoWizTerm + " " + label, value)
             }
         }
         return map

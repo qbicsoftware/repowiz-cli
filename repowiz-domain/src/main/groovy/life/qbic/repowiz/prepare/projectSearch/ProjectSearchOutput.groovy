@@ -6,7 +6,7 @@ import life.qbic.repowiz.prepare.model.RepoWizSample
 
 interface ProjectSearchOutput {
 
-    def transferProjectMetadata(List<RepoWizProject> meta)
-    def transferSampleMetadata(List<RepoWizSample> meta)
+    def transferProjectMetadata(RepoWizProject project)
+    //def transferSampleMetadata(List<RepoWizSample> meta)
     def userNotification(String message)
 }
