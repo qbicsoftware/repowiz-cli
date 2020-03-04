@@ -1,6 +1,6 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare.projectSearch.openBis
 
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.Experiment
+
 import life.qbic.xml.manager.StudyXMLParser
 import life.qbic.xml.properties.Property
 import life.qbic.xml.study.Qexperiment

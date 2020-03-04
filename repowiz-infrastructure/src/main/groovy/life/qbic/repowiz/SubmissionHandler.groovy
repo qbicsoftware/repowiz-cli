@@ -4,6 +4,7 @@ import life.qbic.repowiz.cli.SubmissionPresenter
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
+import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
 import life.qbic.repowiz.submit.FinaliseSubmission
@@ -65,7 +66,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
-    //prepare submission use case
+    //prepare submission use case --> transfer to finalise submission
+    @Override
+    def validateProject(RepoWizProject project) {
+        return null
+    }
+
     @Override
     def transferQuestion(List<String> uploadTypes) { //todo rename: transfer uploadtypes from usecase to handler
         presenter.requestUploadType(uploadTypes)
@@ -75,16 +81,5 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     def displayAnswer(String choice) { //todo rename: selected uploadtype is shown
         presenter.displayUserChoices([choice])
     }
-
-    @Override
-    def transferProjectFiles(List<String> files) {
-        return null
-    }
-
-    @Override
-    def transferProjectMetadata(List<File> filledTemplates) {
-        return null
-    }
-
 
 }

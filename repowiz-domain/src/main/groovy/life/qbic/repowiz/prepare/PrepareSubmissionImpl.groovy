@@ -6,7 +6,6 @@ import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import life.qbic.repowiz.prepare.mapping.MapInfoOutput
 
 import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import org.apache.logging.log4j.LogManager
@@ -71,7 +70,9 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, Pr
 
     //project search output
     @Override
-    def transferProjectMetadata(RepoWizProject meta) {
+    def addRequiredFields(RepoWizProject project) {
+        //add required fields to project object
+        output.validateProject(project)
         return null
     }
 

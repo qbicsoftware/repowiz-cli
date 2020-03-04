@@ -1,29 +1,24 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare.projectSearch.openBis
 
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.Experiment
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.sample.Sample
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.VocabularyTerm
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.fetchoptions.VocabularyTermFetchOptions
-import ch.ethz.sis.openbis.generic.asapi.v3.dto.vocabulary.search.VocabularyTermSearchCriteria
-import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.projectSearch.LocalDatabaseMapper
+import life.qbic.repowiz.prepare.projectSearch.TemporaryDatabase
 import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class Mapp {
+class OpenBisMapper implements LocalDatabaseMapper{
 
+    //todo add interface for generalization
     final HashMap toRepoWiz
 
-    private static final Logger LOG = LogManager.getLogger(Mapp.class)
+    private static final Logger LOG = LogManager.getLogger(OpenBisMapper.class)
 
-
-    Mapp(){
+    OpenBisMapper(){
         TemporaryDatabase temp = new TemporaryDatabase()
         toRepoWiz = temp.openBisToRepoWiz
     }
 
-    HashMap maskProperties(Map properties){
+    HashMap mapProperties(Map properties){
         HashMap repoWizTerms = new HashMap()
 
         properties.each {key, value ->
@@ -33,12 +28,12 @@ class Mapp {
         return repoWizTerms
     }
 
-    HashMap maskFiles(List files, String dataSetType){
+    HashMap mapFiles(List files, String dataSetType){
         //keep all files in a list and separate them later on (cannot keep duplicate keys in hashmap)
         return [ (toRepoWiz.get(dataSetType)) : files]
     }
 
-    HashMap maskConditions(List<Property> properties){
+    HashMap mapConditions(List<Property> properties){
         HashMap map = new HashMap()
         String repoWizTerm = toRepoWiz.get("Q_EXPERIMENTAL_SETUP") //todo do not hardcode??
 

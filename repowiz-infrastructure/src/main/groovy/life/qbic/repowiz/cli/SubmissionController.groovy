@@ -1,6 +1,7 @@
 package life.qbic.repowiz.cli
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
+import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
@@ -11,10 +12,11 @@ import life.qbic.repowiz.prepare.PrepareSubmissionImpl
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 
-import life.qbic.repowiz.prepare.mapping.GeoMapper
-import life.qbic.repowiz.prepare.mapping.GeoParser
+import life.qbic.repowiz.prepare.mapping.GeoSubmission
+import life.qbic.repowiz.prepare.parsing.GeoParserInput
 import life.qbic.repowiz.prepare.mapping.MapInfoInput
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchMapper
+import life.qbic.repowiz.prepare.projectSearch.geo.GeoParser
+import life.qbic.repowiz.prepare.projectSearch.openBis.ProjectSearcher
 import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.submit.FinaliseSubmission
@@ -22,7 +24,7 @@ import life.qbic.repowiz.submit.FinaliseSubmission
 class SubmissionController {
 
     String projectID
-    ProjectSearchMapper projectSearch
+    ProjectSearcher projectSearch
     RepositoryDescription repoDescription
     MapInfoInput map
     GeoParser parser
@@ -41,10 +43,10 @@ class SubmissionController {
         presenter = new SubmissionPresenter(view,this)
 
         //parser
-        parser = new XlsxParser()
+        parser = new GeoParser(["METADATA TEMPLATE"])
 
         //set up mapping
-        map = new GeoMapper(parser)
+        map = new GeoSubmission(parser)
 
         // set up database
         repoDescription = new RepositoryDatabaseConnector()
@@ -59,7 +61,8 @@ class SubmissionController {
 
         String sessionToken = ""
         IApplicationServerApi v3 = null
-        projectSearch = new ProjectSearchMapper(v3,sessionToken)
+        IDataStoreServerApi dss = null
+        projectSearch = new ProjectSearcher(v3,dss,sessionToken)
 
 
     }

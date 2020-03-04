@@ -1,16 +1,17 @@
 package life.qbic.repowiz.prepare.mapping
 
+import life.qbic.repowiz.prepare.parsing.GeoParserInput
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class GeoMapper implements MapInfoInput{
+class GeoSubmission implements MapInfoInput{
 
-    private static final Logger LOG = LogManager.getLogger(GeoMapper.class)
+    private static final Logger LOG = LogManager.getLogger(GeoSubmission.class)
 
-    GeoParser parser
+    GeoParserInput parser
     MapInfoOutput output
 
-    GeoMapper(GeoParser parser){
+    GeoSubmission(GeoParserInput parser){
         this.parser = parser
     }
 
@@ -44,7 +45,7 @@ class GeoMapper implements MapInfoInput{
         HashMap<String,HashMap> fieldsPerSheet = new HashMap<>()
 
         sheets.each { sheet ->
-            fieldsPerSheet.put(sheet,parser.parseSheetByColor(sheet))
+            fieldsPerSheet.put(sheet,parser.parseHtsSheet(sheet))
         }
 
         output.transferFields(fieldsPerSheet)

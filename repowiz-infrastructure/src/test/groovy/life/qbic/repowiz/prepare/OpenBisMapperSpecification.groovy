@@ -1,18 +1,18 @@
 package life.qbic.repowiz.prepare
 
-import life.qbic.repowiz.prepare.projectSearch.Mapp
+import life.qbic.repowiz.prepare.projectSearch.openBis.OpenBisMapper
 import life.qbic.xml.properties.Property
 import life.qbic.xml.properties.PropertyType
 import spock.lang.Specification
 
-class MappSpecification extends Specification{
+class OpenBisMapperSpecification extends Specification{
 
-    Mapp mapp = new Mapp()
+    OpenBisMapper mapp = new OpenBisMapper()
 
 
     def "OpenBis properties are properly mapped"(){
         when:
-        def res = mapp.maskProperties(["Q_PROJECT_DETAILS":"text"])
+        def res = mapp.mapProperties(["Q_PROJECT_DETAILS":"text"])
 
         then:
         res == ["design":"text"]
@@ -20,7 +20,7 @@ class MappSpecification extends Specification{
 
     def "OpenBis properties with no mapping are ignored"(){
         when:
-        def res = mapp.maskProperties(["Q_PROJECT_DETAILS":"text","this is a test":"do not map the label of this value"])
+        def res = mapp.mapProperties(["Q_PROJECT_DETAILS":"text", "this is a test":"do not map the label of this value"])
 
         then:
         res == ["design":"text"]
@@ -28,7 +28,7 @@ class MappSpecification extends Specification{
 
     def "DataSet files are mapped as list"(){
         when:
-        def res = mapp.maskFiles(["file1.fasta","file2.fasta","file3.fasta"],"Q_NGS_RAW_DATA")
+        def res = mapp.mapFiles(["file1.fasta", "file2.fasta", "file3.fasta"],"Q_NGS_RAW_DATA")
 
         then:
         res.sort() == ["raw file":["file1.fasta","file2.fasta","file3.fasta"]].sort()
@@ -42,7 +42,7 @@ class MappSpecification extends Specification{
         List<Property> properties = [prop1, prop2]
 
         when:
-        def res = mapp.maskConditions(properties)
+        def res = mapp.mapConditions(properties)
 
         then:
         res.sort() == ["condition genotype:" : "mutant","condition healthy:": "sick"].sort()

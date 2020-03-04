@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare.projectSearch.openBis
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
@@ -6,7 +6,7 @@ import ch.systemsx.cisd.common.spring.HttpInvokerUtils
 
 class OpenBisSession {
 
-
+//todo convert to singelton?? see postman-core-lib
     String sessionToken
     IApplicationServerApi v3
     IDataStoreServerApi dss

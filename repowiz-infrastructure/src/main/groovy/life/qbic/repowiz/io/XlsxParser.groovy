@@ -1,6 +1,7 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.prepare.mapping.GeoParser
+import life.qbic.repowiz.prepare.mapping.RepositoryMapper
+import life.qbic.repowiz.prepare.parsing.GeoParserInput
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
@@ -12,14 +13,23 @@ import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 
-class XlsxParser implements TemplateParser, GeoParser{
+abstract class XlsxParser implements TemplateParser, GeoParserInput{
+
+    private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
+
 
     XSSFWorkbook wb
+    List sheets
+    List requiredFields = []
+    HashMap<String,XSSFCell> templateFields = new HashMap<>()
+    String section
 
-    final String comment = '#'
-    final byte[] rgbLevelColor = [-1, 0, 0]
-    final byte[] rgbFieldColor = [0, 0, -1]
+    abstract String commentMarker
+    abstract RepositoryMapper mapper
 
+    XlsxParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
+        sheets = templateSheets
+    }
 
     @Override
     def parseAsStream(String file) {
@@ -28,58 +38,46 @@ class XlsxParser implements TemplateParser, GeoParser{
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
 
-    //for geo it is required to parse the sheet by color
-    @Override
-    def parseTemplate(String template) {
-        parseAsStream(template)
-    }
+    abstract def isSection(XSSFCell cell)
+    abstract def isField(XSSFCell cell)
+    abstract def isRequired(XSSFCell cell)
+    abstract def isValidCell(XSSFCell cell)
+    //method to write information back/to know where to write information
+    //abstract HashMap<String,List<String>> writeToSheet(String sheetName)
 
-    //todo for geo bold terms are required! the thin ones are optional!! --> encode that in repowiz structure??!?
-
-    @Override
-    HashMap<String,List<String>> parseSheetByColor(String sheetName) {
-        HashMap res = null
+    def parseTemplateSheet(String sheetName) {
+        //HashMap<String, List<String>> classWithFields = new HashMap<>()
 
         wb.sheetIterator().each { sheet ->
-            if (sheet.sheetName.trim() == sheetName) { //need to strip succeeding whitespaces
-                res = getExperimentLevels(sheet)
-            }
-        }
-        return res
-    }
+            //if (sheets.contains(sheet.sheetName.trim())) { //need to strip succeeding whitespaces todo write as regex
+            if (sheetName == sheet.sheetName.trim()) {
+                sheet.each { row ->
 
-    def getExperimentLevels(Sheet sheet) {
+                    for (int col = 0; col < row.size(); col++) {
 
-        HashMap<String, List<String>> classWithFields = new HashMap<>()
-        int column = 0
+                        XSSFCell cell = (XSSFCell) row.getCell(col)
 
-        sheet.each { row ->
+                        if (isValidCell(cell) && isSection(cell)) {
+                            section = cell.stringCellValue.trim().toLowerCase() //need section because of duplicate field names
+                            getSectionFields(row.rowNum, sheet)
 
-            XSSFCell cell = (XSSFCell) row.getCell(column)
-
-            if (cell != null && cell.stringCellValue != "" && !containsComment(cell)) {
-
-                byte[] color = getRGBColor(cell)
-
-                if (isLevel(color,column)) {
-                    String level = cell.stringCellValue.trim()
-                    List<String> fields = getExperimentFields(row.rowNum, sheet)
-                    //level is all fields assigned to a section in the metadata sheet
-                    classWithFields.put(level, fields)
+                            //section is all fields assigned to a section in the metadata sheet
+                            //classWithFields.put(section, fields)
+                        }
+                    }
                 }
             }
         }
-        return classWithFields
+
     }
 
-    List<String> getExperimentFields(int levelRow, Sheet sheet) {
-        boolean nextLevel = false
-        List<String> metaFields = []
+    def getSectionFields(int rowNum, Sheet sheet) {
+        boolean nextSection = false
 
-        //iterate up to next level
-        while (!nextLevel) {
-            levelRow += 1
-            Row row = sheet.getRow(levelRow)
+        //iterate up to next section
+        while (!nextSection) {
+            rowNum += 1
+            Row row = sheet.getRow(rowNum)
 
             if (row == null) {
                 break
@@ -89,21 +87,27 @@ class XlsxParser implements TemplateParser, GeoParser{
                 XSSFCell cell = (XSSFCell) row.getCell(col)
 
                 if (isValidCell(cell)) {
-                    byte[] color = getRGBColor(cell)
-
-                    if (isLevel(color,col)) {
-                        nextLevel = true
+                    if (isSection(cell)) {
+                        nextSection = true
                     }
-                    if (isField(color,col)) {
-                        metaFields.add(cell.stringCellValue.trim())
+                    if (isField(cell)){
+                        String rawValue = cell.stringCellValue.trim()
+                        //LOG.debug("Masking Geo terms ...")
+                        String maskedValue = maskDuplicates(rawValue,section)
+                        //LOG.debug("Mapping Geo terms to RepoWiz terms ...")
+                        String cellValue = mapper.mapPropertiesToRepoWiz(maskedValue)
+
+                        templateFields.put(cellValue,cell)
+
+                        if(isRequired(cell)) requiredFields.add(cellValue)
+
                     }
                 }
             }
         }
-        return metaFields
     }
 
-    byte[] getRGBColor(XSSFCell cell) {
+    static byte[] getRGBColor(XSSFCell cell) {
         XSSFCellStyle cellStyle = cell.cellStyle
         XSSFFont res = cellStyle.font
 
@@ -113,19 +117,20 @@ class XlsxParser implements TemplateParser, GeoParser{
         return null
     }
 
-    def isLevel(byte[] color, int col){
-        return color != null && color == rgbLevelColor && col == 0
+    boolean commentCell(Cell cell) {
+        return cell.stringCellValue.startsWith(commentMarker)
     }
 
-    def isField(byte[] color, int col){
-        return color != null && color == rgbFieldColor || col > 0
+    static def maskDuplicates(String prop, String section){
+        /*List masked = []
+
+        prop.each {
+            masked << section + "_" + it
+        }
+
+        return masked*/
+        return section + "_" + prop
     }
 
-    def isValidCell(XSSFCell cell){
-        return cell != null && cell.stringCellValue != "" && !containsComment(cell)
-    }
 
-    boolean containsComment(Cell cell) {
-        return cell.stringCellValue.startsWith(comment)
-    }
 }

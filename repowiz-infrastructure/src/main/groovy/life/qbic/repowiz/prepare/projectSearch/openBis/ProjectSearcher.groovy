@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare.projectSearch.openBis
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
@@ -21,20 +21,16 @@ import life.qbic.dataLoading.PostmanDataFilterer
 import life.qbic.dataLoading.PostmanDataFinder
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
-import life.qbic.xml.manager.StudyXMLParser
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import life.qbic.xml.properties.Property
-import life.qbic.xml.study.Qexperiment
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-import javax.xml.bind.JAXBElement
-import javax.xml.bind.JAXBException
+class ProjectSearcher implements ProjectSearchInput {
 
-
-class ProjectSearchMapper implements ProjectSearchInput {
-
-    private static final Logger LOG = LogManager.getLogger(ProjectSearchMapper.class)
+    private static final Logger LOG = LogManager.getLogger(ProjectSearcher.class)
 
     Project project
 
@@ -45,11 +41,11 @@ class ProjectSearchMapper implements ProjectSearchInput {
     //output
     ProjectSearchOutput output
     RepoWizProject repoWizProject
-    Mapp mapper = new Mapp()
+    OpenBisMapper mapper = new OpenBisMapper()
 
     ConditionParser conditionParser
 
-    ProjectSearchMapper(IApplicationServerApi v3, IDataStoreServerApi dss, String session) {
+    ProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session) {
         this.v3 = v3
         this.dss = dss
 
@@ -65,7 +61,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
         loadOpenBisProjectInfo(projectID)
         loadOpenBisSampleInfo()
 
-        output.transferProjectMetadata(repoWizProject)
+        output.addRequiredFields(repoWizProject)
     }
 
     def loadOpenBisProjectInfo(String projectID) {
@@ -92,7 +88,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
 
 
         //todo how to get rid of code here?
-        repoWizProject = new RepoWizProject(projectID, mapper.maskProperties(["Q_PROJECT_DETAILS":project.description]))
+        repoWizProject = new RepoWizProject(projectID, mapper.mapProperties(["Q_PROJECT_DETAILS":project.description]))
 
         //prepare condition parse for samples
         project.experiments.each {exp ->
@@ -150,11 +146,11 @@ class ProjectSearchMapper implements ProjectSearchInput {
         LOG.info "Fetching Data Set ..."
         allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
 
-        allProperties << mapper.maskProperties(mapper.maskDuplicateProperties(sample.type.code,sample.properties))
+        allProperties << mapper.mapProperties(mapper.maskDuplicateProperties(sample.type.code,sample.properties))
 
         //add conditions
         List<Property> res = conditionParser.getSampleCondition(sample.code)
-        allProperties << mapper.maskConditions(res)
+        allProperties << mapper.mapConditions(res)
 
         //map openBis vocabulary to readable names
         allProperties.each {key, value ->
@@ -188,7 +184,7 @@ class ProjectSearchMapper implements ProjectSearchInput {
                     dataFiles << path[path.size() - 1]
                 }
             }
-            allDataSets << mapper.maskFiles(dataFiles, dataSet.type.code)
+            allDataSets << mapper.mapFiles(dataFiles, dataSet.type.code)
         }
         return allDataSets
     }
@@ -196,9 +192,9 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchChildSamples(Sample sample) {
         HashMap childProperties = new HashMap()
         sample.children.each {child ->
-            childProperties << mapper.maskConditions(conditionParser.getSampleCondition(child.code))
-            childProperties << mapper.maskProperties(mapper.maskDuplicateProperties(child.type.code, child.properties))
-            childProperties << mapper.maskProperties(mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties))
+            childProperties << mapper.mapConditions(conditionParser.getSampleCondition(child.code))
+            childProperties << mapper.mapProperties(mapper.maskDuplicateProperties(child.type.code, child.properties))
+            childProperties << mapper.mapProperties(mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties))
             childProperties << fetchChildSamples(child)
         }
         return childProperties
@@ -207,9 +203,9 @@ class ProjectSearchMapper implements ProjectSearchInput {
     HashMap fetchParentSamples(Sample sample){
         HashMap parentProperties = new HashMap()
         sample.parents.each {parent ->
-            parentProperties << mapper.maskConditions(conditionParser.getSampleCondition(parent.code))
-            parentProperties << mapper.maskProperties(mapper.maskDuplicateProperties(parent.type.code, parent.properties))
-            parentProperties << mapper.maskProperties(mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties))
+            parentProperties << mapper.mapConditions(conditionParser.getSampleCondition(parent.code))
+            parentProperties << mapper.mapProperties(mapper.maskDuplicateProperties(parent.type.code, parent.properties))
+            parentProperties << mapper.mapProperties(mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties))
             parentProperties << fetchParentSamples(parent)
         }
         return parentProperties

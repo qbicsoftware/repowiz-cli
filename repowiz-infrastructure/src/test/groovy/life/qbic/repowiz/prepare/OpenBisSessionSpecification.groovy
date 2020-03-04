@@ -2,9 +2,9 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.io.JsonParser
-import life.qbic.repowiz.prepare.projectSearch.OpenBisSession
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchMapper
+import life.qbic.repowiz.prepare.projectSearch.openBis.OpenBisSession
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
+import life.qbic.repowiz.prepare.projectSearch.openBis.ProjectSearcher
 import spock.lang.Specification
 
 class OpenBisSessionSpecification extends Specification{
@@ -21,7 +21,7 @@ class OpenBisSessionSpecification extends Specification{
 
     def "experiment"(){
         given:
-        ProjectSearchMapper mapper = new ProjectSearchMapper(session.v3,session.dss, session.sessionToken)
+        ProjectSearcher mapper = new ProjectSearcher(session.v3,session.dss, session.sessionToken)
         mapper.addProjectSearchOutput(out)
 
         when:
@@ -33,7 +33,7 @@ class OpenBisSessionSpecification extends Specification{
 
     def "sample"(){
         given:
-        ProjectSearchMapper mapper = new ProjectSearchMapper(session.v3,session.dss,session.sessionToken)
+        ProjectSearcher mapper = new ProjectSearcher(session.v3,session.dss,session.sessionToken)
         mapper.addProjectSearchOutput(out)
 
         when:
