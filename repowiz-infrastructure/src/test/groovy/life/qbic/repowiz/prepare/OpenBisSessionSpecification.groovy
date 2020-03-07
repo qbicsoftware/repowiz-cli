@@ -12,8 +12,7 @@ class OpenBisSessionSpecification extends Specification{
     OpenBisSession session
     ProjectSearchOutput out = Mock(ProjectSearchOutput)
 
-
-   def setup(){
+   /*def setup(){
         JsonParser props = new JsonParser()
         Map cred = (Map) props.parseAsStream("credentials.json.properties")
         session = new OpenBisSession((String) cred.get("user"), (String) cred.get("password"), (String) cred.get("server_url"))
@@ -45,6 +44,6 @@ class OpenBisSessionSpecification extends Specification{
                                    "I16R019a02_01_S3_L002_R1_001.fastq.gz",
                                    "I16R019a02_01_S3_L003_R1_001.fastq.gz",
                                    "I16R019a02_01_S3_L004_R1_001.fastq.gz"].sort()
-    }
+    }*/
 
 }
