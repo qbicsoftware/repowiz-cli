@@ -3,7 +3,7 @@ package life.qbic.repowiz.prepare.model
 class RepoWizProject {
     String projectID
     HashMap<String,String> properties
-    List<String> requiredFields //fields required in order to validate the object?
+    //List<String> requiredFields //known in the plugin of the repository
     List<RepoWizSample> samples = []
 
     RepoWizProject(String project, HashMap meta){

@@ -15,7 +15,7 @@ class OpenBisMapperSpecification extends Specification{
         def res = mapp.mapProperties(["Q_PROJECT_DETAILS":"text"])
 
         then:
-        res == ["design":"text"]
+        res == ["series_design":"text"]
     }
 
     def "OpenBis properties with no mapping are ignored"(){
@@ -23,7 +23,7 @@ class OpenBisMapperSpecification extends Specification{
         def res = mapp.mapProperties(["Q_PROJECT_DETAILS":"text", "this is a test":"do not map the label of this value"])
 
         then:
-        res == ["design":"text"]
+        res == ["series_design":"text"]
     }
 
     def "DataSet files are mapped as list"(){
@@ -31,7 +31,7 @@ class OpenBisMapperSpecification extends Specification{
         def res = mapp.mapFiles(["file1.fasta", "file2.fasta", "file3.fasta"],"Q_NGS_RAW_DATA")
 
         then:
-        res.sort() == ["raw file":["file1.fasta","file2.fasta","file3.fasta"]].sort()
+        res.sort() == ["samples_raw file":["file1.fasta","file2.fasta","file3.fasta"]].sort()
     }
 
     def "Conditions are translated properly"(){
@@ -45,7 +45,7 @@ class OpenBisMapperSpecification extends Specification{
         def res = mapp.mapConditions(properties)
 
         then:
-        res.sort() == ["condition genotype:" : "mutant","condition healthy:": "sick"].sort()
+        res.sort() == ["samples_characteristics genotype" : "mutant","samples_characteristics healthy": "sick"].sort()
     }
 
     def "duplicate properties are masked properly"(){

@@ -17,15 +17,14 @@ abstract class XlsxParser implements TemplateParser, GeoParserInput{
 
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
 
-
     XSSFWorkbook wb
     List sheets
     List requiredFields = []
     HashMap<String,XSSFCell> templateFields = new HashMap<>()
     String section
 
-    abstract String commentMarker
-    abstract RepositoryMapper mapper
+    String commentMarker
+    RepositoryMapper mapper
 
     XlsxParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
         sheets = templateSheets

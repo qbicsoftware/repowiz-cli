@@ -2,6 +2,8 @@ package life.qbic.repowiz.prepare.projectSearch.openBis
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.dataset.DataSet
+import ch.ethz.sis.openbis.generic.asapi.v3.dto.dataset.fetchoptions.DataSetFetchOptions
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.experiment.fetchoptions.ExperimentFetchOptions
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.project.Project
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.project.fetchoptions.ProjectFetchOptions
@@ -17,8 +19,7 @@ import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.DataSetFile
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSetFileFetchOptions
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.search.DataSetFileSearchCriteria
 
-import life.qbic.dataLoading.PostmanDataFilterer
-import life.qbic.dataLoading.PostmanDataFinder
+
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
@@ -163,11 +164,9 @@ class ProjectSearcher implements ProjectSearchInput {
     //load the RepoWiz data set info
     HashMap loadOpenBisDataSetInfo(String sampleCode, String type) {
 
-        PostmanDataFinder finder = new PostmanDataFinder(v3, dss, new PostmanDataFilterer(), sessionToken)
-
         HashMap allDataSets = new HashMap()
 
-        finder.findAllDatasetsRecursive(sampleCode).each { dataSet ->
+        findAllDatasetsRecursive(sampleCode).each { dataSet ->
             DataSetFileSearchCriteria criteria = new DataSetFileSearchCriteria()
             criteria.withDataSet().withPermId().thatEquals(dataSet.permId.permId)
 
@@ -188,6 +187,45 @@ class ProjectSearcher implements ProjectSearchInput {
         }
         return allDataSets
     }
+
+    List<DataSet> findAllDatasetsRecursive(final String sampleId) {
+        SampleSearchCriteria criteria = new SampleSearchCriteria()
+        criteria.withCode().thatEquals(sampleId)
+
+        // tell the API to fetch all descendants for each returned sample
+        SampleFetchOptions fetchOptions = new SampleFetchOptions()
+        DataSetFetchOptions dsFetchOptions = new DataSetFetchOptions()
+        dsFetchOptions.withType()
+        fetchOptions.withChildrenUsing(fetchOptions)
+        fetchOptions.withDataSetsUsing(dsFetchOptions)
+        SearchResult<Sample> result = v3.searchSamples(sessionToken, criteria, fetchOptions)
+
+        List<DataSet> foundDatasets = new ArrayList<>()
+
+        for (Sample sample : result.getObjects()) {
+            // add the datasets of the sample itself
+            foundDatasets.addAll(sample.getDataSets())
+
+            // fetch all datasets of the children
+            foundDatasets.addAll(fetchDescendantDatasets(sample))
+        }
+
+        return foundDatasets
+    }
+
+    private static List<DataSet> fetchDescendantDatasets(final Sample sample) {
+        List<DataSet> foundSets = new ArrayList<>()
+
+        // fetch all datasets of the children recursively
+        for (Sample child : sample.getChildren()) {
+            final List<DataSet> foundChildrenDatasets = child.getDataSets()
+            foundSets.addAll(foundChildrenDatasets)
+            foundSets.addAll(fetchDescendantDatasets(child))
+        }
+
+        return foundSets
+    }
+
 
     HashMap fetchChildSamples(Sample sample) {
         HashMap childProperties = new HashMap()

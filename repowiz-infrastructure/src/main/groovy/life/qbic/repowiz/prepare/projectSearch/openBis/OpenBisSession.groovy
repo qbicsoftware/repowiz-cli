@@ -11,7 +11,7 @@ class OpenBisSession {
     IApplicationServerApi v3
     IDataStoreServerApi dss
 
-    OpenBisSession(String user, String password, url){
+    OpenBisSession(String user, String password, String url){
 
         String ass = url + "/openbis/openbis" + IApplicationServerApi.SERVICE_URL
         String ds = url + ":444" + "/datastore_server" + IDataStoreServerApi.SERVICE_URL

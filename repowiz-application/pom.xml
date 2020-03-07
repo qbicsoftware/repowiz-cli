@@ -23,7 +23,6 @@
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!--  command-line argument parsing to use execute method -->
         <dependency>
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
