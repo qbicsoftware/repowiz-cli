@@ -18,12 +18,6 @@ public class RepowizCommand implements Runnable{
 
     private static final Logger LOG = LogManager.getLogger(RepowizCommand.class);
 
-    /**@CommandLine.Option(names={"-conf", "--config"}, required = true, description="RepoWiz config file")
-    public volatile String conf;
-
-    @CommandLine.Option(names={"-p", "--projectId"}, required = true, description="Project for which the submission is prepared")
-    public volatile String projectID;*/
-
     @CommandLine.Option(names={"-l", "--list"}, description="Lists all implemented repositories of RepoWiz")
     public volatile String projectID;
 
