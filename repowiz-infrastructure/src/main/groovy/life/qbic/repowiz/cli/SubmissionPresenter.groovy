@@ -67,7 +67,7 @@ class SubmissionPresenter implements SubmissionOutput{
     def mapToString(HashMap<Integer,String> map){
         String text = ""
         map.each {num, val ->
-            text += " $val ($num)"
+            text += "($num) $val \n"
         }
 
         return text
