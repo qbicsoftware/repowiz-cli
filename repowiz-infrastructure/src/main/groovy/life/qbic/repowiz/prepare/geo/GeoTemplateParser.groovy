@@ -3,12 +3,12 @@ package life.qbic.repowiz.prepare.projectSearch.geo
 import life.qbic.repowiz.io.XlsxParser
 import org.apache.poi.xssf.usermodel.XSSFCell
 
-class GeoParser extends XlsxParser{
+class GeoTemplateParser extends XlsxParser{
 
     final byte[] rgbLevelColor = [-1, 0, 0]
     final byte[] rgbFieldColor = [0, 0, -1]
 
-    GeoParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
+    GeoTemplateParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
         super(templateSheets)
         super.commentMarker = '#'
         super.mapper = new GeoMapper("hts")

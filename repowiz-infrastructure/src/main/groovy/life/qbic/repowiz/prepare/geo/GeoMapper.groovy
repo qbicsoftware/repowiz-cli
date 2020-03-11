@@ -1,6 +1,6 @@
 package life.qbic.repowiz.prepare.projectSearch.geo
 
-import life.qbic.repowiz.prepare.mapping.RepositoryMapper
+import life.qbic.repowiz.prepare.RepositoryMapper
 import life.qbic.repowiz.prepare.projectSearch.TemporaryDatabase
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

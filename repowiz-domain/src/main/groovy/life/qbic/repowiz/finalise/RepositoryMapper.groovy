@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.mapping
+package life.qbic.repowiz.prepare
 
 interface RepositoryMapper {
 

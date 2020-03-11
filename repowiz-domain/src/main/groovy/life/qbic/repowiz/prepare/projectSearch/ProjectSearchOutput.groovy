@@ -1,10 +1,11 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
 
 interface ProjectSearchOutput {
 
-    def addRequiredFields(RepoWizProject project)
+    def transferProjectData(RepoWizProject project, List<RepoWizSample> samples)
     def userNotification(String message)
 }

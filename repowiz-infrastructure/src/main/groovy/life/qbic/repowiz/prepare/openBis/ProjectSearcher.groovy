@@ -62,7 +62,7 @@ class ProjectSearcher implements ProjectSearchInput {
         loadOpenBisProjectInfo(projectID)
         loadOpenBisSampleInfo()
 
-        output.addRequiredFields(repoWizProject)
+        output.transferProjectData(repoWizProject)
     }
 
     def loadOpenBisProjectInfo(String projectID) {

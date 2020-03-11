@@ -1,5 +1,7 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare
 
+
+//todo move this stuff to external repository
 class TemporaryDatabase {
 
     HashMap openBisToRepoWiz
@@ -43,18 +45,6 @@ class TemporaryDatabase {
         repoWizToGeo = new HashMap()
         geoToRepoWiz = new HashMap()
 
-        /*repoWizToGeo.put("design","overall design")
-        repoWizToGeo.put("source name","source name")
-        repoWizToGeo.put("organism","organism")
-        repoWizToGeo.put("molecule","molecule")
-        repoWizToGeo.put("instrument model","instrument model")
-        repoWizToGeo.put("sequencing mode","single or paired-end")
-        repoWizToGeo.put("library protocol","library construction protocol")
-        repoWizToGeo.put("ref genome","genome build")
-        repoWizToGeo.put("raw file","raw file")
-        repoWizToGeo.put("file name 1","file name 1")
-        repoWizToGeo.put("file name 2","file name 2")
-        repoWizToGeo.put("characteristics","characteristics: ")*/
 
         for(int pos = 0; pos < geo.size(); pos++){
             repoWizToGeo.put(repoWiz[pos],geo[pos])

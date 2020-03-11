@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch
+package life.qbic.repowiz.prepare
 
 abstract class TemplateSection {
     //all fields
