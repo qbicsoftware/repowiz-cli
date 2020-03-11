@@ -14,14 +14,15 @@ public class RepowizTool{
 
     private static final Logger LOG = LogManager.getLogger(RepowizTool.class);
 
-    String projectID;
-    SubmissionController controller;
+    private SubmissionController controller;
 
     public RepowizTool(String projectID){
-        this.projectID = projectID;
         // set up infrastructure classes
         CommandlineView commandlineView = new RepoWizView();
         controller = new SubmissionController(commandlineView,projectID);
+    }
+
+    public RepowizTool(){
     }
 
     public void executeFindRepository(){
@@ -29,5 +30,9 @@ public class RepowizTool{
     }
     public void executeSelectRepository(String selectedRepository) {
         controller.init(selectedRepository);
+    }
+
+    public void executeListing(){
+        //todo list all implemented repositories for the user
     }
 }

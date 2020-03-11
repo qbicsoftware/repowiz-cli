@@ -53,10 +53,9 @@ class SelectRepository implements SelectRepositoryInput{
 
     @Override
     def processRepository(String answer) {
-        Repository repo
 
-        if((repo = isValidRepository(answer))!= null){
-            output.selectedRepository(repo)
+        if(isValidRepository(answer)){
+            output.selectedRepository(getValidRepository(answer))
         }
         else {
             LOG.error "No valid repository was selected"
@@ -72,16 +71,27 @@ class SelectRepository implements SelectRepositoryInput{
         return repoNames
     }
 
-    def isValidRepository(String user_choice){
-        Repository validChoice = null
+    boolean isValidRepository(String user_choice){
+        boolean validChoice = false
 
         suggestedRepos.each {
             if(it.name == user_choice){
-               validChoice = it
+               validChoice = true
             }
         }
 
         return validChoice
     }
 
+    Repository getValidRepository(String user_choice){
+        Repository validChoice = null
+
+        suggestedRepos.each {
+            if(it.name == user_choice){
+                validChoice = it
+            }
+        }
+
+        return validChoice
+    }
 }

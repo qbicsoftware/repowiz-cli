@@ -8,4 +8,6 @@ class RepoWizSample {
         sampleName = name
         this.properties = properties
     }
+
+    //todo do not implement any logic in here!!!!
 }

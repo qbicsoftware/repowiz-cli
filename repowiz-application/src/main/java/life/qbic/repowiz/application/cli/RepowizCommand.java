@@ -1,5 +1,6 @@
 package life.qbic.repowiz.application.cli;
 
+import life.qbic.repowiz.application.cli.subcommands.ListCommand;
 import life.qbic.repowiz.application.cli.subcommands.RepositoryGuideCommand;
 import life.qbic.repowiz.application.cli.subcommands.SelectRepositoryCommand;
 import picocli.CommandLine;
@@ -12,14 +13,14 @@ import org.apache.logging.log4j.Logger;
 @Command(
    name="Repowiz",
    description="RepoWiz helps you to find a suitable repository for your data and prepares your submission",
-   subcommands = {RepositoryGuideCommand.class, SelectRepositoryCommand.class})
+   subcommands = {RepositoryGuideCommand.class, SelectRepositoryCommand.class, ListCommand.class})
 
 public class RepowizCommand implements Runnable{
 
     private static final Logger LOG = LogManager.getLogger(RepowizCommand.class);
 
     @CommandLine.Option(names={"-l", "--list"}, description="Lists all implemented repositories of RepoWiz")
-    public volatile String projectID;
+    public volatile String list;
 
     @CommandLine.Option(names = {"-h", "--help"}, description = "Prints usage and exists.", usageHelp = true)
     public volatile boolean printHelp;
