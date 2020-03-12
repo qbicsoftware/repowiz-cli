@@ -2,7 +2,7 @@
 
 ### Use Case Description
 
-Triggers the validation of the project data in the repository plugin and informs the user about missing required project
+Transfers the RepoWiz objects to the suitable repository plugin, triggers the validation of the project data and informs the user about missing required project
 information.
 The final submission is then forwarded to the desired output plugin which can be a file download of the filled template.	
 

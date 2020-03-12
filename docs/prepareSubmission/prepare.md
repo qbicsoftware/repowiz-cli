@@ -2,8 +2,8 @@
 
 ### Use Case Description
 
-RepoWiz transforms the project data from the local database plugin into a flat metadata model (RepoWizProject and RepoWizSamples) 
-and passes the data on to the repository plugin.
+RepoWiz transforms the project data from the local database plugin into a flat metadata model (RepoWizProject and RepoWizSamples).
+It also checks if the project is valid for the selected repository.
 
 ### Input:
 1. Project identifier
