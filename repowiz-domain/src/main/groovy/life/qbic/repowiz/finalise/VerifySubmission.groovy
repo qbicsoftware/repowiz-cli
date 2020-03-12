@@ -1,4 +1,4 @@
-package life.qbic.repowiz.submit
+package life.qbic.repowiz.finalise
 
 interface VerifySubmission {
 

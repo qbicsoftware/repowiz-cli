@@ -1,8 +1,10 @@
-package life.qbic.repowiz.submit
+package life.qbic.repowiz.finalise
+
+import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
 
 interface FinaliseSubmission {
 
-    def checkSubmissionValidity(HashMap<String,String> metadata)
-    def createSubmissionOverview(HashMap<String,String> metadata,List<String> files)
-    def submitData()
+    def transferSubmissionData(RepoWizProject project, List<RepoWizSample> samples)
+    def setSubmissionDetails(String repositoryName, String uploadType)
 }

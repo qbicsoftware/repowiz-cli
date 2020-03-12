@@ -1,11 +1,8 @@
-package life.qbic.repowiz.submit
+package life.qbic.repowiz.finalise
 
 interface SubmissionOutput {
 
-    def getSampleIds(List<String> sampleIDs)
-    def getMetaDataForSamples(HashMap<String,String> metadata, String sampleID)
-    def getFilesForSamples(List<String> filePaths, String sampleID)
-    def uploadFormat(String type)
+    def submissionSummary(String summary)
     List<String> subsequentSteps()
     String submissionIdentifier()
 

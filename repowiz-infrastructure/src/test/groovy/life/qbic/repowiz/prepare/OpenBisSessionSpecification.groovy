@@ -1,10 +1,8 @@
 package life.qbic.repowiz.prepare
 
 
-import life.qbic.repowiz.io.JsonParser
-import life.qbic.repowiz.prepare.projectSearch.openBis.OpenBisSession
+import life.qbic.repowiz.prepare.openBis.OpenBisSession
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
-import life.qbic.repowiz.prepare.projectSearch.openBis.ProjectSearcher
 import spock.lang.Specification
 
 class OpenBisSessionSpecification extends Specification{

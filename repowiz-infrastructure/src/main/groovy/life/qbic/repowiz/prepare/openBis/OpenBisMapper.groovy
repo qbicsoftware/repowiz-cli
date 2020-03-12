@@ -1,7 +1,7 @@
-package life.qbic.repowiz.prepare.projectSearch.openBis
+package life.qbic.repowiz.prepare.openBis
 
 import life.qbic.repowiz.prepare.projectSearch.LocalDatabaseMapper
-import life.qbic.repowiz.prepare.projectSearch.TemporaryDatabase
+import life.qbic.repowiz.TemporaryDatabase
 import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger

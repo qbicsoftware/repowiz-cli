@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare
+package life.qbic.repowiz.prepare.projectSearch
 
 
 interface ProjectSearchInput {

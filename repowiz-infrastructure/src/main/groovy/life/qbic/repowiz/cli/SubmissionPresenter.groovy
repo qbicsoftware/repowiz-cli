@@ -1,7 +1,7 @@
 package life.qbic.repowiz.cli
 
+import life.qbic.repowiz.finalise.SubmissionOutput
 
-import life.qbic.repowiz.submit.SubmissionOutput
 
 class SubmissionPresenter implements SubmissionOutput{
 
@@ -73,25 +73,8 @@ class SubmissionPresenter implements SubmissionOutput{
         return text
     }
 
-    //keep it like that? does it make sense to show this content to the presenter?
-
     @Override
-    def getSampleIds(List<String> sampleIDs) {
-        return null
-    }
-
-    @Override
-    def getMetaDataForSamples(HashMap<String, String> metadata, String sampleID) {
-        return null
-    }
-
-    @Override
-    def getFilesForSamples(List<String> filePaths, String sampleID) {
-        return null
-    }
-
-    @Override
-    def uploadFormat(String type) {
+    def submissionSummary(String summary) {
         return null
     }
 

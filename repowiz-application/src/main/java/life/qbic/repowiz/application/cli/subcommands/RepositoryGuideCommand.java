@@ -22,7 +22,7 @@ public class RepositoryGuideCommand implements Runnable{
 
     @Override
     public void run() {
-        RepowizTool tool = new RepowizTool(projectID);
+        RepowizTool tool = new RepowizTool(projectID, conf);
         tool.executeFindRepository();
     }
 }

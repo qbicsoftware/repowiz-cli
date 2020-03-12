@@ -1,5 +1,7 @@
-package life.qbic.repowiz.prepare
+package life.qbic.repowiz.finalise
 
+
+//todo do i want to keep this?
 abstract class TemplateSection {
     //all fields
     List optionalFields

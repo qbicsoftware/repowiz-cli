@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch.openBis
+package life.qbic.repowiz.prepare.openBis
 
 
 import life.qbic.xml.manager.StudyXMLParser

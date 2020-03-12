@@ -3,6 +3,7 @@ package life.qbic.repowiz
 import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.io.IO
 
+//todo also move repository descriptions to external repository
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
     String path = "repositories/"

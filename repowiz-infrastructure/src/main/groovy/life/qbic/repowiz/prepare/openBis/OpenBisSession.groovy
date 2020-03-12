@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch.openBis
+package life.qbic.repowiz.prepare.openBis
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi

@@ -1,8 +1,6 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.prepare.projectSearch.geo.GeoMapper
-import life.qbic.repowiz.prepare.projectSearch.geo.GeoParser
-import org.apache.poi.xssf.usermodel.XSSFCell
+
 import spock.lang.Specification
 
 class XlsxParserSpecification extends Specification{

@@ -2,82 +2,77 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.prepare.mapping.MapInfoInput
-import life.qbic.repowiz.prepare.mapping.MapInfoOutput
-
 import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, MapInfoOutput, ProjectSearchOutput{
+class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutput{
 
-    private static final Logger LOG = LogManager.getLogger(PrepareSubmissionImpl.class);
+    private static final Logger LOG = LogManager.getLogger(PrepareSubmissionImpl.class)
 
     PrepareSubmissionOutput output
     String project
     ProjectSearchInput projectSearch
-    MapInfoInput mapInfo
+    private Repository repo
+    private String uploadType
 
 
-    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch, MapInfoInput mapInfo){
+    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch){
         this.output = output
         this.project = projectID
         this.projectSearch = projectSearch
-        this.mapInfo = mapInfo
     }
 
+    //request upload type information and load project data from local database
     @Override
     def prepareSubmissionToRepository(Repository repository) {
-        //ask the user for upload type
         LOG.info "Preparing submission "
-        mapInfo.addOutput(this)
+        repo = repository
+
+        //ask the user for upload type
         LOG.info "Request upload type "
         output.transferQuestion(repository.uploadTypes)
 
         //project data
         LOG.info "Fetch Project Data"
         projectSearch.loadProjectInformation(project)
-        //projectSearch.getProjectMetadata(project)
-        //method like: get project field list for project
-
-
-        //transfer to output
-        //output.transferProjectFiles()
     }
 
+    //PrepareSubmissionInput
+    //user answer describing the upload type e.g hts upload special for each repository
     @Override
     def processUploadType(String answer) {
+        //display the user answer for better overview
         output.displayAnswer(answer)
-        getRequiredFields(answer)
-    }
-
-
-    def getRequiredFields(String uploadType){
-        mapInfo.getFields(uploadType) //add (String repositoryName)
-        //todo
-        //mapInfo soll ein "übermapper" sein der alle anderen mapper beinhalted
-    }
-
-    @Override
-    def transferFields(HashMap fields) {
-        LOG.debug "Received the field values from template"
-        LOG.debug fields
-        //todo handle the fields
-        return null
+        uploadType = answer
     }
 
     //project search output
     @Override
-    def addRequiredFields(RepoWizProject project) {
-        //add required fields to project object
-        output.validateProject(project)
-        return null
+    def transferProjectData(RepoWizProject project, List samples) {
+        if (isValid(samples,repo)){
+            output.validateProject(project, samples)
+            output.submissionDetails(repo.name,uploadType)
+        }else{
+            //todo throw exception/warning
+            // output.displayAnswer() oder so
+        }
     }
 
+    //update for the user: show information about processes while parsing local database
     @Override
     def userNotification(String message) {
         output.displayAnswer(message)
     }
+
+    //todo check if project data matches the repository conditions
+    boolean isValid(List<RepoWizSample> samples, Repository repo){
+        //todo
+        return false
+    }
+
+
 }

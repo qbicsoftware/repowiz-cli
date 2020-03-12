@@ -16,10 +16,10 @@ public class RepowizTool{
 
     private SubmissionController controller;
 
-    public RepowizTool(String projectID){
+    public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         CommandlineView commandlineView = new RepoWizView();
-        controller = new SubmissionController(commandlineView,projectID);
+        controller = new SubmissionController(commandlineView,projectID, config);
     }
 
     public RepowizTool(){

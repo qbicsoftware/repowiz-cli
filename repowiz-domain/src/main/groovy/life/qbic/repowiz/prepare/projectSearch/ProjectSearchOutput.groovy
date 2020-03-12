@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare
+package life.qbic.repowiz.prepare.projectSearch
 
 
 import life.qbic.repowiz.prepare.model.RepoWizProject
@@ -8,4 +8,5 @@ interface ProjectSearchOutput {
 
     def transferProjectData(RepoWizProject project, List<RepoWizSample> samples)
     def userNotification(String message)
+
 }

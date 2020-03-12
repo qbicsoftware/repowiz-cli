@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare
+package life.qbic.repowiz
 
 
 //todo move this stuff to external repository

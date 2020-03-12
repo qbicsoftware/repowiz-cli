@@ -1,16 +1,18 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.cli.SubmissionPresenter
+import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
-import life.qbic.repowiz.submit.FinaliseSubmission
+import life.qbic.repowiz.finalise.FinaliseSubmission
 
 //todo do i really want to keep one class implementing so many interfaces?
-class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput{
+class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput, SubmissionOutput{
 
     SubmissionPresenter presenter
 
@@ -68,8 +70,13 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //prepare submission use case --> transfer to finalise submission
     @Override
-    def validateProject(RepoWizProject project) {
-        return null
+    def validateProject(RepoWizProject project, List<RepoWizSample> samples) {
+        finaliseSubmissionInput.transferSubmissionData(project,samples)
+    }
+
+    @Override
+    def submissionDetails(String repoName, String uploadType) {
+        finaliseSubmissionInput.setSubmissionDetails(repoName,uploadType)
     }
 
     @Override
@@ -82,4 +89,19 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         presenter.displayUserChoices([choice])
     }
 
+    //finalise submission output
+    @Override
+    def submissionSummary(String summary) {
+        return null
+    }
+
+    @Override
+    List<String> subsequentSteps() {
+        return null
+    }
+
+    @Override
+    String submissionIdentifier() {
+        return null
+    }
 }

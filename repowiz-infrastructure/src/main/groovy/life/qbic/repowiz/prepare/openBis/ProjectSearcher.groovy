@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.projectSearch.openBis
+package life.qbic.repowiz.prepare.openBis
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+//todo separate code, try to create general class for plugin architecture and move openBis code into concrete opnebis class
 class ProjectSearcher implements ProjectSearchInput {
 
     private static final Logger LOG = LogManager.getLogger(ProjectSearcher.class)
@@ -42,6 +43,8 @@ class ProjectSearcher implements ProjectSearchInput {
     //output
     ProjectSearchOutput output
     RepoWizProject repoWizProject
+    List repoWizSamples = []
+
     OpenBisMapper mapper = new OpenBisMapper()
 
     ConditionParser conditionParser
@@ -62,7 +65,7 @@ class ProjectSearcher implements ProjectSearchInput {
         loadOpenBisProjectInfo(projectID)
         loadOpenBisSampleInfo()
 
-        output.transferProjectData(repoWizProject)
+        output.transferProjectData(repoWizProject,repoWizSamples)
     }
 
     def loadOpenBisProjectInfo(String projectID) {
@@ -128,7 +131,7 @@ class ProjectSearcher implements ProjectSearchInput {
             //todo mapp the terms before adding to project!!!!!
             HashMap sampleProperties = collectProperties(sample)
 
-            repoWizProject.addSample(new RepoWizSample("Sample "+counter, sampleProperties))
+            repoWizSamples << new RepoWizSample("Sample "+counter, sampleProperties)
             counter ++
         }
 

@@ -1,6 +1,5 @@
 package life.qbic.repowiz.prepare
 
-import life.qbic.repowiz.prepare.mapping.MapInfoInput
 import spock.lang.Specification
 
 class PrepareSubmissionSpecification extends Specification{

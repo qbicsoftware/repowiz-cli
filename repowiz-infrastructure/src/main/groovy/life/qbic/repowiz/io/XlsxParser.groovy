@@ -1,7 +1,6 @@
 package life.qbic.repowiz.io
 
-import life.qbic.repowiz.prepare.mapping.RepositoryMapper
-import life.qbic.repowiz.prepare.parsing.GeoParserInput
+import life.qbic.repowiz.finalise.RepositoryMapper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
@@ -13,7 +12,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
 
-abstract class XlsxParser implements TemplateParser, GeoParserInput{
+abstract class XlsxParser implements TemplateParser{
 
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
 

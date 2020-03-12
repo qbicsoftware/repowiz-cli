@@ -1,18 +1,54 @@
-package life.qbic.repowiz.prepare.projectSearch.geo
+package life.qbic.repowiz.finalise.geo
 
+
+import life.qbic.repowiz.finalise.parsing.RepositoryInput
+import life.qbic.repowiz.finalise.parsing.RepositoryOutput
 import life.qbic.repowiz.io.XlsxParser
+import life.qbic.repowiz.prepare.model.RepoWizProject
+import life.qbic.repowiz.prepare.model.RepoWizSample
 import org.apache.poi.xssf.usermodel.XSSFCell
 
-class GeoTemplateParser extends XlsxParser{
+class GeoTemplateParser extends XlsxParser implements RepositoryInput {
 
     final byte[] rgbLevelColor = [-1, 0, 0]
     final byte[] rgbFieldColor = [0, 0, -1]
 
-    GeoTemplateParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
-        super(templateSheets)
+    RepositoryOutput output
+
+    GeoTemplateParser(){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
+        super(["METADATA TEMPLATE"])
         super.commentMarker = '#'
         super.mapper = new GeoMapper("hts")
+        this.output = output
     }
+
+    def addRepositoryOutput(RepositoryOutput out){
+        output = out
+    }
+
+    @Override
+    def createSubmission(RepoWizProject project, List<RepoWizSample> samples) {
+        return null
+    }
+
+    @Override
+    def parseAsStream(String template){
+        super.parseAsStream(template)
+    }
+
+    @Override
+    def validateProjectInformation(RepoWizProject project, List<RepoWizSample> samples) {
+        //if valid --> no missing values
+        //else define missing information for repowiz objects and pass them to output
+        //output.handelMissingInformation()
+        return null
+    }
+
+    @Override
+    String getRepositoryName() {
+        return "geo"
+    }
+
 
     //a required field does not contain the keyword "[optional]" within the cells comment
     def isRequired(XSSFCell cell){
