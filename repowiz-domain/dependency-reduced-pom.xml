@@ -24,12 +24,6 @@
             <groupId>info.picocli</groupId>
             <artifactId>picocli</artifactId>
             <version>4.2.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>life.qbic</groupId>
-                    <artifactId>postman-core-lib</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 </project>
