@@ -1,9 +1,8 @@
 package life.qbic.repowiz.cli
 
-import life.qbic.repowiz.finalise.SubmissionOutput
+import life.qbic.repowiz.observer.AnswerTypes
 
-
-class SubmissionPresenter implements SubmissionOutput{
+class SubmissionPresenter {
 
     CommandlineView output
     SubmissionController controller
@@ -13,20 +12,19 @@ class SubmissionPresenter implements SubmissionOutput{
         this.controller = controller
     }
 
-    String requestAnswer(List<String> choices){
-        String formattedChoices = "> Please choose one of the following options: \n> "
+    String requestAnswer(AnswerTypes type, List < String > choices){
 
         HashMap map = listToMap(choices) //todo rename: adds numbers for the users choice
-
-        formattedChoices += mapToString(map) //todo rename: creates string from map for view
-
-        int answerNumber = output.userAnswer(formattedChoices)
-
-        String answer = map.get(answerNumber).toLowerCase()
-        return answer
+        output.displayQuestion(type,map)
     }
 
-    def requestDecision(List<String> choices){
+    def displayUserChoices(List<String> decisions){
+
+        output.displayDecisionOverview(decisions)
+    }
+
+
+    /*def requestDecision(List<String> choices){
         String answer = requestAnswer(choices)
         controller.transferDecision(answer) //transferToFindRepository
     }
@@ -39,18 +37,7 @@ class SubmissionPresenter implements SubmissionOutput{
     def requestUploadType(List<String> uploadTypes){
         String answer = requestAnswer(uploadTypes)
         controller.transferUploadType(answer) //transferToSelectRepository
-    }
-
-    def displayUserChoices(List<String> decisions){ //choice
-
-        String formattedDecisions = "> You selected: "
-
-        decisions.each {
-            formattedDecisions += "-> $it "
-        }
-
-        output.displayDecisionOverview(formattedDecisions)
-    }
+    }*/
 
 
     def listToMap(List elements){
@@ -64,27 +51,5 @@ class SubmissionPresenter implements SubmissionOutput{
         return map
     }
 
-    def mapToString(HashMap<Integer,String> map){
-        String text = ""
-        map.each {num, val ->
-            text += "($num) $val \n"
-        }
 
-        return text
-    }
-
-    @Override
-    def submissionSummary(String summary) {
-        return null
-    }
-
-    @Override
-    List<String> subsequentSteps() {
-        return null
-    }
-
-    @Override
-    String submissionIdentifier() {
-        return null
-    }
 }

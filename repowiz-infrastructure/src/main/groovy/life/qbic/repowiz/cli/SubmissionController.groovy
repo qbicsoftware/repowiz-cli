@@ -6,15 +6,13 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
-import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.finalise.geo.GeoTemplateParser
 import life.qbic.repowiz.finalise.mapping.RepositoryPluginHandler
-import life.qbic.repowiz.finalise.mapping.SubmissionToPlugin
 import life.qbic.repowiz.finalise.parsing.RepositoryInput
-import life.qbic.repowiz.finalise.parsing.RepositoryOutput
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
 import life.qbic.repowiz.io.JsonParser
+import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.prepare.PrepareSubmissionImpl
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
@@ -23,8 +21,15 @@ import life.qbic.repowiz.prepare.openBis.ProjectSearcher
 import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.finalise.FinaliseSubmission
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
-class SubmissionController {
+import java.beans.PropertyChangeEvent
+import java.beans.PropertyChangeListener
+
+class SubmissionController implements PropertyChangeListener{
+
+    private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
 
     String projectID
     ProjectSearcher projectSearch
@@ -44,9 +49,7 @@ class SubmissionController {
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view, this)
 
-
         repositoryOutput = new RepositoryPluginHandler(handelRepositoryPlugins())
-
 
         // set up repository database
         repoDescription = new RepositoryDatabaseConnector()
@@ -117,6 +120,31 @@ class SubmissionController {
 
     }
 
+    @Override
+    void propertyChange(PropertyChangeEvent evt) {
+        String userAnswer = (String) evt.getNewValue()
+        String answer = evt.getPropertyName()
+
+        switch (answer){
+            case AnswerTypes.DECISION.label:
+                findRepository.processDesicion(userAnswer)
+                break
+            case AnswerTypes.REPOSITORY.label:
+                selectRepository.processRepository(userAnswer)
+                break
+            case AnswerTypes.UPLOADTYPE.label:
+                prepareSubmission.processUploadType(userAnswer)
+                break
+            case AnswerTypes.SUBMIT.label:
+                //todo add method to handel user answer
+                //finaliseSubmission.processSubmission(userAnswer)
+                break
+            default:
+                LOG.error "could not define answer type!"
+        }
+    }
+
+    /*
     def transferDecision(String decision) {
         findRepository.processDesicion(decision)
     }
@@ -127,6 +155,7 @@ class SubmissionController {
 
     def transferUploadType(String type) {
         prepareSubmission.processUploadType(type)
-    }
+    }*/
+
 
 }

@@ -3,6 +3,7 @@ package life.qbic.repowiz
 import life.qbic.repowiz.cli.SubmissionPresenter
 import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
+import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.prepare.model.RepoWizProject
@@ -42,7 +43,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //MatchingRepositories output
     @Override
     def transferAnswerPossibilities(List<String> choices) {
-        presenter.requestDecision(choices)
+        presenter.requestAnswer(AnswerTypes.DECISION,choices)
     }
 
     @Override
@@ -59,7 +60,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //selectRepository output
     @Override
     def chooseRepository(List<String> repositories) {
-        presenter.requestRepository(repositories)
+        presenter.requestAnswer(AnswerTypes.REPOSITORY, repositories)
     }
 
     @Override
@@ -81,7 +82,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def transferQuestion(List<String> uploadTypes) { //todo rename: transfer uploadtypes from usecase to handler
-        presenter.requestUploadType(uploadTypes)
+        presenter.requestAnswer(AnswerTypes.UPLOADTYPE,uploadTypes)
     }
 
     @Override
@@ -96,12 +97,13 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
+    String verifySubmission() {
+        finaliseSubmissionInput
+    }
+
+    @Override
     List<String> subsequentSteps() {
         return null
     }
 
-    @Override
-    String submissionIdentifier() {
-        return null
-    }
 }
