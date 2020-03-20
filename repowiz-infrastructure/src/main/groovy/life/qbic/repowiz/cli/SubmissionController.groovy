@@ -47,7 +47,7 @@ class SubmissionController implements PropertyChangeListener{
     SubmissionController(CommandlineView view, String projectID, String config) {
         this.projectID = projectID
         // set up infrastructure classes
-        presenter = new SubmissionPresenter(view, this)
+        presenter = new SubmissionPresenter(view)
 
         repositoryOutput = new RepositoryPluginHandler(handelRepositoryPlugins())
 
