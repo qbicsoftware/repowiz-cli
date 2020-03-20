@@ -7,7 +7,8 @@
 		<module>repowiz-domain</module>
 		<module>repowiz-infrastructure</module>
 		<module>repowiz-application</module>
-	</modules>
+        <module>geo-plugin-manager</module>
+    </modules>
 	<parent>
 		<groupId>life.qbic</groupId>
 		<artifactId>cli-parent-pom</artifactId>
