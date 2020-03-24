@@ -17,7 +17,6 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     FinaliseSubmissionImpl(TargetRepository targetRepository){
         this.targetRepository = targetRepository
-
         //pluginHandler.addOutput(this)
     }
 
