@@ -7,6 +7,7 @@ class Repository {
     List<String> uploadTypes
     String uploadFormat
     List<String> uploadRequirements //todo is that really a list or is other data structure more useful?
+    String selectedUploadType
 
     HashMap<String,String> characteristics
     ArrayList<String> subsequentSteps

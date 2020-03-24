@@ -1,4 +1,4 @@
-package life.qbic.repowiz.finalise.geo
+package life.qbic.repowiz.mapping
 
 import life.qbic.repowiz.TemporaryDatabase
 import life.qbic.repowiz.finalise.RepositoryMapper

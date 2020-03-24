@@ -146,7 +146,6 @@ class ProjectSearcher implements ProjectSearchInput {
         allProperties << fetchChildSamples(sample)
 
         //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
-        output.userNotification("Fetching Data Set ...")
         LOG.info "Fetching Data Set ..."
         allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
 

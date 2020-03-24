@@ -1,9 +1,9 @@
 package life.qbic.repowiz.finalise.api
 
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
+
+import life.qbic.repowiz.prepare.model.SubmissionModel
 
 interface SubmissionManager {
-    SubmissionModel getSubmissionModel(RepoWizProject project, List<RepoWizSample> samples)
+    SubmissionModel validateSubmissionModel(SubmissionModel model)
     //service for retrieving the submission model = quote manager interface in baeldung example
 }

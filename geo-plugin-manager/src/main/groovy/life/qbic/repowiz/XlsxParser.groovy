@@ -1,6 +1,7 @@
-package life.qbic.repowiz.io
+package life.qbic.repowiz
 
 import life.qbic.repowiz.finalise.RepositoryMapper
+import life.qbic.repowiz.io.TemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell

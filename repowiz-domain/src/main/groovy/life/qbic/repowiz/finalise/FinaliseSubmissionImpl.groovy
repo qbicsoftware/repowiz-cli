@@ -1,26 +1,22 @@
 package life.qbic.repowiz.finalise
 
-import life.qbic.repowiz.finalise.mapping.SubmissionToPlugin
-import life.qbic.repowiz.finalise.mapping.PluginToSubmission
-import life.qbic.repowiz.finalise.mapping.RepositoryPluginHandler
-
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission, PluginToSubmission{
+class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission{
 
     SubmissionOutput output
-    RepositoryPluginHandler pluginHandler
+    TargetRepository targetRepository
 
     private static final Logger LOG = LogManager.getLogger(FinaliseSubmissionImpl.class)
 
 
-    FinaliseSubmissionImpl(RepositoryPluginHandler pluginHandler){
-        this.pluginHandler = pluginHandler
+    FinaliseSubmissionImpl(TargetRepository targetRepository){
+        this.targetRepository = targetRepository
 
-        pluginHandler.addOutput(this)
+        //pluginHandler.addOutput(this)
     }
 
     def addSubmissionHandler(SubmissionOutput out){
@@ -29,7 +25,7 @@ class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission, Pl
 
     @Override
     def setSubmissionDetails(String repositoryName, String uploadType) {
-        pluginHandler.determineRepositoryPlugin(repositoryName, uploadType)
+        targetRepository.determineRepositoryPlugin(repositoryName, uploadType)
     }
 
     //todo connect with controller to receive answer

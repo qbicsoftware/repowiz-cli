@@ -6,7 +6,7 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
-import life.qbic.repowiz.finalise.geo.GeoTemplateParser
+import GeoTemplateParser
 import life.qbic.repowiz.finalise.mapping.RepositoryPluginHandler
 import life.qbic.repowiz.finalise.parsing.RepositoryInput
 import life.qbic.repowiz.find.FindMatchingRepositories

@@ -4,6 +4,7 @@ package life.qbic.repowiz.prepare
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.prepare.model.SubmissionModel
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import org.apache.logging.log4j.LogManager
@@ -17,8 +18,6 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     String project
     ProjectSearchInput projectSearch
     private Repository repo
-    private String uploadType
-
 
     PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch){
         this.output = output
@@ -47,15 +46,15 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     def processUploadType(String answer) {
         //display the user answer for better overview
         output.displayAnswer(answer)
-        uploadType = answer
+        repo.setSelectedUploadType(answer)
     }
 
     //project search output
     @Override
     def transferProjectData(RepoWizProject project, List samples) {
         if (isValid(samples,repo)){
-            output.validateProject(project, samples)
-            output.submissionDetails(repo.name,uploadType)
+            output.validateProject(new SubmissionModel(project, samples))
+            output.submissionDetails(repo)
         }else{
             //todo throw exception/warning
             // output.displayAnswer() oder so
@@ -69,7 +68,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     }
 
     //todo check if project data matches the repository conditions
-    boolean isValid(List<RepoWizSample> samples, Repository repo){
+    static boolean isValid(List<RepoWizSample> samples, Repository repo){
         //todo
         return false
     }
