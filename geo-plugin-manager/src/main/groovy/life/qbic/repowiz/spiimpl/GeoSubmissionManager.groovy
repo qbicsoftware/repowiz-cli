@@ -13,8 +13,7 @@ class GeoSubmissionManager implements SubmissionManager{
 
 
     @Override
-    SubmissionModel validateSubmissionModel(RepoWizProject project, List<RepoWizSample> samples) {
-        SubmissionModel model = new SubmissionModel(project,samples)
+    SubmissionModel validateSubmissionModel(SubmissionModel model) {
         //todo load all required fields for valid submission
         //todo load all accepted fields
         //todo answer with validation status and missing fields

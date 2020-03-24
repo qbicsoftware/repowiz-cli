@@ -40,7 +40,7 @@ class GeoTemplateParser extends XlsxParser implements RepositoryInput {
 
     //a section is defined by the rgb color red
     def isSection(XSSFCell cell){
-        byte[] color = XlsxParser.getRGBColor(cell)
+        byte[] color = getRGBColor(cell)
         int col = cell.getColumnIndex()
 
         return color != null && color == rgbLevelColor && col == 0
@@ -48,7 +48,7 @@ class GeoTemplateParser extends XlsxParser implements RepositoryInput {
 
     //a field is defined by the rbg color blue
     def isField(XSSFCell cell){
-        byte[] color = XlsxParser.getRGBColor(cell)
+        byte[] color = getRGBColor(cell)
         int col = cell.getColumnIndex()
 
         return color != null && color == rgbFieldColor || col > 0

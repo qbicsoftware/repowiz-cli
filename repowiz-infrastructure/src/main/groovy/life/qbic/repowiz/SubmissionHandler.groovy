@@ -92,7 +92,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //finalise submission output
     @Override
-    def submissionSummary(String summary) {
+    def displaySubmissionSummary(String summary) {
         return null
     }
 
@@ -102,7 +102,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
-    List<String> subsequentSteps() {
+    List<String> displayStepsAfterSubmission() {
         return null
     }
 

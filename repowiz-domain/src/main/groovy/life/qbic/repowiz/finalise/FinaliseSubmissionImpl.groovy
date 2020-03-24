@@ -1,11 +1,13 @@
 package life.qbic.repowiz.finalise
 
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.prepare.model.SubmissionModel
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission{
+class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     SubmissionOutput output
     TargetRepository targetRepository
@@ -24,29 +26,18 @@ class FinaliseSubmissionImpl implements VerifySubmission, FinaliseSubmission{
     }
 
     @Override
-    def setSubmissionDetails(String repositoryName, String uploadType) {
-        targetRepository.determineRepositoryPlugin(repositoryName, uploadType)
+    def transferSubmissionData(SubmissionModel submission, Repository repository) {
+        return null
     }
 
-    //todo connect with controller to receive answer
     @Override
-    def verifyCorrectnessOfSubmission(boolean correct) {
-        if(correct){
+    def processVerificationOfSubmission(boolean verified) {
+        if(verified){
             //todo fill template
             //todo start download
         }
-    }
-
-    //MapInfoOutput
-    @Override
-    def transferUpdatedProjectData(RepoWizProject project, List<RepoWizSample> samples) {
-
-    }
-
-    //SubmissionOutput
-    @Override
-    def transferSubmissionData(RepoWizProject project, List<RepoWizSample> samples) {
         return null
     }
+
 
 }

@@ -2,8 +2,8 @@ package life.qbic.repowiz.finalise
 
 interface SubmissionOutput {
 
-    def submissionSummary(String summary)
-    List<String> subsequentSteps()
-    String verifySubmission()
+    def displaySubmissionSummary(String summary)
+    def displayStepsAfterSubmission(String text)
+    def verifySubmission()
 
 }

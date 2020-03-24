@@ -33,10 +33,10 @@ public class RepowizTool{
     }
 
     public void executeFindRepository(){
-        controller.initGuide();
+        controller.initWithGuide();
     }
     public void executeSelectRepository(String selectedRepository) {
-        controller.init(selectedRepository);
+        controller.initWithSelection(selectedRepository);
     }
 
     public void executeListing(){

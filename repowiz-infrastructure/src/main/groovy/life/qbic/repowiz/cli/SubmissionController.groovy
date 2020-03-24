@@ -6,9 +6,7 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
-import GeoTemplateParser
-import life.qbic.repowiz.finalise.mapping.RepositoryPluginHandler
-import life.qbic.repowiz.finalise.parsing.RepositoryInput
+import life.qbic.repowiz.finalise.TargetRepository
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
 import life.qbic.repowiz.io.JsonParser
@@ -34,7 +32,7 @@ class SubmissionController implements PropertyChangeListener{
     String projectID
     ProjectSearcher projectSearch
     RepositoryDescription repoDescription
-    RepositoryPluginHandler repositoryOutput
+    TargetRepository repository
 
     SubmissionPresenter presenter
 
@@ -48,24 +46,12 @@ class SubmissionController implements PropertyChangeListener{
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)
-
-        repositoryOutput = new RepositoryPluginHandler(handelRepositoryPlugins())
+        repository = new TargetRepository()
 
         // set up repository database
         repoDescription = new RepositoryDatabaseConnector()
 
         setupLocalDatabaseConnection(config)
-
-    }
-
-    //method to manage all repository plugins (output domain)
-    List<RepositoryInput> handelRepositoryPlugins() {
-
-        RepositoryInput geo = new GeoTemplateParser()
-        //add clinvar
-        //RepositoryInput clinvar = new ClinVarTemplateParser()
-
-        return [geo]
     }
 
     //method to manage the local database connection (input domain)
@@ -83,8 +69,8 @@ class SubmissionController implements PropertyChangeListener{
     }
 
 
-    def init(String repo) {
-        finaliseSubmission = new FinaliseSubmissionImpl(repositoryOutput)
+    def initWithSelection(String repo) {
+        finaliseSubmission = new FinaliseSubmissionImpl(repository)
         SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
         finaliseSubmission.addSubmissionHandler(finaliseHandler)
 
@@ -100,9 +86,9 @@ class SubmissionController implements PropertyChangeListener{
         selectRepository.selectRepository(repo.toLowerCase())
     }
 
-    def initGuide() {
+    def initWithGuide() {
 
-        finaliseSubmission = new FinaliseSubmissionImpl(repositoryOutput)
+        finaliseSubmission = new FinaliseSubmissionImpl(repository)
         PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
         finaliseSubmission.addSubmissionHandler(finaliseHandler)
 
@@ -136,26 +122,13 @@ class SubmissionController implements PropertyChangeListener{
                 prepareSubmission.processUploadType(userAnswer)
                 break
             case AnswerTypes.SUBMIT.label:
-                //todo add method to handel user answer
-                //finaliseSubmission.processSubmission(userAnswer)
+                boolean verified = false
+                if(answer == "yes") verified = true
+                finaliseSubmission.processVerificationOfSubmission(verified)
                 break
             default:
                 LOG.error "could not define answer type!"
         }
     }
-
-    /*
-    def transferDecision(String decision) {
-        findRepository.processDesicion(decision)
-    }
-
-    def transferRepositoryName(String repository) {
-        selectRepository.processRepository(repository)
-    }
-
-    def transferUploadType(String type) {
-        prepareSubmission.processUploadType(type)
-    }*/
-
 
 }
