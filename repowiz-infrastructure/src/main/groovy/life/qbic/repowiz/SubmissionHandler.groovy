@@ -102,9 +102,4 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         finaliseSubmissionInput
     }
 
-    @Override
-    List<String> displayStepsAfterSubmission() {
-        return null
-    }
-
 }

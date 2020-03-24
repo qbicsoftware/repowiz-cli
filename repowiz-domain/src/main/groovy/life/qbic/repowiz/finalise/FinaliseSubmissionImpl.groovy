@@ -22,7 +22,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     @Override
     def transferSubmissionData(SubmissionModel submission, Repository repository) {
-        return null
+        targetRepository.provider(repository.name)
     }
 
     @Override

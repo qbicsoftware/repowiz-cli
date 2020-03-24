@@ -6,29 +6,31 @@ import java.nio.file.ProviderNotFoundException
 
 class TargetRepository {
     //utility class = exchange rate class in baeldung example
-    //private static final String DEFAULT_PROVIDER = ""
+    Loader loader
+
+    TargetRepository(Loader loader){
+        this.loader = loader
+    }
 
     //All providers
-    public static List<TargetRepositoryProvider> providers() {
+    List<TargetRepositoryProvider> providers() {
         List<TargetRepositoryProvider> services = new ArrayList<>()
-        //use the service loader to
+
+
+        /*//use the service loader to
         ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
 
         loader.forEach({ targetRepositoryProvider ->
             services.add(targetRepositoryProvider)
-        })
+        })*/
 
         return services
     }
 
-    /*//Default provider
-    public static TargetRepositoryProvider provider() {
-        return provider(DEFAULT_PROVIDER);
-    }*/
-
     //provider by name
-    public static TargetRepositoryProvider provider(String providerName) {
-        ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
+    TargetRepositoryProvider provider(String providerName) {
+
+        /*ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
         Iterator<TargetRepositoryProvider> it = loader.iterator()
         while (it.hasNext()) {
             TargetRepositoryProvider provider = it.next()
@@ -36,6 +38,8 @@ class TargetRepository {
                 return provider
             }
         }
-        throw new ProviderNotFoundException("Target Repository provider " + providerName + " not found");
+
+        throw new ProviderNotFoundException("Target Repository provider " + providerName + " not found");*/
+        return null
     }
 }
