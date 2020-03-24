@@ -15,12 +15,8 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
     private static final Logger LOG = LogManager.getLogger(FinaliseSubmissionImpl.class)
 
 
-    FinaliseSubmissionImpl(TargetRepository targetRepository){
+    FinaliseSubmissionImpl(TargetRepository targetRepository, SubmissionOutput out){
         this.targetRepository = targetRepository
-        //pluginHandler.addOutput(this)
-    }
-
-    def addSubmissionHandler(SubmissionOutput out){
         output = out
     }
 

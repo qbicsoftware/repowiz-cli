@@ -70,11 +70,11 @@ class SubmissionController implements PropertyChangeListener{
 
 
     def initWithSelection(String repo) {
-        finaliseSubmission = new FinaliseSubmissionImpl(repository)
-        SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
-        finaliseSubmission.addSubmissionHandler(finaliseHandler)
 
-        //SubmissionHandler finaliseHandler = new SubmissionHandler(presenter)
+        PrepareSubmissionOutput handler = new SubmissionHandler(presenter)
+        finaliseSubmission = new FinaliseSubmissionImpl(repository,handler)
+
+        SubmissionHandler finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
 
         prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch)
         SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter)
@@ -88,9 +88,10 @@ class SubmissionController implements PropertyChangeListener{
 
     def initWithGuide() {
 
-        finaliseSubmission = new FinaliseSubmissionImpl(repository)
+        PrepareSubmissionOutput handler = new SubmissionHandler(presenter)
+        finaliseSubmission = new FinaliseSubmissionImpl(repository,handler)
+
         PrepareSubmissionOutput finaliseHandler = new SubmissionHandler(finaliseSubmission, presenter)
-        finaliseSubmission.addSubmissionHandler(finaliseHandler)
 
         prepareSubmission = new PrepareSubmissionImpl(finaliseHandler, projectID, projectSearch)
         SubmissionHandler prepareHandler = new SubmissionHandler(prepareSubmission, presenter)

@@ -8,6 +8,7 @@ import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.prepare.model.SubmissionModel
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
 import life.qbic.repowiz.finalise.FinaliseSubmission
@@ -71,13 +72,8 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //prepare submission use case --> transfer to finalise submission
     @Override
-    def validateProject(RepoWizProject project, List<RepoWizSample> samples) {
-        finaliseSubmissionInput.transferSubmissionData(project,samples)
-    }
-
-    @Override
-    def submissionDetails(String repoName, String uploadType) {
-        finaliseSubmissionInput.setSubmissionDetails(repoName,uploadType)
+    def validateProject(SubmissionModel submission, Repository repository) {
+        finaliseSubmissionInput.transferSubmissionData(submission, repository)
     }
 
     @Override
@@ -93,6 +89,11 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //finalise submission output
     @Override
     def displaySubmissionSummary(String summary) {
+        return null
+    }
+
+    @Override
+    def displayStepsAfterSubmission(String text) {
         return null
     }
 

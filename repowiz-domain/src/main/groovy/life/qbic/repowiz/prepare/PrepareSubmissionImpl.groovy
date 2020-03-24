@@ -53,8 +53,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     @Override
     def transferProjectData(RepoWizProject project, List samples) {
         if (isValid(samples,repo)){
-            output.validateProject(new SubmissionModel(project, samples))
-            output.submissionDetails(repo)
+            output.validateProject(new SubmissionModel(project, samples), repo)
         }else{
             //todo throw exception/warning
             // output.displayAnswer() oder so
