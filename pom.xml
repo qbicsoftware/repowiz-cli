@@ -7,7 +7,8 @@
 		<module>repowiz-domain</module>
 		<module>repowiz-infrastructure</module>
 		<module>repowiz-application</module>
-	<!--    <module>geo-plugin-manager</module> -->
+        <module>clinvar-plugin-manager</module>
+        <!--    <module>geo-plugin-manager</module> -->
     </modules>
     <parent>
         <groupId>life.qbic</groupId>

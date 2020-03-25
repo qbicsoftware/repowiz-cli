@@ -11,7 +11,9 @@ class GeoSubmissionManager implements SubmissionManager{
 
     private static final Logger LOG = LogManager.getLogger(GeoSubmissionManager.class)
 
-
+    GeoSubmissionManager(){
+        LOG.info "creating geo object"
+    }
     @Override
     SubmissionModel validateSubmissionModel(SubmissionModel model) {
         //todo load all required fields for valid submission

@@ -14,8 +14,7 @@ class TargetRepository {
 
     //All providers
     List<TargetRepositoryProvider> providers() {
-        List<TargetRepositoryProvider> services = new ArrayList<>()
-
+        List<TargetRepositoryProvider> services = loader.load()
 
         /*//use the service loader to
         ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
@@ -29,6 +28,7 @@ class TargetRepository {
 
     //provider by name
     TargetRepositoryProvider provider(String providerName) {
+        List<TargetRepositoryProvider> services = loader.load(providerName)
 
         /*ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
         Iterator<TargetRepositoryProvider> it = loader.iterator()
