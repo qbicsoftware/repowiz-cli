@@ -1,9 +1,7 @@
 package life.qbic.repowiz.finalise
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
-import life.qbic.repowiz.prepare.model.SubmissionModel
+import life.qbic.repowiz.model.SubmissionModel
 
 interface FinaliseSubmission {
     def transferSubmissionData(SubmissionModel submission, Repository repository)

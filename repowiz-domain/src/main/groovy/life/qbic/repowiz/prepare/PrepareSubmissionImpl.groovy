@@ -2,9 +2,9 @@ package life.qbic.repowiz.prepare
 
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
-import life.qbic.repowiz.prepare.model.SubmissionModel
+import life.qbic.repowiz.model.RepoWizProject
+import life.qbic.repowiz.model.RepoWizSample
+import life.qbic.repowiz.model.SubmissionModel
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import org.apache.logging.log4j.LogManager
@@ -66,7 +66,6 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
         }
     }
 
-    //update for the user: show information about processes while parsing local database
     @Override
     def userNotification(String message) {
         output.displayAnswer(message)

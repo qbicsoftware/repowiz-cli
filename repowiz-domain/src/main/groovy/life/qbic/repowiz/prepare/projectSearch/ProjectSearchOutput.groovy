@@ -1,8 +1,8 @@
 package life.qbic.repowiz.prepare.projectSearch
 
+import life.qbic.repowiz.model.RepoWizProject
+import life.qbic.repowiz.model.RepoWizSample
 
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
 
 interface ProjectSearchOutput {
 

@@ -1,6 +1,5 @@
 package life.qbic.repowiz
 
-import life.qbic.repowiz.finalise.RepositoryMapper
 import life.qbic.repowiz.io.TemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -24,9 +23,8 @@ abstract class XlsxParser implements TemplateParser{
     String section
 
     String commentMarker
-    RepositoryMapper mapper
 
-    XlsxParser(List<String> templateSheets){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
+    XlsxParser(List<String> templateSheets){
         sheets = templateSheets
     }
 
@@ -94,11 +92,11 @@ abstract class XlsxParser implements TemplateParser{
                         //LOG.debug("Masking Geo terms ...")
                         String maskedValue = maskDuplicates(rawValue,section)
                         //LOG.debug("Mapping Geo terms to RepoWiz terms ...")
-                        String cellValue = mapper.mapPropertiesToRepoWiz(maskedValue)
+                        //String cellValue = mapper.mapPropertiesToRepoWiz(maskedValue)
 
-                        templateFields.put(cellValue,cell)
+                        templateFields.put(maskedValue,cell)
 
-                        if(isRequired(cell)) requiredFields.add(cellValue)
+                        if(isRequired(cell)) requiredFields.add(maskedValue)
 
                     }
                 }

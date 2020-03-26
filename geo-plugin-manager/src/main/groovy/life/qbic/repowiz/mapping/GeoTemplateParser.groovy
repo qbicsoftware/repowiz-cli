@@ -2,8 +2,8 @@ package life.qbic.repowiz.mapping
 
 import life.qbic.repowiz.RepositoryInput
 import life.qbic.repowiz.XlsxParser
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.model.RepoWizProject
+import life.qbic.repowiz.model.RepoWizSample
 import org.apache.poi.xssf.usermodel.XSSFCell
 
 class GeoTemplateParser extends XlsxParser implements RepositoryInput {
@@ -14,7 +14,7 @@ class GeoTemplateParser extends XlsxParser implements RepositoryInput {
     GeoTemplateParser(){ //e.g hts ["METADATA TEMPLATE"], affymetrix_ge ["METADATA","MATRIX"] oder so
         super(["METADATA TEMPLATE"])
         super.commentMarker = '#'
-        super.mapper = new GeoMapper("hts")
+        //super.mapper = new GeoMapper()
     }
 
     @Override
@@ -26,7 +26,6 @@ class GeoTemplateParser extends XlsxParser implements RepositoryInput {
     def determineMissingValues(RepoWizProject project, List<RepoWizSample> sampples) {
         return null
     }
-
 //a required field does not contain the keyword "[optional]" within the cells comment
     def isRequired(XSSFCell cell){
         boolean required = false

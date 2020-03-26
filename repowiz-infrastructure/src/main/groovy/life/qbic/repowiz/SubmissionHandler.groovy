@@ -3,12 +3,10 @@ package life.qbic.repowiz
 import life.qbic.repowiz.cli.SubmissionPresenter
 import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
+import life.qbic.repowiz.model.SubmissionModel
 import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
-import life.qbic.repowiz.prepare.model.SubmissionModel
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
 import life.qbic.repowiz.finalise.FinaliseSubmission
@@ -93,7 +91,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
-    def displayStepsAfterSubmission(String text) {
+    def displayStepsAfterSubmission(List<String> text) {
         return null
     }
 

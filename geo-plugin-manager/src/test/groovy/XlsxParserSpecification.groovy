@@ -1,53 +1,49 @@
-package life.qbic.repowiz.io
-
-
+import life.qbic.repowiz.mapping.GeoTemplateParser
+import org.apache.poi.xssf.usermodel.XSSFCell
 import spock.lang.Specification
 
 class XlsxParserSpecification extends Specification{
 
-   /* def "Geo Parser returns all Fields from Template"(){
+   /*def "Geo Parser returns all Fields from Template"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         when:
-        def res = parser.parseTemplateSheet("METADATA TEMPLATE")
+        parser.parseTemplateSheet("METADATA TEMPLATE")
 
         then:
-        res.keySet().size() == 7
-        assert res.containsKey("SERIES")
-        assert res.containsKey("SAMPLES")
-        assert res.containsKey("PROTOCOLS")
-        assert res.containsKey("DATA PROCESSING PIPELINE")
-        assert res.containsKey("PROCESSED DATA FILES")
-        assert res.containsKey("RAW FILES")
-        assert res.containsKey("PAIRED-END EXPERIMENTS")
+        parser.templateFields.keySet().size() == 7
+        assert parser.templateFields.containsKey("SERIES")
+        assert parser.templateFields.containsKey("SAMPLES")
+        assert parser.templateFields.containsKey("PROTOCOLS")
+        assert parser.templateFields.containsKey("DATA PROCESSING PIPELINE")
+        assert parser.templateFields.containsKey("PROCESSED DATA FILES")
+        assert parser.templateFields.containsKey("RAW FILES")
+        assert parser.templateFields.containsKey("PAIRED-END EXPERIMENTS")
 
-    }
+    }*/
 
     def "blbl"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         when:
         parser.parseTemplateSheet("METADATA TEMPLATE")
 
         println parser.requiredFields
-        //todo check if all fields are found!
 
         then:
-        parser.requiredFields.contains("project title")
-        assert parser.requiredFields.contains("characteristics: tag")
-        assert parser.requiredFields.contains("molecule")
-        assert !parser.requiredFields.contains("growth protocol")
-        assert !parser.requiredFields.contains("supplementary file")
-        //assert parser.requiredFields.size() == 31
+        parser.requiredFields.contains("series_title")
+        assert parser.requiredFields.contains("samples_characteristics: tag")
+        assert parser.requiredFields.contains("samples_molecule")
+        assert !parser.requiredFields.contains("protocols_growth protocol")
     }
 
     def "Finds correct Level RGB color"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(6).getCell(0)
@@ -57,12 +53,11 @@ class XlsxParserSpecification extends Specification{
 
         then:
         color == (byte []) [-1,0,0]
-
     }
 
     def "Finds correct Field RGB color"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(8).getCell(0)
@@ -77,7 +72,7 @@ class XlsxParserSpecification extends Specification{
 
     def "Detect required fields from comment"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(11).getCell(0)
@@ -91,7 +86,7 @@ class XlsxParserSpecification extends Specification{
 
     def "Detect optional fields in comment"(){
         given:
-        GeoParser parser = new GeoParser()
+        GeoTemplateParser parser = new GeoTemplateParser()
         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(14).getCell(0)
@@ -101,7 +96,7 @@ class XlsxParserSpecification extends Specification{
 
         then:
         !required
-    }*/
+    }
 
 
 }

@@ -18,10 +18,8 @@ import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.DataSetFile
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSetFileFetchOptions
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.search.DataSetFileSearchCriteria
-
-
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
+import life.qbic.repowiz.model.RepoWizProject
+import life.qbic.repowiz.model.RepoWizSample
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import life.qbic.xml.properties.Property

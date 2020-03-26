@@ -3,7 +3,7 @@ package life.qbic.repowiz.finalise
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.finalise.api.SubmissionManager
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
-import life.qbic.repowiz.prepare.model.SubmissionModel
+import life.qbic.repowiz.model.SubmissionModel
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

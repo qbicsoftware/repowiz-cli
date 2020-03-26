@@ -1,51 +1,37 @@
 package life.qbic.repowiz.mapping
 
-import life.qbic.repowiz.TemporaryDatabase
-import life.qbic.repowiz.finalise.RepositoryMapper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class GeoMapper implements RepositoryMapper{
+class GeoMapper {
 
     private static final Logger LOG = LogManager.getLogger(GeoMapper.class)
 
-    HashMap toGeo = new HashMap()
-    HashMap toRepoWiz = new HashMap()
+    private HashMap geoTerms = new HashMap()
+    private HashMap repoWizTerms = new HashMap()
 
-
-    GeoMapper(String uploadType){
-        TemporaryDatabase temp = new TemporaryDatabase()
-
-        if(uploadType == "hts"){
-            toRepoWiz = temp.repoWizToGeo
-            toGeo = temp.geoToRepoWiz
-        }
+    GeoMapper(){
+        loadMetadataTerms()
     }
 
-    @Override
-    String mapPropertiesToRepoWiz(String prop){
-        /*List repoWizTerms = []
-
-        properties.each {property ->
-            String repoWizTerm = toGeo.get(property)
-            if (repoWizTerm != null) repoWizTerms << repoWizTerm
-        }
-
-        return repoWizTerms*/
-        if(toGeo.get(prop) == null) LOG.debug prop
-
-        return toGeo.get(prop)
+    String getRepoWizTerm(String geoTerm){
+       return geoTerms.get(geoTerm)
     }
 
-    @Override
-    String mapPropertiesToOutput(String properties){
-        /*HashMap repoWizTerms = new HashMap()
+    String getGeoTerm(String repoWizTerm){
+        return repoWizTerms.get(repoWizTerm)
+    }
 
-        properties.each {key, value ->
-            String repoWizTerm = toGeo.get(key)
-            if (repoWizTerm != null) repoWizTerms.put(repoWizTerm, value)
-        }*/
-        return ""
+    def loadMetadataTerms(){
+        InputStream stream = GeoMapper.class.getClassLoader().getResourceAsStream("META_INF/mapping/MetadataMapping.txt")
+        stream.eachLine {line ->
+            if(!line.startsWith('#')){
+                List value = line.split(",")
+
+                geoTerms.put(value[0],value[1])
+                repoWizTerms.put(value[1],value[0])
+            }
+        }
     }
 
 }

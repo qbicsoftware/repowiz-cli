@@ -24,7 +24,8 @@ class RepositoryLoader implements Loader{
         return targetRepositories
     }
 
-    TargetRepositoryProvider load(Repository repository){
+    @Override
+    TargetRepositoryProvider load(String repositoryName) {
 
         TargetRepositoryProvider targetRepository = null
 
@@ -33,7 +34,7 @@ class RepositoryLoader implements Loader{
         List providers = parseFileStream(fileStream)
 
         providers.each {provider ->
-            if(provider == repository.name || StringUtils.lowerCase(provider).contains(provider)) targetRepository = getClassInstance(provider)
+            if(provider == repositoryName || StringUtils.lowerCase(provider).contains(provider)) targetRepository = getClassInstance(provider)
             //todo how to compare the names? what do i accept and what not
         }
 
