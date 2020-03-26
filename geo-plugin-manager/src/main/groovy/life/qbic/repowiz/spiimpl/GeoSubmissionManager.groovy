@@ -1,6 +1,7 @@
 package life.qbic.repowiz.spiimpl
 
 import life.qbic.repowiz.finalise.api.SubmissionManager
+import life.qbic.repowiz.mapping.GeoMapper
 import life.qbic.repowiz.prepare.model.SubmissionModel
 import life.qbic.repowiz.prepare.model.RepoWizProject
 import life.qbic.repowiz.prepare.model.RepoWizSample
@@ -9,13 +10,14 @@ import org.apache.logging.log4j.Logger
 
 class GeoSubmissionManager implements SubmissionManager{
 
-    private static final Logger LOG = LogManager.getLogger(GeoSubmissionManager.class)
-    String templatePath
-    List<String> templateSheets = []
+    private SubmissionModel geoSubmissionModel
+    private GeoMapper mapper
 
+    private static final Logger LOG = LogManager.getLogger(GeoSubmissionManager.class)
 
     GeoSubmissionManager(){
         LOG.info "Creating Geo Submission Manager"
+        mapper = new GeoMapper()
     }
 
     @Override
@@ -23,17 +25,24 @@ class GeoSubmissionManager implements SubmissionManager{
 
         //todo load all required fields for valid submission
 
+
         //todo load all accepted fields
         //todo answer with validation status and missing fields
         return model
     }
 
     @Override
-    void createSubmission() {
+    void downloadSubmission() {
         //todo download template for user
     }
 
     def mapMetadata(SubmissionModel model){
+        HashMap projectProps = model.project.properties
+
+        List<HashMap> sampleProps = []
+        model.samples.each {repoWizSample ->
+            //map properties of sample
+        }
 
     }
 
