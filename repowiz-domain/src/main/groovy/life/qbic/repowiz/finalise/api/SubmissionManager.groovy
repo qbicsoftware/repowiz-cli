@@ -1,7 +1,7 @@
 package life.qbic.repowiz.finalise.api
 
+import life.qbic.repowiz.model.SubmissionModel
 
-import life.qbic.repowiz.prepare.model.SubmissionModel
 
 interface SubmissionManager {
     SubmissionModel validateSubmissionModel(SubmissionModel model)

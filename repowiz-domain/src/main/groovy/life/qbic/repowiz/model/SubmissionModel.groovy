@@ -1,7 +1,4 @@
-package life.qbic.repowiz.prepare.model
-
-import life.qbic.repowiz.prepare.model.RepoWizProject
-import life.qbic.repowiz.prepare.model.RepoWizSample
+package life.qbic.repowiz.model
 
 class SubmissionModel {
     RepoWizProject project

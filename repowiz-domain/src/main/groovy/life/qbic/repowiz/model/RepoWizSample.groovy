@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.model
+package life.qbic.repowiz.model
 
 class RepoWizSample {
     String sampleName

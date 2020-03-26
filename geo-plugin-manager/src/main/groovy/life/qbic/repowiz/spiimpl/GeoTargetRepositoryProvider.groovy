@@ -10,7 +10,7 @@ class GeoTargetRepositoryProvider extends TargetRepositoryProvider{
     @Override
     SubmissionManager create() {
         GeoSubmissionManager manager = new GeoSubmissionManager()
-        if(uploadType != null) manager.defineSubmissionTemplate(super.uploadType)
+        if(uploadType != null) manager.createGeoSubmissionObject(super.uploadType)
         return manager
     }
 }
