@@ -1,11 +1,13 @@
 package life.qbic.repowiz.finalise
 
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 import org.apache.commons.lang.StringUtils
 
 import java.lang.reflect.Constructor
 
 class RepositoryLoader implements Loader{
+
     String repositoryListFile = "META_INF/services/life.qbic.repowiz.spi.TargetRepositoryProvider"
 
     List<TargetRepositoryProvider> load(){
@@ -22,16 +24,17 @@ class RepositoryLoader implements Loader{
         return targetRepositories
     }
 
-    TargetRepositoryProvider load(String providerName){
-        TargetRepositoryProvider targetRepository
+    TargetRepositoryProvider load(Repository repository){
+
+        TargetRepositoryProvider targetRepository = null
 
         InputStream fileStream = RepositoryLoader.getClassLoader().getResourceAsStream(repositoryListFile)
 
         List providers = parseFileStream(fileStream)
 
         providers.each {provider ->
-            if(provider == providerName || StringUtils.lowerCase(provider).contains(provider)) targetRepository = getClassInstance(provider)
-            //todo how to max the names? what do i accept and what not
+            if(provider == repository.name || StringUtils.lowerCase(provider).contains(provider)) targetRepository = getClassInstance(provider)
+            //todo how to compare the names? what do i accept and what not
         }
 
         return targetRepository

@@ -6,5 +6,6 @@ abstract class TargetRepositoryProvider {
     //creates validated objects???
     //spi interface = exchange rate provider in baeldung beispiel
     abstract String providerName
+    abstract String uploadType
     abstract SubmissionManager create()
 }

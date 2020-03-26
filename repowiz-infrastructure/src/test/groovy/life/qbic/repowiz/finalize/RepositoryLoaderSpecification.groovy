@@ -4,7 +4,6 @@ import life.qbic.repowiz.finalise.RepositoryLoader
 import life.qbic.repowiz.finalise.api.SubmissionManager
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 import life.qbic.repowiz.spiimpl.ClinvarTargetRepositoryProvider
-import life.qbic.repowiz.spiimpl.GeoSubmissionManager
 import life.qbic.repowiz.spiimpl.GeoTargetRepositoryProvider
 import spock.lang.Specification
 

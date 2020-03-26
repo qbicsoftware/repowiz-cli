@@ -1,5 +1,6 @@
 package life.qbic.repowiz.finalise
 
+import life.qbic.repowiz.Repository
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 
 import java.nio.file.ProviderNotFoundException
@@ -15,31 +16,15 @@ class TargetRepository {
     //All providers
     List<TargetRepositoryProvider> providers() {
         List<TargetRepositoryProvider> services = loader.load()
-
-        /*//use the service loader to
-        ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
-
-        loader.forEach({ targetRepositoryProvider ->
-            services.add(targetRepositoryProvider)
-        })*/
-
         return services
     }
 
-    //provider by name
-    TargetRepositoryProvider provider(String providerName) {
-        List<TargetRepositoryProvider> services = loader.load(providerName)
+    //provider by concrete repository
+    TargetRepositoryProvider provider(String repositoryName) {
+        TargetRepositoryProvider provider = loader.load(repositoryName)
 
-        /*ServiceLoader<TargetRepositoryProvider> loader = ServiceLoader.load(TargetRepositoryProvider.class)
-        Iterator<TargetRepositoryProvider> it = loader.iterator()
-        while (it.hasNext()) {
-            TargetRepositoryProvider provider = it.next()
-            if (providerName == provider.getClass().getName()) {
-                return provider
-            }
-        }
+        if(provider != null) return provider
 
-        throw new ProviderNotFoundException("Target Repository provider " + providerName + " not found");*/
-        return null
+        throw new ProviderNotFoundException("Target Repository provider " + provider.providerName + " not found")
     }
 }

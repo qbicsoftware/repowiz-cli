@@ -18,6 +18,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     String project
     ProjectSearchInput projectSearch
     private Repository repo
+    private String uploadType
 
     PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch){
         this.output = output
@@ -46,15 +47,20 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     def processUploadType(String answer) {
         //display the user answer for better overview
         output.displayAnswer(answer)
-        repo.setSelectedUploadType(answer)
+        uploadType = answer
     }
 
     //project search output
     @Override
     def transferProjectData(RepoWizProject project, List samples) {
         if (isValid(samples,repo)){
-            output.validateProject(new SubmissionModel(project, samples), repo)
-        }else{
+
+            SubmissionModel model = new SubmissionModel(project, samples)
+            model.setUploadType(uploadType)
+
+            output.validateProject(model, repo)
+        }
+        else{
             //todo throw exception/warning
             // output.displayAnswer() oder so
         }

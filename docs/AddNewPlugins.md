@@ -14,4 +14,7 @@ metadata model of repowiz and that the mapping needs to be provided by each adde
 4. In order to access the plugin code from repowiz add your module as dependency into the 
 repowiz-infrastructure POM
 
+5. give a description about the repository in order to be included into the guide and to handel the
+upload type
+
 ## Exchanging new Local Database
