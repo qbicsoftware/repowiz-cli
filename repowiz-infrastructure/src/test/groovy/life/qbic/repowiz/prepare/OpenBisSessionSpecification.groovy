@@ -1,16 +1,17 @@
 package life.qbic.repowiz.prepare
 
-
+import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.prepare.openBis.OpenBisSession
+import life.qbic.repowiz.prepare.openBis.ProjectSearcher
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import spock.lang.Specification
 
 class OpenBisSessionSpecification extends Specification{
 
-    OpenBisSession session
+    /*OpenBisSession session
     ProjectSearchOutput out = Mock(ProjectSearchOutput)
 
-   /*def setup(){
+   def setup(){
         JsonParser props = new JsonParser()
         Map cred = (Map) props.parseAsStream("credentials.json.properties")
         session = new OpenBisSession((String) cred.get("user"), (String) cred.get("password"), (String) cred.get("server_url"))

@@ -5,6 +5,6 @@ import life.qbic.repowiz.model.RepoWizSample
 
 
 interface RepositoryInput {
-    def parseAsStream(String template)
+    def createWorkbook(String template)
     def determineMissingValues(RepoWizProject project, List<RepoWizSample> sampples)
 }

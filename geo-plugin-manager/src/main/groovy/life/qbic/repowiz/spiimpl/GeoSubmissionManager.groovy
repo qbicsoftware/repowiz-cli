@@ -26,8 +26,8 @@ class GeoSubmissionManager implements SubmissionManager{
     @Override
     SubmissionModel validateSubmissionModel(SubmissionModel model) {//idea load the upload/submission type from the model
         mapMetadata(model)
-        //todo load all required fields for valid submission
-        List missingFields = geoSubmission.determineMissingFields([])
+        //todo check if all required fields are filled
+        List missingFields = geoSubmission.determineMissingFields(new HashMap())
         //todo answer with validation status and missing fields
         if (missingFields == []) LOG.info "The submission is valid, all required fields are defined"
 
@@ -52,34 +52,35 @@ class GeoSubmissionManager implements SubmissionManager{
         }
     }
 
-    //todo continue from here
-    private void mapMetadata(SubmissionModel model){
+    void mapMetadata(SubmissionModel model){
         //map project data
-        HashMap mappedProjectProps = model.project.properties
-        RepoWizProject mappedProject = new RepoWizProject(model.project.projectID,new HashMap())
+        HashMap mappedProjectProps = mapProperties(model.project.properties)
+        RepoWizProject mappedProject = new RepoWizProject(model.project.projectID, mappedProjectProps)
         //map sample data
         List<RepoWizSample> mappedSamples = []
 
         model.samples.each {sample ->
-            /*HashMap mappedSampleProps = mapper.getGeoTerm(sample.properties)
-            mappedSamples << new RepoWizSample(sample.sampleName,mappedSampleProps)*/
+            HashMap mappedSampleProps = mapProperties(sample.properties)
+            mappedSamples << new RepoWizSample(sample.sampleName,mappedSampleProps)
         }
 
         geoSubmissionModel = new SubmissionModel(mappedProject,mappedSamples)
     }
 
-    private static List<String> getProperties(SubmissionModel model){
-        List<String> properties = []
+    HashMap mapProperties(HashMap<String,String> properties){
+        HashMap<String,String> mappedProperties = new HashMap<>()
 
-        //add project property attributes
-        properties.addAll(model.project.properties.keySet())
-        //add sample property attributes
-        model.samples.each {sample ->
-            sample.properties.keySet().each {property ->
-                if (!properties.contains(property)) properties.addAll(property)
-            }
+       properties.each {k,v ->
+           //map the property key to geo term
+           String mappedTerm = mapper.getGeoTerm(k)
+           mappedProperties.put(mappedTerm, v)
         }
-        return properties
+
+        return mappedProperties
+    }
+
+    SubmissionModel getGeoSubmissionModel(){
+        return geoSubmissionModel
     }
 
 }

@@ -17,19 +17,14 @@ abstract class XlsxParser implements TemplateParser{
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
 
     XSSFWorkbook wb
-    List sheets
     List requiredFields = []
     HashMap<String,XSSFCell> templateFields = new HashMap<>()
     String section
 
     String commentMarker
 
-    XlsxParser(List<String> templateSheets){
-        sheets = templateSheets
-    }
-
     @Override
-    def parseAsStream(String file) {
+    def createWorkbook(String file) {
         InputStream stream = XlsxParser.class.getClassLoader().getResourceAsStream(file)
 
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
@@ -119,13 +114,6 @@ abstract class XlsxParser implements TemplateParser{
     }
 
     static def maskDuplicates(String prop, String section){
-        /*List masked = []
-
-        prop.each {
-            masked << section + "_" + it
-        }
-
-        return masked*/
         return section + "_" + prop
     }
 

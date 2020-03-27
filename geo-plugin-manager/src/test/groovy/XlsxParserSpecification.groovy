@@ -27,7 +27,7 @@ class XlsxParserSpecification extends Specification{
     def "blbl"(){
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+        parser.createWorkbook("templates/seq_template_v2.1.xlsx")
 
         when:
         parser.parseTemplateSheet("METADATA TEMPLATE")
@@ -44,7 +44,7 @@ class XlsxParserSpecification extends Specification{
     def "Finds correct Level RGB color"(){
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+        parser.createWorkbook("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(6).getCell(0)
 
@@ -58,7 +58,7 @@ class XlsxParserSpecification extends Specification{
     def "Finds correct Field RGB color"(){
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+        parser.createWorkbook("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(8).getCell(0)
 
@@ -73,7 +73,7 @@ class XlsxParserSpecification extends Specification{
     def "Detect required fields from comment"(){
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+        parser.createWorkbook("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(11).getCell(0)
 
@@ -87,7 +87,7 @@ class XlsxParserSpecification extends Specification{
     def "Detect optional fields in comment"(){
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+        parser.createWorkbook("templates/seq_template_v2.1.xlsx")
 
         XSSFCell cell = parser.wb.getSheetAt(0).getRow(14).getCell(0)
 
