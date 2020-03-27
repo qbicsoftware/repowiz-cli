@@ -1,15 +1,18 @@
 package life.qbic.repowiz.mapping
 
-import life.qbic.repowiz.RepositoryInput
 import life.qbic.repowiz.XlsxParser
-import life.qbic.repowiz.model.RepoWizProject
-import life.qbic.repowiz.model.RepoWizSample
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 import org.apache.poi.xssf.usermodel.XSSFCell
 
 class GeoTemplateParser extends XlsxParser {
 
     final byte[] rgbLevelColor = [-1, 0, 0]
     final byte[] rgbFieldColor = [0, 0, -1]
+
+    String outputPath = "src/main/resources/test.xlsx"
+    private static final Logger LOG = LogManager.getLogger(GeoTemplateParser.class)
+
 
     GeoTemplateParser(){
         super.commentMarker = '#'
@@ -18,6 +21,18 @@ class GeoTemplateParser extends XlsxParser {
     @Override
     def createWorkbook(String template){
         super.createWorkbook(template)
+    }
+
+    def writeToWorkbook(HashMap<String,String> values){
+
+        values.each {k,v ->
+            super.write(k,v)
+        }
+
+        File file = new File(outputPath)
+        FileOutputStream out = new FileOutputStream(file)
+
+        super.wb.write(out)
     }
 
     //a required field does not contain the keyword "[optional]" within the cells comment

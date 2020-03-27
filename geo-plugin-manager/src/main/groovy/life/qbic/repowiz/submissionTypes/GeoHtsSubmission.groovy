@@ -1,6 +1,9 @@
 package life.qbic.repowiz.submissionTypes
 
+import life.qbic.repowiz.download.GeoSubmissionDownloader
 import life.qbic.repowiz.mapping.GeoTemplateParser
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 class GeoHtsSubmission extends GeoSubmission{
 
@@ -10,6 +13,7 @@ class GeoHtsSubmission extends GeoSubmission{
     List seq_type = ["single","paired-end"]
 
     private GeoTemplateParser parser
+    private static final Logger LOG = LogManager.getLogger(GeoHtsSubmission.class)
 
     GeoHtsSubmission(){
         super.templatePath = "templates/seq_template_v2.1.xlsx"
@@ -25,20 +29,27 @@ class GeoHtsSubmission extends GeoSubmission{
 
     @Override
     List<String> determineMissingFields(Map filledFields) {
-        List missingFields = []
-
         parser.requiredFields.each {requiredField ->
             if(!filledFields.keySet().contains(requiredField)){
-                missingFields << requiredField
+                super.missingFields << (requiredField as String)
             }
         }
 
-        missingFields.addAll(containsOtherRequiredFields(filledFields))
+        super.missingFields.addAll(containsOtherRequiredFields(filledFields))
 
-        return missingFields
+        return super.missingFields
     }
 
-    //check if other required fields, that are not marked with a comment are contained within the given fields
+    @Override
+    void writeToWorkbook(HashMap values) {
+        parser.writeToWorkbook(values)
+    }
+
+    void prepareDownload() {
+        super.downloader.download()
+    }
+
+//check if other required fields, that are not marked with a comment are contained within the given fields
     static List containsOtherRequiredFields(Map fields){
         List missing = []
         //some other fields are also required but not marked with a comment

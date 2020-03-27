@@ -30,6 +30,43 @@ abstract class XlsxParser implements TemplateParser{
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
 
+    def write(String fieldName, String fieldValue){
+        templateFields.each {field, cell ->
+
+            if(fieldName == field && isColumnSection(fieldName)){
+                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
+                cellWithValue.setCellValue(fieldValue)
+            }
+            //todo write row wise values
+            /*if(fieldName == field && isRowSection(fieldName)){
+                Row row = cell.row
+                //how to handle row increment per row keyword??
+                cellWithValue.setCellValue("this is the new value")
+                //need to update cell values (row) of templateField cells?
+            }*/
+        }
+    }
+
+    def isColumnSection(String field){
+        List keyWords = ["series", "protocols", "data processing pipeline"]
+        boolean columnCell = false
+
+        keyWords.each {word ->
+            if(field.startsWith(word)) columnCell = true
+        }
+        return columnCell
+    }
+
+    def isRowSection(String field){
+        List keyWords = ["samples", "processed data files", "raw files", "paired-end experiments"]
+        boolean rowCell = false
+
+        keyWords.each {word ->
+            if(field.startsWith(word)) rowCell = true
+        }
+        return rowCell
+    }
+
     abstract def isSection(XSSFCell cell)
     abstract def isField(XSSFCell cell)
     abstract def isRequired(XSSFCell cell)

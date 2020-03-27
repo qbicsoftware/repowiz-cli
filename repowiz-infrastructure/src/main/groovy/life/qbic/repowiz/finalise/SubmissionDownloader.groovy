@@ -1,5 +1,7 @@
 package life.qbic.repowiz.finalise
 
-abstract class SubmissionDownloader {
+interface SubmissionDownloader {
+
+    void download()
 
 }

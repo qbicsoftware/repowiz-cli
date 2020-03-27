@@ -6,7 +6,12 @@ import life.qbic.repowiz.model.SubmissionModel
 class ClinvarSubmissionManager implements SubmissionManager{
 
     @Override
-    SubmissionModel validateSubmissionModel(SubmissionModel model) {
+    List validateSubmissionModel(SubmissionModel model) {
+        return null
+    }
+
+    @Override
+    String getSubmissionSummary() {
         return null
     }
 

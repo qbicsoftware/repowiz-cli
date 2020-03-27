@@ -26,8 +26,14 @@ class GeoSubmissionManager implements SubmissionManager{
     @Override
     List validateSubmissionModel(SubmissionModel model) {//idea load the upload/submission type from the model
         mapMetadata(model)
+
         //todo check if all required fields are filled
-        List missingFields = geoSubmission.determineMissingFields(new HashMap())
+        HashMap props = model.getAllProperties()
+        List missingFields = geoSubmission.determineMissingFields(props)
+        geoSubmission.writeToWorkbook(props)
+
+        //todo mark required field values in output sheet
+
         //todo answer with validation status and missing fields
         if (missingFields == []) LOG.info "The submission is valid, all required fields are defined"
 
@@ -36,12 +42,13 @@ class GeoSubmissionManager implements SubmissionManager{
 
     @Override
     String getSubmissionSummary() {
+        //todo
         return null
     }
 
     @Override
     void downloadSubmission() {
-        //todo download template for user
+
     }
 
     void createGeoSubmissionObject(String uploadType){//called in the SubmissionManager

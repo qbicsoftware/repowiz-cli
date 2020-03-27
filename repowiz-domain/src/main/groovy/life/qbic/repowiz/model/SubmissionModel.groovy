@@ -11,4 +11,13 @@ class SubmissionModel {
         this.samples = samples
     }
 
+    HashMap getAllProperties() {
+        HashMap properties = project.properties
+
+        samples.each {sample ->
+            properties << sample.properties
+        }
+        return properties
+    }
+
 }
