@@ -86,18 +86,18 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //finalise submission output
     @Override
-    def displaySubmissionSummary(String summary) {
-        return null
+    def displayUserInformation(String information) {
+        presenter.displayUserInformation(information as List<String>)
     }
 
     @Override
-    def displayStepsAfterSubmission(List<String> text) {
-        return null
+    def displayUserInformation(List<String> text) {
+        presenter.displayUserInformation(text)
     }
 
     @Override
-    String verifySubmission() {
-        finaliseSubmissionInput
+    String verifySubmission(String verify) {
+        presenter.displayUserInformation(verify as List<String>)
     }
 
 }

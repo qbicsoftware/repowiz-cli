@@ -19,6 +19,10 @@ class SubmissionPresenter {
         output.displayDecisionOverview(decisions)
     }
 
+    def displayUserInformation(List<String> decisions){
+        output.displayDecisionOverview(decisions)
+    }
+
     def listToMap(List elements){
         HashMap map = new HashMap()
         int counter = 1

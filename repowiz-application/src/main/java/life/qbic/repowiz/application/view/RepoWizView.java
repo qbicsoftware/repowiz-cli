@@ -39,11 +39,22 @@ public class RepoWizView implements CommandlineView {
     }
 
     @Override
+    public void displayInformation(List<String> info) {
+        StringBuilder formattedDecisions = new StringBuilder("> ");
+
+        for (String entry : info) {
+            formattedDecisions.append(" " + entry);
+        }
+
+        System.out.println(formattedDecisions);
+    }
+
+    @Override
     public void setUserAnswer(UserAnswer answer) {
         this.answer = answer;
     }
 
-    public String mapToString(HashMap<Integer,String> map){
+    private String mapToString(HashMap<Integer, String> map){
         StringBuilder text = new StringBuilder();
 
         for (Map.Entry<Integer, String> entry : map.entrySet()) {

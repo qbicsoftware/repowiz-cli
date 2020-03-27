@@ -32,14 +32,15 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
         manager = provider.create()
         //output.displayInformation("Validate submission data")
-        submission = manager.validateSubmissionModel(submission)
+        List missingFields = manager.validateSubmissionModel(submission)
 
-        output.displaySubmissionSummary(submissionModelToString(submission))
+        //tell the user which fields are missing
+        output.displayUserInformation("Following required fields are missing in your submission:")
+        output.displayUserInformation(missingFields)
+        //show the user the submission summary and ask him to verify the download
+        output.displayUserInformation("Submission Summary:")
+        output.displayUserInformation(manager.getSubmissionSummary())
         output.verifySubmission()
-    }
-
-    static String submissionModelToString(SubmissionModel model){
-        return ""
     }
 
     @Override
@@ -47,8 +48,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         if(verified){
             //todo fill template
             manager.downloadSubmission()
-            output.displayStepsAfterSubmission(repository.subsequentSteps)
-            //todo start download
+            output.displayUserInformation(repository.subsequentSteps)
         }
         return null
     }
