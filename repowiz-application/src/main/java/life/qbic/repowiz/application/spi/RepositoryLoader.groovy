@@ -1,6 +1,6 @@
-package life.qbic.repowiz.finalise
+package life.qbic.repowiz.application.spi
 
-import life.qbic.repowiz.Repository
+import life.qbic.repowiz.finalise.Loader
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 import org.apache.commons.lang.StringUtils
 

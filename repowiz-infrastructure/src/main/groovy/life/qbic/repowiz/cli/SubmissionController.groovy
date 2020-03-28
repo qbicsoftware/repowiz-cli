@@ -6,7 +6,6 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
-import life.qbic.repowiz.finalise.RepositoryLoader
 import life.qbic.repowiz.finalise.TargetRepository
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
@@ -16,24 +15,23 @@ import life.qbic.repowiz.prepare.PrepareSubmissionImpl
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.prepare.openBis.OpenBisSession
-import life.qbic.repowiz.prepare.openBis.ProjectSearcher
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher
 import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.finalise.FinaliseSubmission
-import org.apache.logging.log4j.LogManager
-import org.apache.logging.log4j.Logger
 
 import java.beans.PropertyChangeEvent
 import java.beans.PropertyChangeListener
 
-class SubmissionController implements PropertyChangeListener{
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
-    private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
+class SubmissionController implements PropertyChangeListener{
 
     String projectID
     ProjectSearcher projectSearch
     RepositoryDescription repoDescription
-    TargetRepository repository
+    TargetRepository repository = null
 
     SubmissionPresenter presenter
 
@@ -43,14 +41,16 @@ class SubmissionController implements PropertyChangeListener{
     PrepareSubmissionInput prepareSubmission
     FinaliseSubmission finaliseSubmission
 
+    private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
+
+
     SubmissionController(CommandlineView view, String projectID, String config) {
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)
 
         //set up infrastructure for loading repositories
-        RepositoryLoader loader = new RepositoryLoader()
-        repository = new TargetRepository(loader)
+        //repository = new TargetRepository(loader)
 
         // set up repository database
         repoDescription = new RepositoryDatabaseConnector()

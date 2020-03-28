@@ -16,20 +16,20 @@ public class RepowizTool{
     private static final Logger LOG = LogManager.getLogger(RepowizTool.class);
 
     private SubmissionController controller;
-    private UserAnswer answer;
 
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         CommandlineView commandlineView = new RepoWizView();
         controller = new SubmissionController(commandlineView,projectID, config);
 
-        answer = new UserAnswer();
+        UserAnswer answer = new UserAnswer();
         answer.addPropertyChangeListener(controller);
 
         commandlineView.setUserAnswer(answer);
     }
 
     public RepowizTool(){
+        //add spi provider here!
     }
 
     public void executeFindRepository(){

@@ -1,14 +1,14 @@
-package life.qbic.cli;
+package life.application.cli;
 
 import org.junit.Test;
 
 /**
- * Integration tests for RepowizTool.
+ * Unit tests for RepowizTool.
  */
-public class RepowizIntegrationTest  {
+public class RepowizTest  {
     // TODO: write unit tests (you do not need to test ToolExecutor, just test the execute() and shutdown() methods of your tool)
 
     @Test
-    public void testToolConnectsToTheCloud() {
+    public void testToolDoesNotOpenPandorasBox() {
     }
 }

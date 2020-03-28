@@ -4,9 +4,9 @@ import life.qbic.repowiz.download.GeoSubmissionDownloader
 
 abstract class GeoSubmission {
 
-    abstract String templatePath
-    abstract List<String> missingFields = []
-    abstract GeoSubmissionDownloader downloader
+    String templatePath
+    List<String> missingFields = []
+    GeoSubmissionDownloader downloader
 
    GeoSubmission() {
        downloader = new GeoSubmissionDownloader()

@@ -1,10 +1,8 @@
-package life.qbic.repowiz.finalize
+package life.application.spi
 
-import life.qbic.repowiz.finalise.RepositoryLoader
+import life.qbic.repowiz.application.spi.RepositoryLoader
 import life.qbic.repowiz.finalise.api.SubmissionManager
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
-import life.qbic.repowiz.spiimpl.ClinvarTargetRepositoryProvider
-import life.qbic.repowiz.spiimpl.GeoTargetRepositoryProvider
 import spock.lang.Specification
 
 class RepositoryLoaderSpecification extends Specification{
@@ -18,8 +16,7 @@ class RepositoryLoaderSpecification extends Specification{
         def res = loader.getClassInstance(geoClass)
 
         then:
-        res instanceof GeoTargetRepositoryProvider
-        assert res instanceof TargetRepositoryProvider
+        res instanceof TargetRepositoryProvider
 
     }
 
@@ -45,8 +42,7 @@ class RepositoryLoaderSpecification extends Specification{
         SubmissionManager manager = res.create()
 
         then:
-        res instanceof GeoTargetRepositoryProvider
-        assert res instanceof TargetRepositoryProvider
+        res instanceof TargetRepositoryProvider
         assert manager != null
     }
 
@@ -60,8 +56,7 @@ class RepositoryLoaderSpecification extends Specification{
         SubmissionManager manager = res.create()
 
         then:
-        res instanceof ClinvarTargetRepositoryProvider
-        assert res instanceof TargetRepositoryProvider
+        res instanceof TargetRepositoryProvider
         assert manager != null
     }
 }

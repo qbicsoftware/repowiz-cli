@@ -1,6 +1,6 @@
 package life.qbic.repowiz.prepare
 
-import life.qbic.repowiz.prepare.openBis.OpenBisMapper
+import life.qbic.repowiz.prepare.projectSearch.OpenBisMapper
 import life.qbic.xml.properties.Property
 import life.qbic.xml.properties.PropertyType
 import spock.lang.Specification

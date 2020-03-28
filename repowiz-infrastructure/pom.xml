@@ -17,18 +17,6 @@
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <!-- START: add all Repository-Plugin Modules here -->
-        <dependency>
-            <groupId>life.qbic</groupId>
-            <artifactId>geo-plugin-manager</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>life.qbic</groupId>
-            <artifactId>clinvar-plugin-manager</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <!-- END: add all Repository-Plugin Modules here-->
         <dependency>
             <groupId>life.qbic.openbis</groupId>
             <artifactId>openbis_api</artifactId>
@@ -38,12 +26,6 @@
             <groupId>life.qbic.openbis</groupId>
             <artifactId>dss_client</artifactId>
             <version>13.04.8</version>
-        </dependency>
-        <!-- Excel XLSX-->
-        <dependency>
-            <groupId>builders.dsl</groupId>
-            <artifactId>spreadsheet-builder-poi</artifactId>
-            <version>2.0.0</version>
         </dependency>
         <!-- for xml study parser -->
         <dependency>

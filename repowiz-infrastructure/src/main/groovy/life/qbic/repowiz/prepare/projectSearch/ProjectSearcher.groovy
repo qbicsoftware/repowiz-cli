@@ -1,4 +1,4 @@
-package life.qbic.repowiz.prepare.openBis
+package life.qbic.repowiz.prepare.projectSearch
 
 import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
 import ch.ethz.sis.openbis.generic.asapi.v3.dto.common.search.SearchResult
@@ -20,8 +20,7 @@ import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSe
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.search.DataSetFileSearchCriteria
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchInput
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
+import life.qbic.repowiz.prepare.openBis.ConditionParser
 import life.qbic.xml.properties.Property
 import org.apache.commons.lang3.StringUtils
 import org.apache.logging.log4j.LogManager

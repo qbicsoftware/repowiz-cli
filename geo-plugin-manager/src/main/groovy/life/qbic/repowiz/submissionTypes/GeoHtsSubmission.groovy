@@ -45,9 +45,6 @@ class GeoHtsSubmission extends GeoSubmission{
         parser.writeToWorkbook(values)
     }
 
-    void prepareDownload() {
-        super.downloader.download()
-    }
 
 //check if other required fields, that are not marked with a comment are contained within the given fields
     static List containsOtherRequiredFields(Map fields){
