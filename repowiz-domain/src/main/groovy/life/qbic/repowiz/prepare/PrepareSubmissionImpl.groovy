@@ -44,7 +44,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     //PrepareSubmissionInput
     //user answer describing the upload type e.g hts upload special for each repository
     @Override
-    def processUploadType(String answer) {
+    def setUploadType(String answer) {
         //display the user answer for better overview
         output.displayAnswer(answer)
         uploadType = answer

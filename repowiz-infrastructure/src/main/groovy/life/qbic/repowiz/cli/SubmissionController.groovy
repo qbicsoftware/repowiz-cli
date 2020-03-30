@@ -125,7 +125,7 @@ class SubmissionController implements PropertyChangeListener{
                 selectRepository.processRepository(userAnswer)
                 break
             case AnswerTypes.UPLOADTYPE.label:
-                prepareSubmission.processUploadType(userAnswer)
+                prepareSubmission.setUploadType(userAnswer)
                 break
             case AnswerTypes.SUBMIT.label:
                 boolean verified = false
