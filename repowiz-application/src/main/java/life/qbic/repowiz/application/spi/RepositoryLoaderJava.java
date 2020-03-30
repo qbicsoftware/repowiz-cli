@@ -40,7 +40,6 @@ public class RepositoryLoaderJava implements Loader {
 
     @Override
     public TargetRepositoryProvider load(String repositoryName) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-
         TargetRepositoryProvider targetRepository = null;
         LOG.info("Load target repository "+repositoryName);
 
@@ -50,11 +49,13 @@ public class RepositoryLoaderJava implements Loader {
 
         for (String provider:providers) {
             LOG.debug("Provider: "+provider+" compared to "+repositoryName);
-            if(provider.equals(repositoryName) || StringUtils.lowerCase(provider).contains(provider)) targetRepository = getClassInstance(provider);
-            //todo how to compare the names? what do i accept and what not
+            String test = StringUtils.lowerCase(provider);
+            LOG.debug(test);
+            if(provider.equals(StringUtils.lowerCase(repositoryName)) || test.contains(StringUtils.lowerCase(repositoryName)+"targetrepositoryprovider")){
+                targetRepository = getClassInstance(provider);
+                LOG.info("Successfully loaded target repository "+repositoryName);
+            }
         }
-
-        LOG.info("Successfully loaded target repository "+repositoryName);
 
         return targetRepository;
     }

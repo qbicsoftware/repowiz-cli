@@ -23,7 +23,7 @@ class GeoMapper {
     }
 
     private def loadMetadataTerms(){
-        InputStream stream = GeoMapper.class.getClassLoader().getResourceAsStream("META_INF/mapping/MetadataMapping.txt")
+        InputStream stream = GeoMapper.class.getClassLoader().getResourceAsStream("mapping/MetadataMapping.txt")
         stream.eachLine {line ->
             if(!line.startsWith('#')){
                 List value = line.split(",")

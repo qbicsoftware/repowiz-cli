@@ -5,7 +5,7 @@ import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 
 class GeoTargetRepositoryProvider extends TargetRepositoryProvider{
 
-    String providerName = "life.qbic.repowiz.spiimpl.GeoTargetRepositoryProvider"
+    String providerName = "Geo"
     String uploadType
 
     @Override
