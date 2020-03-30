@@ -17,11 +17,12 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
 
         when:
         assert repoInfo instanceof Map
-        Repository repo = connector.createRepoFromJSON(repoInfo)
+        Repository repo = connector.getRepository("repositories/geo.json")
+        println repo
         //print repoInfo
 
         then:
-        repo.name == "Geo"
+        repo.repositoryName == "Geo"
         repo.uploadTypes == ["affymetrix_GE", "hts"]
     }
 
@@ -29,7 +30,7 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
         when:
         def res = connector.findRepository(["geo"])
         then:
-        res.get(0).name == "Geo"
+        res.get(0).repositoryName == "Geo"
     }
 
     def "multiple repositories are found"(){
@@ -38,7 +39,7 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
         then:
         res.size() == 2
         res.each {
-            if(it.name == "Geo" ||it.name == "ClinVar")
+            if(it.repositoryName == "Geo" ||it.repositoryName == "ClinVar")
                 true
         }
     }

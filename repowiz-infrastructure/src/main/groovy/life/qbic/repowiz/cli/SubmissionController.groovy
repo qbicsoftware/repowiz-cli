@@ -122,7 +122,7 @@ class SubmissionController implements PropertyChangeListener{
                 findRepository.validateDesicion(userAnswer)
                 break
             case AnswerTypes.REPOSITORY.label:
-                selectRepository.processRepository(userAnswer)
+                selectRepository.validateSelectedRepository(userAnswer)
                 break
             case AnswerTypes.UPLOADTYPE.label:
                 prepareSubmission.setUploadType(userAnswer)

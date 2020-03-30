@@ -14,7 +14,13 @@ class SelectRepositorySpecification extends Specification{
 
     def "defining non suggested repository returns null"(){
         given:
-        Repository repo = new Repository("clinvar","",[""],"",[""])
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
@@ -26,7 +32,13 @@ class SelectRepositorySpecification extends Specification{
 
     def "defining valid repository "(){
         given:
-        Repository repo = new Repository("clinvar","",[""],"",[""])
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
@@ -38,7 +50,13 @@ class SelectRepositorySpecification extends Specification{
 
     def "retrieve correct repository"(){
         given:
-        Repository repo = new Repository("clinvar","",[""],"",[""])
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
         when:

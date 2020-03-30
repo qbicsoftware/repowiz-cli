@@ -6,6 +6,6 @@ interface SelectRepositoryInput {
 
     def selectRepository(String repository)
     def selectRepoFromSuggestions(List<Repository> suggestedRepos)
-    def processRepository(String answer)
+    def validateSelectedRepository(String answer)
 
 }

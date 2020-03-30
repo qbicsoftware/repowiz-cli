@@ -22,6 +22,7 @@ class SelectRepository implements SelectRepositoryInput{
 
     SelectRepository(SelectRepositoryOutput output) {
         this.output = output
+        repositoryDescription = null
     }
 
     @Override
@@ -52,7 +53,7 @@ class SelectRepository implements SelectRepositoryInput{
     }
 
     @Override
-    def processRepository(String answer) {
+    def validateSelectedRepository(String answer) {
 
         if(isValidRepository(answer)){
             output.selectedRepository(getValidRepository(answer))
@@ -66,7 +67,7 @@ class SelectRepository implements SelectRepositoryInput{
     List<String> getRepositoryNameList(List<Repository> suggestedRepo){
         List<String> repoNames = []
         suggestedRepo.each {
-            repoNames << it.name
+            repoNames << it.repositoryName
         }
         return repoNames
     }
@@ -75,7 +76,7 @@ class SelectRepository implements SelectRepositoryInput{
         boolean validChoice = false
 
         suggestedRepos.each {
-            if(it.name == user_choice){
+            if(it.repositoryName == user_choice){
                validChoice = true
             }
         }
@@ -87,7 +88,7 @@ class SelectRepository implements SelectRepositoryInput{
         Repository validChoice = null
 
         suggestedRepos.each {
-            if(it.name == user_choice){
+            if(it.repositoryName == user_choice){
                 validChoice = it
             }
         }

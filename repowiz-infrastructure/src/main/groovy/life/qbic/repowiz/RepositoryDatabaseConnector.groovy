@@ -7,6 +7,11 @@ import life.qbic.repowiz.io.IO
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
     String path = "repositories/"
+    JsonParser parser
+
+    RepositoryDatabaseConnector(){
+        parser = new JsonParser()
+    }
 
     @Override
     List<Repository> findRepository(List<String> repositoryNames) {
@@ -31,32 +36,39 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
 
     Repository getRepository(String fileURL){
         //String resourceFile1 = "repositories/geo.json"
+        Repository repo = null
 
         InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
 
         if (resourceStream != null) {
-            JsonParser parser = new JsonParser()
             def json = parser.parseAsStream(fileURL)
             assert json instanceof Map
 
-            return createRepoFromJSON(json)
+            println json.get("repositoryName")
+            repo = new Repository(repositoryName: (String) json.get("repositoryName"),
+                    dataType: json.get("dataType"),
+                    uploadTypes: (List)json.get("uploadTypes"),
+                    uploadFormat: (String)json.get("uploadFormat"),
+                    uploadRequirements:(List)json.get("uploadRequirements"),
+                    characteristics: (HashMap)[size:(String)json.get("size")],
+                    subsequentSteps: (List) ["",""])
         }
-
-        return null
-    }
-
-
-    Repository createRepoFromJSON(Map repoMap){
-        String name = repoMap.get("repositoryName")
-        String repositoryType = repoMap.get("repositoryName")
-        List<String> uploadTypes = repoMap.get("uploadTypes")
-        String uploadFormat = repoMap.get("uploadFormat")
-        List<String> uploadRequirements = repoMap.get("uploadRequirements")
-        String size = repoMap.get("size")
-
-        Repository repo = new Repository(name,repositoryType,uploadTypes,uploadFormat,uploadRequirements)
-        repo.addCharacteristic("size",size)
 
         return repo
     }
+
+
+    /*Repository createRepoFromJSON(Map repoMap){
+
+        Repository repo = new Repository(name: repoMap.get("repositoryName"),
+                repositoryType: repoMap.get("repositoryName"),
+                uploadTypes: repoMap.get("uploadTypes"),
+                uploadFormat: repoMap.get("uploadFormat"),
+                uploadRequirements:repoMap.get("uploadRequirements"),
+                characteristics: [size:(String)repoMap.get("size")],
+                subsequentSteps: ["",""])
+
+        return repo
+    }*/
+
 }
