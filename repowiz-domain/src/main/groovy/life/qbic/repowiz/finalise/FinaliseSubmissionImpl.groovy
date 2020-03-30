@@ -16,7 +16,6 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     private static final Logger LOG = LogManager.getLogger(FinaliseSubmissionImpl.class)
 
-
     FinaliseSubmissionImpl(TargetRepository targetRepository, SubmissionOutput out){
         this.targetRepository = targetRepository
         output = out

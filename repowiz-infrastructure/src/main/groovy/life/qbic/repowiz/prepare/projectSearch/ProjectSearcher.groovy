@@ -103,7 +103,6 @@ class ProjectSearcher implements ProjectSearchInput {
     //load the RepoWiz sample info
     def loadOpenBisSampleInfo() { //do that for a experiment or generally?? Experiment experiment
         LOG.info "Fetching Sample Information ..."
-        output.userNotification("Fetching Sample Information ...")
 
         SampleFetchOptions fetchOptions = new SampleFetchOptions()
         fetchOptions.withType()
@@ -263,12 +262,10 @@ class ProjectSearcher implements ProjectSearchInput {
     private void checkSpaceAvailability() {
 
         if (project == null) {
-            output.userNotification("Project " + project.code + " does not exist for user")
             LOG.error "Project " + project.code + " does not exist for user"
             v3.logout(sessionToken)
             System.exit(0)
         } else {
-            output.userNotification("Found project " + project.code + " for user")
             LOG.info "Found project " + project.code + " for user"
         }
     }

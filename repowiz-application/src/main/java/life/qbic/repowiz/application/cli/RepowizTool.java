@@ -1,5 +1,6 @@
 package life.qbic.repowiz.application.cli;
 
+import life.qbic.repowiz.application.spi.RepositoryLoaderJava;
 import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
@@ -20,7 +21,7 @@ public class RepowizTool{
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         CommandlineView commandlineView = new RepoWizView();
-        controller = new SubmissionController(commandlineView,projectID, config);
+        controller = new SubmissionController(commandlineView,projectID, config, new RepositoryLoaderJava());
 
         UserAnswer answer = new UserAnswer();
         answer.addPropertyChangeListener(controller);

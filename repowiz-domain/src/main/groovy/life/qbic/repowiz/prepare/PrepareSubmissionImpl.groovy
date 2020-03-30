@@ -53,6 +53,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     //project search output
     @Override
     def transferProjectData(RepoWizProject project, List samples) {
+        LOG.info "Validate project data"
         if (isValid(samples,repo)){
 
             SubmissionModel model = new SubmissionModel(project, samples)
@@ -74,7 +75,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     //todo check if project data matches the repository conditions
     static boolean isValid(List<RepoWizSample> samples, Repository repo){
         //todo
-        return false
+        return true
     }
 
 

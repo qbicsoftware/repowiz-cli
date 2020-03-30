@@ -6,6 +6,7 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
+import life.qbic.repowiz.finalise.Loader
 import life.qbic.repowiz.finalise.TargetRepository
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
@@ -44,13 +45,13 @@ class SubmissionController implements PropertyChangeListener{
     private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
 
 
-    SubmissionController(CommandlineView view, String projectID, String config) {
+    SubmissionController(CommandlineView view, String projectID, String config, Loader loader) {
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)
 
         //set up infrastructure for loading repositories
-        //repository = new TargetRepository(loader)
+        repository = new TargetRepository(loader)
 
         // set up repository database
         repoDescription = new RepositoryDatabaseConnector()
