@@ -52,16 +52,17 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
 
     //project search output
     @Override
-    def transferProjectData(RepoWizProject project, List samples) {
+    def createSubmissionModel(RepoWizProject project, List samples) throws InvalidProjectException{
         LOG.info "Validate project data"
         if (isValid(samples,repo)){
 
             SubmissionModel model = new SubmissionModel(project, samples)
             model.setUploadType(uploadType)
 
-            output.validateProject(model, repo)
+            output.finaliseSubmission(model, repo)
         }
         else{
+            throw new InvalidProjectException("Your project does not fit the selected repository "+repo.name)
             //todo throw exception/warning
             // output.displayAnswer() oder so
         }

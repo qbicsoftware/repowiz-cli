@@ -6,7 +6,7 @@ import life.qbic.repowiz.model.RepoWizSample
 
 interface ProjectSearchOutput {
 
-    def transferProjectData(RepoWizProject project, List<RepoWizSample> samples)
+    def createSubmissionModel(RepoWizProject project, List<RepoWizSample> samples)
     def userNotification(String message)
 
 }

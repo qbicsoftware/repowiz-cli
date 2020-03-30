@@ -70,7 +70,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //prepare submission use case --> transfer to finalise submission
     @Override
-    def validateProject(SubmissionModel submission, Repository repository) {
+    def finaliseSubmission(SubmissionModel submission, Repository repository) {
         finaliseSubmissionInput.transferSubmissionData(submission, repository)
     }
 

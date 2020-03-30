@@ -5,7 +5,7 @@ import life.qbic.repowiz.model.SubmissionModel
 
 interface PrepareSubmissionOutput {
 
-    def validateProject(SubmissionModel submission, Repository repository)
+    def finaliseSubmission(SubmissionModel submission, Repository repository)
     def transferQuestion(List<String> question)
     def displayAnswer(String answer)
 
