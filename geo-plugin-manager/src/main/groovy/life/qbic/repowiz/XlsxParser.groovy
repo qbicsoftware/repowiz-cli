@@ -81,7 +81,6 @@ abstract class XlsxParser implements TemplateParser{
             //if (sheets.contains(sheet.sheetName.trim())) { //need to strip succeeding whitespaces todo write as regex
             if (sheetName == sheet.sheetName.trim()) {
                 sheet.each { row ->
-
                     for (int col = 0; col < row.size(); col++) {
 
                         XSSFCell cell = (XSSFCell) row.getCell(col)
