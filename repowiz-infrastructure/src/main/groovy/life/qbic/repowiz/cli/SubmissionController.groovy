@@ -56,10 +56,7 @@ class SubmissionController implements PropertyChangeListener{
         // set up repository database
         repoDescription = new RepositoryDatabaseConnector()
 
-        setupLocalDatabaseConnection(config)
     }
-
-
 
 
     def initWithSelection(String repo) {

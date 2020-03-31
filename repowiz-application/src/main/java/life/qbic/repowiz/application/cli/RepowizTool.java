@@ -28,11 +28,11 @@ public class RepowizTool{
     private static final Logger LOG = LogManager.getLogger(RepowizTool.class);
 
     private SubmissionController controller;
-    private CommandlineView commandlineView;
+    private CommandlineView commandlineView = new RepoWizView();
+
 
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
-        commandlineView = new RepoWizView();
         ProjectSearcher searcher = setupLocalDatabaseConnection(config);
 
         controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava());
@@ -64,7 +64,7 @@ public class RepowizTool{
                 repoNames.add(provider.getProviderName());
             }
 
-            commandlineView.displayInformation("The following Repositories are implemented");
+            commandlineView.displayInformation("The following Repositories are implemented: ");
             commandlineView.displayInformation(repoNames);
 
         }catch (Exception e){

@@ -43,7 +43,7 @@ public class RepoWizView implements CommandlineView {
         StringBuilder formattedDecisions = new StringBuilder("> ");
 
         for (String entry : info) {
-            formattedDecisions.append(" " + entry);
+            formattedDecisions.append(" " + entry +"\n");
         }
 
         System.out.println(formattedDecisions);
