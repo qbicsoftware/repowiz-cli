@@ -79,7 +79,7 @@ public class RepowizTool{
         JsonParser confParser = new JsonParser();
         try {
             Map conf = (Map) confParser.parseAsStream(config);
-            OpenBisSession session = new OpenBisSession((String) conf.get("user"), (String) conf.get("password"), (String) conf.get("server_url"))
+            OpenBisSession session = new OpenBisSession((String) conf.get("user"), (String) conf.get("password"), (String) conf.get("server_url"));
 
             String sessionToken = session.getSessionToken();
             IApplicationServerApi v3 = session.getV3();
