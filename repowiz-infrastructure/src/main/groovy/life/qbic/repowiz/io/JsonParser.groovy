@@ -1,26 +1,39 @@
 package life.qbic.repowiz.io
 
 import groovy.json.JsonSlurper
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
 
 import java.nio.file.Path
 
 class JsonParser {//implements TemplateParser{
 
-    /*String jsonFile
+    private static final Logger LOG = LogManager.getLogger(JsonParser.class)
 
-    JsonParser(String file){
-        jsonFile = file
-    }*/
 
-    def parseAsFile(String jsonFile){
-        //todo should not load from class when user forwards conifg file path
+    def parseAsFile(String jsonFile)throws IOException{
+        //todo should not load from class when user forwards config file path
         String file = JsonParser.class.getClassLoader().getResource(jsonFile).getPath()
-        new JsonSlurper().parseText(new File (file).text)
+
+        if(file != null) return new JsonSlurper().parseText(new File (file).text)
+
+        throw new IOException("The specified file was not found: "+jsonFile)
     }
 
-    def parseAsStream(String jsonFile){
+    def parseAsStream(String jsonFile)throws IOException{
         //todo should not load from class when user forwards conifg file path
         InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream(jsonFile)
-        new JsonSlurper().parseText(stream.text)
+
+        if(stream != null) return new JsonSlurper().parseText(stream.text)
+
+        throw new IOException("The specified file was not found: "+jsonFile)
+    }
+
+    Map getMapFromJsonFile(String jsonFilePath){
+        def json = parseAsStream(jsonFilePath)
+
+        assert json instanceof Map
+
+        return (Map) json
     }
 }

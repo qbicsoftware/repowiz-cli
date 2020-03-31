@@ -8,12 +8,12 @@ import org.apache.logging.log4j.Logger
 
 class SelectRepository implements SelectRepositoryInput{
 
-    private static final Logger LOG = LogManager.getLogger(SelectRepository.class)
-
     RepositoryDescription repositoryDescription
     SelectRepositoryOutput output
 
     List<Repository> suggestedRepos
+
+    private static final Logger LOG = LogManager.getLogger(SelectRepository.class)
 
     SelectRepository(SelectRepositoryOutput output, RepositoryDescription description) {
         repositoryDescription = description

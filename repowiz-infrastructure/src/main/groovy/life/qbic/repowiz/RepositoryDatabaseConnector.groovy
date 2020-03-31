@@ -36,39 +36,12 @@ class RepositoryDatabaseConnector implements RepositoryDescription{
 
     Repository getRepository(String fileURL){
         //String resourceFile1 = "repositories/geo.json"
-        Repository repo = null
+        def repositoryMap = parser.getMapFromJsonFile(fileURL)
 
-        InputStream resourceStream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(fileURL)
+        RepositoryCreator creator = new RepositoryCreator()
 
-        if (resourceStream != null) {
-            def json = parser.parseAsStream(fileURL)
-            assert json instanceof Map
-
-            println json.get("repositoryName")
-            repo = new Repository(repositoryName: (String) json.get("repositoryName"),
-                    dataType: json.get("dataType"),
-                    uploadTypes: (List)json.get("uploadTypes"),
-                    uploadFormat: (String)json.get("uploadFormat"),
-                    uploadRequirements:(List)json.get("uploadRequirements"),
-                    characteristics: (HashMap)[size:(String)json.get("size")],
-                    subsequentSteps: (List) ["",""])
-        }
-
-        return repo
+        return creator.createRepository(repositoryMap)
     }
 
-
-    /*Repository createRepoFromJSON(Map repoMap){
-
-        Repository repo = new Repository(name: repoMap.get("repositoryName"),
-                repositoryType: repoMap.get("repositoryName"),
-                uploadTypes: repoMap.get("uploadTypes"),
-                uploadFormat: repoMap.get("uploadFormat"),
-                uploadRequirements:repoMap.get("uploadRequirements"),
-                characteristics: [size:(String)repoMap.get("size")],
-                subsequentSteps: ["",""])
-
-        return repo
-    }*/
 
 }
