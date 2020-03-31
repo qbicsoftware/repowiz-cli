@@ -50,6 +50,11 @@ public class RepoWizView implements CommandlineView {
     }
 
     @Override
+    public void displayInformation(String info) {
+        System.out.println("> " + info);
+    }
+
+    @Override
     public void setUserAnswer(UserAnswer answer) {
         this.answer = answer;
     }

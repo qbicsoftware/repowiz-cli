@@ -45,7 +45,7 @@ class SubmissionController implements PropertyChangeListener{
     private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
 
 
-    SubmissionController(CommandlineView view, String projectID, String config, Loader loader) {
+    SubmissionController(CommandlineView view, String projectID, ProjectSearcher searcher, Loader loader) {
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)
@@ -59,19 +59,7 @@ class SubmissionController implements PropertyChangeListener{
         setupLocalDatabaseConnection(config)
     }
 
-    //method to manage the local database connection (input domain)
-    def setupLocalDatabaseConnection(String config) {
-        //local database connection
-        JsonParser confParser = new JsonParser()
-        Map conf = (Map) confParser.parseAsStream(config)
-        OpenBisSession session = new OpenBisSession((String) conf.get("user"), (String) conf.get("password"), (String) conf.get("server_url"))
 
-        String sessionToken = session.sessionToken
-        IApplicationServerApi v3 = session.v3
-        IDataStoreServerApi dss = session.dss
-
-        projectSearch = new ProjectSearcher(v3, dss, sessionToken)
-    }
 
 
     def initWithSelection(String repo) {
