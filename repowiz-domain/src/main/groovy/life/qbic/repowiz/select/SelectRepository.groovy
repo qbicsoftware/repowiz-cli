@@ -21,8 +21,7 @@ class SelectRepository implements SelectRepositoryInput{
     }
 
     SelectRepository(SelectRepositoryOutput output) {
-        this.output = output
-        repositoryDescription = null
+        SelectRepository(output,null)
     }
 
     @Override
