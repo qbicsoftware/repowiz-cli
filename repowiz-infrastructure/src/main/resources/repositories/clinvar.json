@@ -1,9 +1,9 @@
 {
   "repositoryName": "ClinVar",
   "dataType": "variants",
-  "uploadType": ["clinical variants", "single variants", "list of variants"],
+  "uploadType": ["lite", "full"],
   "uploadFormat": "template",
   "uploadRequirements": ["miame",""],
   "size": {"number":5 , "unit":"ddd"},
-  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"],
+  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
 }

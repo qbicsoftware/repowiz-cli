@@ -1,6 +1,5 @@
 package life.qbic.repowiz.finalise
 
-import life.qbic.repowiz.Repository
 import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
 
 import java.nio.file.ProviderNotFoundException

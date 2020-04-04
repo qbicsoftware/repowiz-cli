@@ -74,7 +74,7 @@ public class RepowizTool{
     }
 
     //method to manage the local database connection (input domain)
-    ProjectSearcher setupLocalDatabaseConnection(String config) {
+    private ProjectSearcher setupLocalDatabaseConnection(String config) {
         //local database connection
         JsonParser confParser = new JsonParser();
         try {

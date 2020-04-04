@@ -26,7 +26,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         LOG.info "Transfer data to TargetRepositoryProvider"
         this.repository = repository
 
-        TargetRepositoryProvider provider = targetRepository.provider(repository.name)
+        TargetRepositoryProvider provider = targetRepository.provider(repository.repositoryName)
         provider.setUploadType(submission.uploadType)
 
         manager = provider.create()
