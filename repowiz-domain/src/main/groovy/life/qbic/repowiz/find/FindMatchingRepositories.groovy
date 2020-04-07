@@ -34,12 +34,12 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
             organisms << it.data
         }
 
-        String user_answer = output.transferAnswerPossibilities(organisms)
-        validateDesicion(user_answer)
+        String user_answer = output.transferAnswerPossibilities(organisms)//todo use observer pattern!
+        validateDecision(user_answer)
     }
 
     @Override
-    def validateDesicion(String answer){
+    def validateDecision(String answer){
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
 
@@ -60,7 +60,6 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
 
-
     def nodeDecision(){
         def decisionPossibilities = []
 
@@ -69,16 +68,14 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         }
 
         String answer = output.transferAnswerPossibilities(decisionPossibilities)
-        validateDesicion(answer)
+        validateDecision(answer)
     }
 
     def leafDecision(){
 
         List<String> matchingRepos = tree.getChildrenData(currentDecisionLevel)
 
-        //obtain only repositories that are implemented within the system
-        //all other repos are not visible to the user
-        List<Repository> repositories = repositoryDescription.findRepository(matchingRepos)
+        List<Repository> repositories = repositoryDescription.findRepositories(matchingRepos)
 
         output.transferRepositoryList(repositories)
     }

@@ -1,29 +1,21 @@
 package life.qbic.repowiz.io
 
-import com.networknt.schema.JsonSchema
-import groovy.json.JsonOutput
-import life.qbic.repowiz.Repository
-import life.qbic.repowiz.RepositoryCreator
+
 import spock.lang.Specification
 
 class JsonParserSpecification extends Specification {
-
-    /**def "finds all files in directory"(){
-        when:
-        def res = IO.getFilesFromDirectory("repositories/")
-
-        then:
-        res.size() == 3
-    }*/
 
     def "parses file"(){
         given:
         //def path = getClass().getResource("/repositories/geo.json").getPath()
         //File file = new File(path)
-        JsonParser parser = new JsonParser()
+        String file = "repositories/geo.json"
+        InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream(file)
+        JsonParser parser = new JsonParser(stream)
 
         when:
-        def res = parser.parseAsFile("repositories/geo.json")
+        def res = parser.parse()
+
 
         then:
         res.get("repositoryName") == "Geo"
@@ -31,7 +23,7 @@ class JsonParserSpecification extends Specification {
 
     def "load schema successfully"(){
         given:
-        JsonParser parser = new JsonParser()
+        JsonParser parser = new JsonParser(null)
 
         when:
         def schema = parser.getJsonSchemaFromClasspath("repositories/repository.schema.json")
@@ -42,11 +34,13 @@ class JsonParserSpecification extends Specification {
 
     def "parse schema successfully"(){
         given:
-        JsonParser parser = new JsonParser()
-        parser.getMapFromJsonFile("repositories/clinvar.json")
+        InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream("repositories/clinvar.json")
+        JsonParser parser = new JsonParser(stream)
+
+        def map = parser.parse()
 
         when:
-        parser.validate("repositories/repository.schema.json")
+        parser.validate("repositories/repository.schema.json",map)
 
         then:
         noExceptionThrown()
@@ -54,11 +48,12 @@ class JsonParserSpecification extends Specification {
 
     def "throw exception for wrong json data"(){
         given:
-        JsonParser parser = new JsonParser()
-        parser.getMapFromJsonFile("repositories/invalidRepository.json")
+        InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream("repositories/invalidRepository.json")
+        JsonParser parser = new JsonParser(stream)
+        def map = parser.parse()
 
         when:
-        parser.validate("repositories/repository.schema.json")
+        parser.validate("repositories/repository.schema.json",map)
 
 
         then:

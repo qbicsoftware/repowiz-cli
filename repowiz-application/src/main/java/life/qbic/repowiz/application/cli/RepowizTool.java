@@ -15,7 +15,7 @@ import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +34,9 @@ public class RepowizTool{
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         ProjectSearcher searcher = setupLocalDatabaseConnection(config);
+        List<String> repos = getImplementedRepositoriesAsList();
 
-        controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava());
+        controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
 
         UserAnswer answer = new UserAnswer();
         answer.addPropertyChangeListener(controller);
@@ -76,9 +77,11 @@ public class RepowizTool{
     //method to manage the local database connection (input domain)
     private ProjectSearcher setupLocalDatabaseConnection(String config) {
         //local database connection
-        JsonParser confParser = new JsonParser();
         try {
-            Map conf = (Map) confParser.parseAsStream(config);
+            InputStream stream = new FileInputStream(config);
+            JsonParser confParser = new JsonParser(stream);
+
+            Map conf = confParser.parse();
             OpenBisSession session = new OpenBisSession((String) conf.get("user"), (String) conf.get("password"), (String) conf.get("server_url"));
 
             String sessionToken = session.getSessionToken();
@@ -87,10 +90,30 @@ public class RepowizTool{
 
             return new ProjectSearcher(v3, dss, sessionToken);
 
-        } catch (IOException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
         return null;
+    }
+
+    private static List<String> getImplementedRepositoriesAsList(){
+        List<String> repos = new ArrayList<>();
+        String fileName = "services/RepositoryJsonFiles.txt";
+
+        try{
+            InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
+            assert stream != null;
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            for (String line; (line = reader.readLine()) != null; ) {
+                repos.add(line);
+            }
+
+        }catch (IOException io){
+           io.printStackTrace();
+        }
+
+        return repos;
     }
 }

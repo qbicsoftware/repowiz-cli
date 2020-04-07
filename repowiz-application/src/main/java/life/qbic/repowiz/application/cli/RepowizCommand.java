@@ -19,9 +19,6 @@ public class RepowizCommand implements Runnable{
 
     private static final Logger LOG = LogManager.getLogger(RepowizCommand.class);
 
-    @CommandLine.Option(names={"-l", "--list"}, description="Lists all implemented repositories of RepoWiz")
-    public volatile String list;
-
     @CommandLine.Option(names = {"-h", "--help"}, description = "Prints usage and exists.", usageHelp = true)
     public volatile boolean printHelp;
 

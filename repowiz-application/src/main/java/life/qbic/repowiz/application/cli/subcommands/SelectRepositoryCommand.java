@@ -17,7 +17,7 @@ public class SelectRepositoryCommand implements Runnable{
     @CommandLine.Option(names={"-p", "--projectId"}, required = true, description="Project for which the submission is prepared")
     String projectID;
 
-    @CommandLine.Option(names={"-r", "--repository"}, description="Repository name")
+    @CommandLine.Option(names={"-r", "--repository"}, required = true, description="Repository name")
     String selectedRepository;
 
     @CommandLine.Option(names = {"-h", "--help"}, description = "Prints usage and exists.", usageHelp = true)

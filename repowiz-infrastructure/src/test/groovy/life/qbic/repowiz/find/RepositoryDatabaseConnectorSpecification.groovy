@@ -7,19 +7,13 @@ import spock.lang.Specification
 
 class RepositoryDatabaseConnectorSpecification extends Specification{
 
-    RepositoryDatabaseConnector connector = new RepositoryDatabaseConnector()
+    List<String> validRepos = ["geo.json","clinvar.json"]
+
+    RepositoryDatabaseConnector connector = new RepositoryDatabaseConnector("repositories","repositories/repository.schema.json",validRepos)
 
     def "valid repo file parsing"(){
-        given:
-        //InputStream fileStream = connector.getClass().getResourceAsStream("/repositories/geo.json")
-        JsonParser parser = new JsonParser()
-        def repoInfo = parser.parseAsStream("repositories/geo.json")
-
         when:
-        assert repoInfo instanceof Map
-        Repository repo = connector.getRepository("repositories/geo.json")
-        println repo
-        //print repoInfo
+        Repository repo = connector.findRepository("geo")
 
         then:
         repo.repositoryName == "Geo"
@@ -28,14 +22,14 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
 
     def "find repository file"(){
         when:
-        def res = connector.findRepository(["geo"])
+        Repository res = connector.findRepository("geo")
         then:
-        res.get(0).repositoryName == "Geo"
+        res.repositoryName == "Geo"
     }
 
     def "multiple repositories are found"(){
         when:
-        def res = connector.findRepository(["clinvar","geo"])
+        List res = connector.findRepositories(["clinvar","geo"])
         then:
         res.size() == 2
         res.each {
@@ -46,15 +40,15 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
 
     def "invalid repository not found"(){
         when:
-        def res = connector.findRepository(["ega"])
+        Repository res = connector.findRepository("ega")
         then:
-        res.empty
+        thrown NullPointerException
     }
 
     def "upper_case repository not found"(){
         when:
-        def res = connector.findRepository(["GEO"])
+        Repository res = connector.findRepository("GEO")
         then:
-        res.empty
+        thrown NullPointerException
     }
 }

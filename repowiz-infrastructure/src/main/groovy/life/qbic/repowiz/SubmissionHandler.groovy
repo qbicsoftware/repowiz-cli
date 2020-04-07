@@ -64,7 +64,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def selectedRepository(Repository repository) {
-        presenter.displayUserChoices([repository.name])
+        presenter.displayUserChoices([repository.repositoryName])
         prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 

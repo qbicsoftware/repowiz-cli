@@ -1,11 +1,13 @@
 package life.qbic.repowiz
 
 class RepositoryCreator {
-    private List requiredFields = ["repositoryName", "dataType","uploadTypes","uploadFormat",
-                                    "uploadRequirements", "characteristics", "subsequentSteps"]
+    Map data
 
+    RepositoryCreator(Map data){
+        this.data = data
+    }
 
-    Repository createRepository(Map data){
+    Repository create(){
         return new Repository(repositoryName: (String) data.get("repositoryName"),
                 dataType: data.get("dataType"),
                 uploadTypes: (List)data.get("uploadTypes"),
@@ -15,10 +17,5 @@ class RepositoryCreator {
                 subsequentSteps: (List) ["",""])
     }
 
-    def validate(Map data) throws Exception{
-        //all fields are required in order to generate a valid repository
-
-
-    }
 
 }

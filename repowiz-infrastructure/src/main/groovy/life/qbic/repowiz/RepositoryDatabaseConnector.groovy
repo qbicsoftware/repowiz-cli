@@ -1,47 +1,51 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.io.JsonParser
-import life.qbic.repowiz.io.IO
 
 //todo also move repository descriptions to external repository
 class RepositoryDatabaseConnector implements RepositoryDescription{
 
-    String path = "repositories/"
-    JsonParser parser
+    String path //= "repositories"
+    String schema
+    List<String> validRepos
 
-    RepositoryDatabaseConnector(){
-        parser = new JsonParser()
+    RepositoryDatabaseConnector(String repositoryFolder, String repositorySchemaPath, List validRepos){
+        path = repositoryFolder
+        schema = repositorySchemaPath
+        this.validRepos = validRepos
     }
 
     @Override
-    List<Repository> findRepository(List<String> repositoryNames) {
-
-        List<String> allRepositoryFiles = IO.getFilesFromDirectory(path)
-        //println allRepositories.toString()
-
-        List<Repository> repositories = []
-
-        //create repository object from repository file
-        allRepositoryFiles.each { fileName ->
-            //get repo name
-            String repo = fileName.split("\\.")[0]
-
-            if(repositoryNames.contains(repo)){
-                repositories << getRepository(path+fileName)
-            }
-        }
-
-        return repositories
-    }
-
-    Repository getRepository(String fileURL){
+    Repository findRepository(String name){
         //String resourceFile1 = "repositories/geo.json"
-        def repositoryMap = parser.getMapFromJsonFile(fileURL)
+        InputStream stream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(path+"/"+getFileName(name))
 
-        RepositoryCreator creator = new RepositoryCreator()
+        JsonParser parser = new JsonParser(stream)
+        Map repositoryMap = parser.parse()
+        parser.validate(schema,repositoryMap)
 
-        return creator.createRepository(repositoryMap)
+        RepositoryCreator creator = new RepositoryCreator(repositoryMap)
+
+        return creator.create()
     }
 
+    @Override
+    List<Repository> findRepositories(List<String> repoNames) {
+        List<Repository> repos = []
+        repoNames.each {repo ->
+            //match name to file
+            String fileName = getFileName(repo)
+            repos << findRepository(fileName)
+        }
+        return repos
+    }
 
+    private String getFileName(String repoName){
+        String filePath = null
+
+        validRepos.each{validRepo ->
+            if(validRepo.contains(repoName)) filePath = validRepo
+        }
+        return filePath
+    }
 }

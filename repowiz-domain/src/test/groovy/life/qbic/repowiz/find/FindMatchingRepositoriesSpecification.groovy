@@ -23,7 +23,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "wrong name"(){
         when:
-        boolean res = findMatchingRepositories.validateDesicion("HUUMAN")
+        boolean res = findMatchingRepositories.validateDecision("HUUMAN")
 
         then:
         !res
@@ -31,7 +31,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "case sensitive"(){
         when:
-        boolean res = findMatchingRepositories.validateDesicion("Human")
+        boolean res = findMatchingRepositories.validateDecision("Human")
 
         then:
         !res
@@ -40,7 +40,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest access type for human as organism"(){
         when:
-        findMatchingRepositories.validateDesicion("human")
+        findMatchingRepositories.validateDecision("human")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
@@ -50,7 +50,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest data type for other as organism"(){
         when:
-        findMatchingRepositories.validateDesicion("other")
+        findMatchingRepositories.validateDecision("other")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
@@ -60,10 +60,10 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest experiment type for other"(){
         given:
-        findMatchingRepositories.validateDesicion("other")
+        findMatchingRepositories.validateDecision("other")
 
         when:
-        findMatchingRepositories.validateDesicion("variants")
+        findMatchingRepositories.validateDecision("variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
@@ -74,11 +74,11 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest repository type for other,variants,structural"(){
         given:
-        findMatchingRepositories.validateDesicion("other")
-        findMatchingRepositories.validateDesicion("variants")
+        findMatchingRepositories.validateDecision("other")
+        findMatchingRepositories.validateDecision("variants")
 
         when:
-        findMatchingRepositories.validateDesicion("structural variants")
+        findMatchingRepositories.validateDecision("structural variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)

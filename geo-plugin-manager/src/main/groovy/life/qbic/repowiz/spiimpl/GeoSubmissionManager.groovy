@@ -30,7 +30,7 @@ class GeoSubmissionManager implements SubmissionManager{
         //todo check if all required fields are filled
         HashMap props = model.getAllProperties()
         List missingFields = geoSubmission.determineMissingFields(props)
-        geoSubmission.writeToWorkbook(props)
+        geoSubmission.writeToWorkbook(props) //todo geoSubmission is null when this code is executed!!
 
         //todo mark required field values in output sheet
 

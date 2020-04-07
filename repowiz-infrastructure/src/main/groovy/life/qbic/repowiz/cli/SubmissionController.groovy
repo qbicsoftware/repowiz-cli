@@ -1,7 +1,6 @@
 package life.qbic.repowiz.cli
 
-import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi
-import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
+
 import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
@@ -10,12 +9,10 @@ import life.qbic.repowiz.finalise.Loader
 import life.qbic.repowiz.finalise.TargetRepository
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
-import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.prepare.PrepareSubmissionImpl
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
-import life.qbic.repowiz.prepare.openBis.OpenBisSession
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher
 import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
@@ -45,17 +42,19 @@ class SubmissionController implements PropertyChangeListener{
     private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
 
 
-    SubmissionController(CommandlineView view, String projectID, ProjectSearcher searcher, Loader loader) {
+    SubmissionController(CommandlineView view, String projectID, ProjectSearcher searcher, Loader loader, List<String> repoFileNames) {
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)
+
+        //define local database
+        projectSearch = searcher
 
         //set up infrastructure for loading repositories
         repository = new TargetRepository(loader)
 
         // set up repository database
-        repoDescription = new RepositoryDatabaseConnector()
-
+        repoDescription = new RepositoryDatabaseConnector("repositories","repositories/repository.schema.json",repoFileNames)
     }
 
 
@@ -88,8 +87,7 @@ class SubmissionController implements PropertyChangeListener{
 
         projectSearch.addProjectSearchOutput(prepareSubmission)
 
-
-        selectRepository = new SelectRepository(prepareHandler)
+        selectRepository = new SelectRepository(prepareHandler,repoDescription)
         SubmissionHandler selectHandler = new SubmissionHandler(selectRepository, presenter)
 
         findRepository = new FindMatchingRepositories(selectHandler, repoDescription)
@@ -104,7 +102,7 @@ class SubmissionController implements PropertyChangeListener{
 
         switch (answer){
             case AnswerTypes.DECISION.label:
-                findRepository.validateDesicion(userAnswer)
+                findRepository.validateDecision(userAnswer)
                 break
             case AnswerTypes.REPOSITORY.label:
                 selectRepository.validateSelectedRepository(userAnswer)

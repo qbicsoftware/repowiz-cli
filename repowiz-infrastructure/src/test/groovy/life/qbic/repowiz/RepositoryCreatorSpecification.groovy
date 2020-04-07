@@ -1,6 +1,5 @@
 package life.qbic.repowiz
 
-import groovy.json.JsonOutput
 import spock.lang.Specification
 
 class RepositoryCreatorSpecification extends Specification {
@@ -16,30 +15,11 @@ class RepositoryCreatorSpecification extends Specification {
         subsequentSteps: ["",""]]
 
         when:
-        RepositoryCreator creator = new RepositoryCreator()
-        Repository repo = creator.createRepository(test)
-        print repo.repositoryName
+        RepositoryCreator creator = new RepositoryCreator(test)
+        Repository repo = creator.create()
 
         then:
         repo != null
     }
 
-    def "create a valid repository with exception"(){
-        given:
-        Map test = [repositoryName: "name",
-                    uploadTypes: ["hts"],
-                    uploadFormat: "template",
-                    uploadRequirements: ["need valid identifier"],
-                    characteristics: [size: "size"],
-                    subsequentSteps: ["",""]]
-
-        when:
-        RepositoryCreator creator = new RepositoryCreator()
-        Repository repo = creator.createRepository(test)
-
-        println new Repository().repositoryName
-
-        then:
-        repo != null
-    }
 }

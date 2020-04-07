@@ -2,7 +2,6 @@ package life.qbic.repowiz.io
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.networknt.schema.BaseJsonValidator
 import com.networknt.schema.JsonSchema
 import com.networknt.schema.JsonSchemaFactory
 import com.networknt.schema.ValidationMessage
@@ -14,39 +13,26 @@ import org.apache.logging.log4j.Logger
 
 class JsonParser {//implements TemplateParser{
 
-    private Map jsonFile
+    private InputStream stream
 
     private static final Logger LOG = LogManager.getLogger(JsonParser.class)
 
-    def parseAsFile(String jsonFile)throws IOException{
-        //todo should not load from class when user forwards config file path
-        String file = JsonParser.class.getClassLoader().getResource(jsonFile).getPath()
-
-        if(file != null) return new JsonSlurper().parseText(new File (file).text)
-
-        throw new IOException("The specified file was not found: "+jsonFile)
+    JsonParser(InputStream stream){
+        this.stream = stream
     }
 
-    def parseAsStream(String jsonFile)throws IOException{
-        //todo should not load from class when user forwards conifg file path
-        InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream(jsonFile)
-
-        if(stream != null) return new JsonSlurper().parseText(stream.text)
-
-        throw new IOException("The specified file was not found: "+jsonFile)
-    }
-
-    void getMapFromJsonFile(String jsonFilePath){
-        def json = parseAsStream(jsonFilePath)
+    Map parse(){
+        def json = new JsonSlurper().parseText(stream.text)
 
         assert json instanceof Map
 
-         jsonFile = (Map) json
+        return  (Map) json
     }
 
-    def validate(String schemaPath){
+
+    def validate(String schemaPath, Map data){
         JsonSchema schema = getJsonSchemaFromClasspath(schemaPath)
-        JsonNode node = getJsonNodeFromMapContent(jsonFile)
+        JsonNode node = getJsonNodeFromMapContent(data)
         Set<ValidationMessage> errors = schema.validate(node)
 
         if(errors.size() != 0){
@@ -55,7 +41,6 @@ class JsonParser {//implements TemplateParser{
     }
 
     protected JsonNode getJsonNodeFromMapContent(Map content) throws Exception {
-
         ObjectMapper mapper = new ObjectMapper()
         JsonNode node = mapper.readTree(JsonOutput.toJson(content))
 
@@ -66,6 +51,7 @@ class JsonParser {//implements TemplateParser{
         JsonSchemaFactory factory = JsonSchemaFactory.instance
         InputStream is = JsonParser.class.getClassLoader().getResourceAsStream(name)
         JsonSchema schema = factory.getSchema(is)
+
         return schema
     }
 }

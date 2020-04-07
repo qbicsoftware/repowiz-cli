@@ -10,8 +10,8 @@ class SubmissionPresenter {
         this.output = output
     }
 
-    String requestAnswer(AnswerTypes type, List < String > choices){
-        HashMap map = listToMap(choices) //todo rename: adds numbers for the users choice
+    void requestAnswer(AnswerTypes type, List < String > choices){
+        HashMap map = formatList(choices) //todo rename: adds numbers for the users choice
         output.displayQuestion(type,map)
     }
 
@@ -23,7 +23,7 @@ class SubmissionPresenter {
         output.displayDecisionOverview(decisions)
     }
 
-    def listToMap(List elements){
+    def formatList(List elements){
         HashMap map = new HashMap()
         int counter = 1
 
@@ -33,6 +33,5 @@ class SubmissionPresenter {
         }
         return map
     }
-
 
 }

@@ -20,14 +20,10 @@ class SelectRepository implements SelectRepositoryInput{
         this.output = output
     }
 
-    SelectRepository(SelectRepositoryOutput output) {
-        SelectRepository(output,null)
-    }
-
     @Override
     def selectRepository(String repository) {
         //check if repository is in database
-        Repository selectedRepository = repositoryDescription.findRepository([repository]).get(0)
+        Repository selectedRepository = repositoryDescription.findRepository(repository)
 
         if(selectedRepository != null){
             //forward valid repo to output
