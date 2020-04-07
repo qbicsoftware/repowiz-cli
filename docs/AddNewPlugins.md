@@ -27,3 +27,5 @@ to transfer the loaded data back into the domain.
 
 2. It is adviced to move further implementations like session connections and mapper into separate classes.
 See the exemplary implementation for openbis in the infrastructure module prepare/openbis.
+
+## Implementing the RepoWiz Metadata Structure

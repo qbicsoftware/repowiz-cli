@@ -1,5 +1,9 @@
 package life.qbic.repowiz.io
 
+import com.networknt.schema.JsonSchema
+import groovy.json.JsonOutput
+import life.qbic.repowiz.Repository
+import life.qbic.repowiz.RepositoryCreator
 import spock.lang.Specification
 
 class JsonParserSpecification extends Specification {
@@ -23,5 +27,41 @@ class JsonParserSpecification extends Specification {
 
         then:
         res.get("repositoryName") == "Geo"
+    }
+
+    def "load schema successfully"(){
+        given:
+        JsonParser parser = new JsonParser()
+
+        when:
+        def schema = parser.getJsonSchemaFromClasspath("repositories/repository.schema.json")
+
+        then:
+        schema != null
+    }
+
+    def "parse schema successfully"(){
+        given:
+        JsonParser parser = new JsonParser()
+        parser.getMapFromJsonFile("repositories/clinvar.json")
+
+        when:
+        parser.validate("repositories/repository.schema.json")
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "throw exception for wrong json data"(){
+        given:
+        JsonParser parser = new JsonParser()
+        parser.getMapFromJsonFile("repositories/invalidRepository.json")
+
+        when:
+        parser.validate("repositories/repository.schema.json")
+
+
+        then:
+        thrown IllegalArgumentException
     }
 }

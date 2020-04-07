@@ -1,0 +1,8 @@
+{
+  "dataType": "variants",
+  "uploadType": ["lite", "full"],
+  "uploadFormat": "template",
+  "uploadRequirements": ["miame",""],
+  "size": "size in wrong format",
+  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
+}
