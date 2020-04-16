@@ -27,7 +27,7 @@
         "template"
       ]
     },
-    "uploadType": {
+    "uploadTypes": {
       "description": "List of accepted experiment types like e.g microarray data",
       "type": "array",
       "items": {
@@ -49,6 +49,6 @@
       }
     }
   },
-  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadType","size", "uploadFormat"]
+  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes","size", "uploadFormat"]
 }
 

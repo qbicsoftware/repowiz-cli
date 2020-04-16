@@ -1,6 +1,6 @@
 {
   "dataType": "variants",
-  "uploadType": ["lite", "full"],
+  "uploadTypes": ["lite", "full"],
   "uploadFormat": "template",
   "uploadRequirements": ["miame",""],
   "size": "size in wrong format",

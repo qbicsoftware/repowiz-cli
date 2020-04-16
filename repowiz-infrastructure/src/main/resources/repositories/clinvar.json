@@ -1,7 +1,7 @@
 {
   "repositoryName": "ClinVar",
   "dataType": "variants",
-  "uploadType": ["lite", "full"],
+  "uploadTypes": ["lite", "full"],
   "uploadFormat": "template",
   "uploadRequirements": ["miame",""],
   "size": {"number":5 , "unit":"ddd"},
