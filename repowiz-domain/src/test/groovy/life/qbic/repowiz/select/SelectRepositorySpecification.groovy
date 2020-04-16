@@ -1,6 +1,6 @@
 package life.qbic.repowiz.select
 
-import life.qbic.repowiz.ProjectDetails
+
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import spock.lang.Specification
@@ -12,17 +12,57 @@ class SelectRepositorySpecification extends Specification{
 
     def selectRepository = new SelectRepository(output,repositoryDescription)
 
-   /**
-    * todo test that
-    * def "typo in repository name gives a warning"(){
-
-    }*/
-
     def "defining non suggested repository returns null"(){
-        Repository repo = new Repository("clinvar","",[""],"",[""])
+        given:
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
+        selectRepository.setSuggestedRepos([repo])
+
         when:
-        def res = selectRepository.findMatchingRepository("clinvaar",[repo])
+        def res = selectRepository.isValidRepository("clinvaar")
+
         then:
-        res == null
+        !res
+    }
+
+    def "defining valid repository "(){
+        given:
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
+        selectRepository.setSuggestedRepos([repo])
+
+        when:
+        def res = selectRepository.isValidRepository("clinvar")
+
+        then:
+        res
+    }
+
+    def "retrieve correct repository"(){
+        given:
+        Repository repo = new Repository(repositoryName:"clinvar",
+                dataType: "",
+                uploadTypes: [],
+                uploadFormat: "",
+                uploadRequirements:[],
+                characteristics: ["size":"100"],
+                subsequentSteps: ["",""])
+        selectRepository.setSuggestedRepos([repo])
+
+        when:
+        def res = selectRepository.getValidRepository("clinvar")
+
+        then:
+        res == repo
     }
 }

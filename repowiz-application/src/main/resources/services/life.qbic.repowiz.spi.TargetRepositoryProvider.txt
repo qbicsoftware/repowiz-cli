@@ -1,0 +1,2 @@
+life.qbic.repowiz.spiimpl.GeoTargetRepositoryProvider
+life.qbic.repowiz.spiimpl.ClinvarTargetRepositoryProvider

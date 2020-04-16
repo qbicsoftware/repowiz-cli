@@ -1,28 +1,18 @@
 package life.qbic.repowiz
 
+import groovy.transform.MapConstructor
+
+@MapConstructor
 class Repository {
+    //the map constructor annotation creates a constructor that accepts a map and fills the above variables from the map
 
-    String name
-    String repositoryType
-    List<String> experimentTypes
-    String uploadType
+    String repositoryName
+    String dataType
+    List<String> uploadTypes
+    String uploadFormat
     List<String> uploadRequirements //todo is that really a list or is other data structure more useful?
-
     HashMap<String,String> characteristics
     ArrayList<String> subsequentSteps
 
-
-    Repository(String name, String repositoryType, List<String> experimentTypes, String uploadType, List<String> uploadRequirements){
-        this.name = name
-        this.repositoryType = repositoryType
-        this.experimentTypes = experimentTypes
-        this.uploadType = uploadType
-        this.uploadRequirements = uploadRequirements
-    }
-
-    //add further repository characteristics if required
-    void addCharacteristic(String key, String value){
-
-    }
 
 }

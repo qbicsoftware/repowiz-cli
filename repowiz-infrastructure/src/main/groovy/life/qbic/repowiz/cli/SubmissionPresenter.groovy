@@ -1,6 +1,6 @@
 package life.qbic.repowiz.cli
 
-import life.qbic.repowiz.cli.CommandlineView
+import life.qbic.repowiz.observer.AnswerTypes
 
 class SubmissionPresenter {
 
@@ -10,41 +10,28 @@ class SubmissionPresenter {
         this.output = output
     }
 
-    String requestAnswer(List<String> choices){
-
-        String formattedChoices = "> Please choose one of the following options: \n> "
-
-        choices.each {
-            formattedChoices += "$it, "
-        }
-        
-        String answer = output.userAnswer(formattedChoices)
-
-        return answer.toLowerCase()
+    void requestAnswer(AnswerTypes type, List < String > choices){
+        HashMap map = formatList(choices) //todo rename: adds numbers for the users choice
+        output.displayQuestion(type,map)
     }
 
-    def displayDecisions(List<String> decisions){
-
-        String formattedDecisions = "> You selected: "
-
-        decisions.each {
-            formattedDecisions += "$it "
-        }
-
-        output.displayDecisionOverview(formattedDecisions)
+    def displayUserChoices(List<String> decisions){
+        output.displayDecisionOverview(decisions)
     }
 
-    def chooseRepository(List<String> repos){
-        String choose = "> Please choose one of the following repositories: "
-
-        repos.each {
-            choose += "\n> $it"
-        }
-
-        String answer = output.userAnswer(choose)
-
-        return answer.toLowerCase()
+    def displayUserInformation(List<String> decisions){
+        output.displayDecisionOverview(decisions)
     }
 
+    def formatList(List elements){
+        HashMap map = new HashMap()
+        int counter = 1
+
+        elements.each {
+            map.put(counter, it)
+            counter ++
+        }
+        return map
+    }
 
 }

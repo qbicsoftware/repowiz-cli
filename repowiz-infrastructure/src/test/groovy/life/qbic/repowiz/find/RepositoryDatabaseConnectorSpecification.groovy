@@ -1,59 +1,54 @@
 package life.qbic.repowiz.find
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.utils.IO
+import life.qbic.repowiz.RepositoryDatabaseConnector
+import life.qbic.repowiz.io.JsonParser
 import spock.lang.Specification
 
 class RepositoryDatabaseConnectorSpecification extends Specification{
 
-    RepositoryDatabaseConnector connector = new RepositoryDatabaseConnector()
+    List<String> validRepos = ["geo.json","clinvar.json"]
+
+    RepositoryDatabaseConnector connector = new RepositoryDatabaseConnector("repositories","repositories/repository.schema.json",validRepos)
 
     def "valid repo file parsing"(){
-        given:
-        InputStream fileStream = connector.getClass().getResourceAsStream("/repositories/geo.json")
-        def repoInfo = IO.parseJsonStream(fileStream)
-
         when:
-        assert repoInfo instanceof Map
-        Repository repo = connector.createRepoFromJSON(repoInfo)
-        print repoInfo
+        Repository repo = connector.findRepository("geo")
 
         then:
-        repo.name == "Geo"
-        repo.experimentTypes == ["Microarray","HTS","other (NanoString, RT-PCR, SAGE)"]
-
-
+        repo.repositoryName == "Geo"
+        repo.uploadTypes == ["affymetrix_GE", "hts"]
     }
 
     def "find repository file"(){
         when:
-        def res = connector.findRepository(["geo"])
+        Repository res = connector.findRepository("geo")
         then:
-        res.get(0).name == "Geo"
+        res.repositoryName == "Geo"
     }
 
     def "multiple repositories are found"(){
         when:
-        def res = connector.findRepository(["clinvar","geo"])
+        List res = connector.findRepositories(["clinvar","geo"])
         then:
         res.size() == 2
         res.each {
-            if(it.name == "Geo" ||it.name == "ClinVar")
+            if(it.repositoryName == "Geo" ||it.repositoryName == "ClinVar")
                 true
         }
     }
 
     def "invalid repository not found"(){
         when:
-        def res = connector.findRepository(["ega"])
+        Repository res = connector.findRepository("ega")
         then:
-        res.empty
+        thrown NullPointerException
     }
 
     def "upper_case repository not found"(){
         when:
-        def res = connector.findRepository(["GEO"])
+        Repository res = connector.findRepository("GEO")
         then:
-        res.empty
+        thrown NullPointerException
     }
 }

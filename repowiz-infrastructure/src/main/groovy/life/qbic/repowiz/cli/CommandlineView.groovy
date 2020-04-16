@@ -1,11 +1,18 @@
 package life.qbic.repowiz.cli
 
+import life.qbic.repowiz.observer.AnswerTypes
+import life.qbic.repowiz.observer.UserAnswer
+
 interface CommandlineView {
 
     //handle input
-    String userAnswer(String question)
+    void displayQuestion(AnswerTypes type, HashMap <Integer,String> choices)
 
     //only display
-    def displayDecisionOverview(String decisions)
+    void displayDecisionOverview(List<String> decisions)
+    void displayInformation(List<String> info)
+    void displayInformation(String info)
+
+    void setUserAnswer(UserAnswer answer)
 
 }

@@ -1,4 +1,4 @@
-{ "$schema": "http://json-schema.org/schema#",
+{
   "title": "repository description",
   "description": "Description schema for different types of repositories for the tool RepoWiz",
   "type": "object",
@@ -19,7 +19,7 @@
         }
       }
     },
-    "uploadType": {
+    "uploadFormat": {
       "description": "Upload type of the repository, is there an API or is it a submission based on a template",
       "type": "string",
       "enum": [
@@ -27,7 +27,7 @@
         "template"
       ]
     },
-    "experimentType": {
+    "uploadTypes": {
       "description": "List of accepted experiment types like e.g microarray data",
       "type": "array",
       "items": {
@@ -48,6 +48,7 @@
         "type": "string"
       }
     }
-  }
+  },
+  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes","size", "uploadFormat"]
 }
 

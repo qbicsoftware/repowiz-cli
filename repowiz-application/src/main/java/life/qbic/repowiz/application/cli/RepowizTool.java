@@ -1,64 +1,119 @@
 package life.qbic.repowiz.application.cli;
 
-import life.qbic.cli.QBiCTool;
-import life.qbic.repowiz.*;
+import ch.ethz.sis.openbis.generic.asapi.v3.IApplicationServerApi;
+import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi;
+import life.qbic.repowiz.application.spi.RepositoryLoaderJava;
 import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
-import life.qbic.repowiz.cli.SubmissionPresenter;
-import life.qbic.repowiz.find.FindMatchingRepositories;
-import life.qbic.repowiz.find.RepositoryDatabaseConnector;
-import life.qbic.repowiz.select.SelectRepository;
+
+import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider;
+import life.qbic.repowiz.io.JsonParser;
+import life.qbic.repowiz.observer.UserAnswer;
+import life.qbic.repowiz.prepare.openBis.OpenBisSession;
+import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
  */
-public class RepowizTool extends QBiCTool<RepowizCommand> {
+public class RepowizTool{
 
     private static final Logger LOG = LogManager.getLogger(RepowizTool.class);
 
-    /**
-     * Constructor.
-     * 
-     * @param command an object that represents the parsed command-line arguments.
-     */
-    public RepowizTool(final RepowizCommand command) {
-        super(command);
+    private SubmissionController controller;
+    private CommandlineView commandlineView = new RepoWizView();
+
+
+    public RepowizTool(String projectID, String config){
+        // set up infrastructure classes
+        ProjectSearcher searcher = setupLocalDatabaseConnection(config);
+        List<String> repos = getImplementedRepositoriesAsList();
+
+        controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
+
+        UserAnswer answer = new UserAnswer();
+        answer.addPropertyChangeListener(controller);
+
+        commandlineView.setUserAnswer(answer);
     }
 
-    @Override
-    public void execute() {
-        // get the parsed command-line arguments
-        final RepowizCommand command = super.getCommand();
+    public RepowizTool(){
+        //add spi provider here!
+    }
 
-        // set up infrastructure classes
-        CommandlineView commandlineView = new RepoWizView();
-        SubmissionPresenter presenter = new SubmissionPresenter(commandlineView);
+    public void executeFindRepository(){
+        controller.initWithGuide();
+    }
+    public void executeSelectRepository(String selectedRepository) {
+        controller.initWithSelection(selectedRepository);
+    }
 
-        SubmissionHandler handler = new SubmissionHandler(presenter);
+    public void executeListing(){
+        RepositoryLoaderJava loader = new RepositoryLoaderJava();
+        try{
+            List<TargetRepositoryProvider> providers = loader.load();
 
-        // set up database
-        RepositoryDescription repoDescription = new RepositoryDatabaseConnector();
-        SelectRepository selectRepository = new SelectRepository(handler,repoDescription);
+            List<String> repoNames = new ArrayList<>();
+            for (TargetRepositoryProvider provider:providers) {
+                repoNames.add(provider.getProviderName());
+            }
 
+            commandlineView.displayInformation("The following Repositories are implemented: ");
+            commandlineView.displayInformation(repoNames);
 
-        if(command.guide){
-            //set up first use case
-            FindMatchingRepositories findRepository = new FindMatchingRepositories(handler,repoDescription);
-            SubmissionController controller = new SubmissionController(command.conf,findRepository);
-
-            controller.findRepository();
-            //handler.addRepositoryInput(selectRepository);
-
+        }catch (Exception e){
+            LOG.error("Cannot load the implemented Plugins");
+            e.printStackTrace();
         }
-        else{
-            //System.out.println("You selected "+command.selectedRepository);
-            SubmissionController controller = new SubmissionController(command.conf,selectRepository);
-            System.out.println(command.selectedRepository);
-            controller.chooseRepo(command.selectedRepository);
+    }
+
+    //method to manage the local database connection (input domain)
+    private ProjectSearcher setupLocalDatabaseConnection(String config) {
+        //local database connection
+        try {
+            InputStream stream = new FileInputStream(config);
+            JsonParser confParser = new JsonParser(stream);
+
+            Map conf = confParser.parse();
+            OpenBisSession session = new OpenBisSession((String) conf.get("user"), (String) conf.get("password"), (String) conf.get("server_url"));
+
+            String sessionToken = session.getSessionToken();
+            IApplicationServerApi v3 = session.getV3();
+            IDataStoreServerApi dss = session.getDss();
+
+            return new ProjectSearcher(v3, dss, sessionToken);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        return null;
+    }
+
+    private static List<String> getImplementedRepositoriesAsList(){
+        List<String> repos = new ArrayList<>();
+        String fileName = "services/RepositoryJsonFiles.txt";
+
+        try{
+            InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
+            assert stream != null;
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            for (String line; (line = reader.readLine()) != null; ) {
+                repos.add(line);
+            }
+
+        }catch (IOException io){
+           io.printStackTrace();
         }
 
+        return repos;
     }
 }

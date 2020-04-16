@@ -2,7 +2,6 @@ package life.qbic.repowiz.find
 
 
 import life.qbic.repowiz.RepositoryDescription
-import life.qbic.repowiz.find.tree.DecisionTree
 import spock.lang.Specification
 
 class FindMatchingRepositoriesSpecification extends Specification {
@@ -24,7 +23,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "wrong name"(){
         when:
-        boolean res = findMatchingRepositories.nextAnswerPossibility("HUUMAN")
+        boolean res = findMatchingRepositories.validateDecision("HUUMAN")
 
         then:
         !res
@@ -32,7 +31,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "case sensitive"(){
         when:
-        boolean res = findMatchingRepositories.nextAnswerPossibility("Human")
+        boolean res = findMatchingRepositories.validateDecision("Human")
 
         then:
         !res
@@ -41,45 +40,45 @@ class FindMatchingRepositoriesSpecification extends Specification {
 
     def "suggest access type for human as organism"(){
         when:
-        findMatchingRepositories.nextAnswerPossibility("human")
+        findMatchingRepositories.validateDecision("human")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["open","controlled"].sort()
+        res.sort() == ["open access","controlled access"].sort()
     }
 
     def "suggest data type for other as organism"(){
         when:
-        findMatchingRepositories.nextAnswerPossibility("other")
+        findMatchingRepositories.validateDecision("other")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["variants","expression_data","dna_rna","protein"].sort()
+        res.sort() == ["variants","expression data","dna/rna","protein"].sort()
     }
 
     def "suggest experiment type for other"(){
         given:
-        findMatchingRepositories.nextAnswerPossibility("other")
+        findMatchingRepositories.validateDecision("other")
 
         when:
-        findMatchingRepositories.nextAnswerPossibility("variants")
+        findMatchingRepositories.validateDecision("variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["structural_variants","genetic_variants"].sort()
+        res.sort() == ["structural variants","genetic variants"].sort()
     }
 
     def "suggest repository type for other,variants,structural"(){
         given:
-        findMatchingRepositories.nextAnswerPossibility("other")
-        findMatchingRepositories.nextAnswerPossibility("variants")
+        findMatchingRepositories.validateDecision("other")
+        findMatchingRepositories.validateDecision("variants")
 
         when:
-        findMatchingRepositories.nextAnswerPossibility("structural_variants")
+        findMatchingRepositories.validateDecision("structural variants")
 
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)

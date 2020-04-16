@@ -3,10 +3,17 @@ package life.qbic.repowiz.select
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 
-class SelectRepository implements SelectRepositoryInput {
+import org.apache.logging.log4j.LogManager
+import org.apache.logging.log4j.Logger
+
+class SelectRepository implements SelectRepositoryInput{
 
     RepositoryDescription repositoryDescription
     SelectRepositoryOutput output
+
+    List<Repository> suggestedRepos
+
+    private static final Logger LOG = LogManager.getLogger(SelectRepository.class)
 
     SelectRepository(SelectRepositoryOutput output, RepositoryDescription description) {
         repositoryDescription = description
@@ -16,7 +23,7 @@ class SelectRepository implements SelectRepositoryInput {
     @Override
     def selectRepository(String repository) {
         //check if repository is in database
-        Repository selectedRepository = repositoryDescription.findRepository([repository]).get(0)
+        Repository selectedRepository = repositoryDescription.findRepository(repository)
 
         if(selectedRepository != null){
             //forward valid repo to output
@@ -24,7 +31,8 @@ class SelectRepository implements SelectRepositoryInput {
             return true
         }
         else{
-            println "No valid repository was selected"
+            LOG.error "No valid repository was selected"
+            System.exit(-1) //do that this way? which code to use?
             return false
         }
     }
@@ -34,26 +42,49 @@ class SelectRepository implements SelectRepositoryInput {
         //validate if repository can be selected?
         List<String> nameList = getRepositoryNameList(suggestedRepos)
 
-        String user_choice = output.chooseRepository(nameList)
+        this.suggestedRepos = suggestedRepos
 
-        output.selectedRepository(findMatchingRepository(user_choice,suggestedRepos))
+        output.chooseRepository(nameList)
+    }
 
+    @Override
+    def validateSelectedRepository(String answer) {
+
+        if(isValidRepository(answer)){
+            output.selectedRepository(getValidRepository(answer))
+        }
+        else {
+            LOG.error "No valid repository was selected"
+            System.exit(-1)
+        }
     }
 
     List<String> getRepositoryNameList(List<Repository> suggestedRepo){
         List<String> repoNames = []
         suggestedRepo.each {
-            repoNames << it.name
+            repoNames << it.repositoryName
         }
         return repoNames
     }
 
-    def findMatchingRepository(String user_choice, List<Repository> suggested){
+    boolean isValidRepository(String user_choice){
+        boolean validChoice = false
+
+        suggestedRepos.each {
+            if(it.repositoryName == user_choice){
+               validChoice = true
+            }
+        }
+
+        return validChoice
+    }
+
+    Repository getValidRepository(String user_choice){
         Repository validChoice = null
 
-        suggested.each {
-            if(it.name == user_choice){
-               validChoice = it
+        suggestedRepos.each {
+            if(it.repositoryName == user_choice){
+                validChoice = it
             }
         }
 

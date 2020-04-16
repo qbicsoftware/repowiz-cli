@@ -1,0 +1,37 @@
+#geoterm,repoWizTerm
+series_title,project title
+series_summary,summary
+series_overall design,design
+series_contributor,contributor
+series_supplementary file,supplementary file
+series_SRA_center_name_code,SRA_center_name_code
+samples_Sample name,sample name
+samples_title,sample title
+samples_source name,source name
+samples_organism,organism
+samples_characteristics: tag,characteristics: tag
+samples_molecule,molecule
+samples_description,sample description
+samples_processed data file,processed data file
+samples_raw file,raw file
+protocols_growth protocol,growth protocol
+protocols_treatment protocol,treatment protocol
+protocols_extract protocol,extract protocol
+protocols_library construction protocol,library protocol
+protocols_library strategy,sequencing type
+data processing pipeline_data processing step,data processing step
+data processing pipeline_genome build,ref genome
+data processing pipeline_processed data files format and content,processed data files format and content
+processed data files_file name,processed file name
+processed data files_file type,processed file type
+processed data files_file checksum,processed file checksum
+raw files_file name,raw file name
+raw files_file type,raw file type
+raw files_file checksum,raw file checksum
+raw files_instrument model,instrument model
+raw files_read length,read length
+raw files_single or paired-end,sequencing mode
+paired-end experiments_file name 1,file name 1
+paired-end experiments_file name 2,file name 2
+paired-end experiments_average insert size,average insert size
+paired-end experiments_standard deviation,standard deviation

@@ -20,5 +20,5 @@
                 </exclusion>
             </exclusions>
         </dependency>
-     </dependencies>
+    </dependencies>
 </project>

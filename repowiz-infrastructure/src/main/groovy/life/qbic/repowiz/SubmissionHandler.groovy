@@ -1,15 +1,24 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.cli.SubmissionPresenter
+import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
+import life.qbic.repowiz.model.SubmissionModel
+import life.qbic.repowiz.observer.AnswerTypes
+import life.qbic.repowiz.prepare.PrepareSubmissionInput
+import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
+import life.qbic.repowiz.finalise.FinaliseSubmission
 
 //todo do i really want to keep one class implementing so many interfaces?
-class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput{
+class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput, SubmissionOutput{
+
+    SubmissionPresenter presenter
 
     SelectRepositoryInput repositoryInput
-    SubmissionPresenter presenter
+    PrepareSubmissionInput prepareSubmissionInput
+    FinaliseSubmission finaliseSubmissionInput
 
     SubmissionHandler(SubmissionPresenter presenter){
         this.presenter = presenter
@@ -20,37 +29,75 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         this.presenter = presenter
     }
 
-    def addRepositoryInput(SelectRepositoryInput input){
-        this.repositoryInput = input
+    SubmissionHandler(PrepareSubmissionInput prepareSubmissionInput, SubmissionPresenter presenter){
+        this.prepareSubmissionInput = prepareSubmissionInput
+        this.presenter = presenter
+    }
+
+    SubmissionHandler(FinaliseSubmission finaliseSubmissionInput, SubmissionPresenter presenter){
+        this.finaliseSubmissionInput = finaliseSubmissionInput
+        this.presenter = presenter
     }
 
     //MatchingRepositories output
     @Override
-    String transferAnswerPossibilities(List<String> choices) {
-        presenter.requestAnswer(choices)
+    def transferAnswerPossibilities(List<String> choices) {
+        presenter.requestAnswer(AnswerTypes.DECISION,choices)
     }
 
     @Override
-    String transferDecisionStack(List<String> decisions) {
-        presenter.displayDecisions(decisions)
+    def transferDecisionStack(List<String> decisions) {
+        presenter.displayUserChoices(decisions)
     }
 
     @Override
     def transferRepositoryList(List<Repository> repositories) {
         //let the user decide which repo he wants
-        repositoryInput.selectRepoFromSuggestions()
+        repositoryInput.selectRepoFromSuggestions(repositories)
     }
 
     //selectRepository output
     @Override
-    String chooseRepository(List<String> repositories) {
-        presenter.chooseRepository(repositories)
+    def chooseRepository(List<String> repositories) {
+        presenter.requestAnswer(AnswerTypes.REPOSITORY, repositories)
     }
 
     @Override
     def selectedRepository(Repository repository) {
-        println "You selected $repository.name"
+        presenter.displayUserChoices([repository.repositoryName])
+        prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
+    //prepare submission use case --> transfer to finalise submission
+    @Override
+    def finaliseSubmission(SubmissionModel submission, Repository repository) {
+        finaliseSubmissionInput.transferSubmissionData(submission, repository)
+    }
+
+    @Override
+    def transferQuestion(List<String> uploadTypes) { //todo rename: transfer uploadtypes from usecase to handler
+        presenter.requestAnswer(AnswerTypes.UPLOADTYPE,uploadTypes)
+    }
+
+    @Override
+    def displayAnswer(String choice) { //todo rename: selected uploadtype is shown
+        presenter.displayUserChoices([choice])
+    }
+
+    //finalise submission output
+    @Override
+    def displayUserInformation(String information) {
+        presenter.displayUserInformation(information as List<String>)
+    }
+
+    @Override
+    def displayUserInformation(List<String> text) {
+        presenter.displayUserInformation(text)
+    }
+
+    @Override
+    String verifySubmission(String verify) {
+        presenter.displayUserInformation(verify as List<String>)
+    }
 
 }

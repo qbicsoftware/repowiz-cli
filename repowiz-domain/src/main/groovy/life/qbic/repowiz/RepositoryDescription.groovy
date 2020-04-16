@@ -3,6 +3,7 @@ package life.qbic.repowiz
 
 interface RepositoryDescription {
 
-    List<Repository> findRepository(List<String> repositoryNames)
+    Repository findRepository(String fileURL)
+    List<Repository> findRepositories(List<String> repoNames)
 
 }
