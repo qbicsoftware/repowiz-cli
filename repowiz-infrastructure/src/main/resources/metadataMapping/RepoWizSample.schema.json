@@ -1,0 +1,145 @@
+{
+  "title": "RepoWizSample Object Mapping",
+  "description": "Mapping schema for metadata of the RepoWizSample object",
+  "definitions": {
+    "characteristic": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": ["label","value"]
+    }
+  },
+  "type": "object",
+  "properties": {
+    "sample name": {
+      "description": "Arbitrary unique identifier (internal reference, not shown) e.g Sample1, Sample2 ,...",
+      "type": "string"
+    },
+    "sample title": {
+      "description": "Unique title describing the sample",
+      "type": "string"
+    },
+    "source name": {
+      "description": "Biological material",
+      "type": "string"
+    },
+    "organism": {
+      "description":"Source organism of the sample",
+      "type": "string"
+    },
+    "characteristics": {
+      "description": "Biosource characteristic (label) with the value of the sample",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/characteristic"
+      }
+    },
+    "molecule": {
+      "description": "Type of molecule extracted from biological material",
+      "type": "string"
+    },
+    "sample description": {
+      "description": "Additional information not provided in the other fields",
+      "type": "string"
+    },
+    "processed data file": {
+      "description": "Name of the file containing the processed data",
+      "type": "string"
+    },
+    "raw file": {
+      "description": "Files containing the raw data",
+      "type": "string"
+    },
+    "growth protocol": {
+      "description": "Conditions that were used to grow or maintain organisms or cells prior to extract preparation.",
+      "type": "string"
+    },
+    "treatment protocol": {
+      "description": "Treatments applied to the biological material prior to extract preparation.",
+      "type": "string"
+    },
+    "extract protocol": {
+      "description": "Protocols used to extract and prepare the material to be sequenced",
+      "type": "string"
+    },
+    "library protocol": {
+      "description":"Library construction protocol",
+      "type": "string"
+    },
+    "sequencing type": {
+      "description": "Type of sequencing used for samples",
+      "enum": ["RNA-Seq", "miRNA-Seq", "ncRNA-Seq", "RNA-Seq (CAGE)", "RNA-Seq (RACE)", "ChIP-Seq", "MNase-Seq", "MBD-Seq",
+        "MRE-Seq", "Bisulfite-Seq" ," Bisulfite-Seq (reduced representation)", "nMeDIP-Seq", "DNase-Hypersensitivity",
+        "Tn-Seq"," FAIRE-seq", "SELEX", "RIP-Seq", "ChIA-PET", "OTHER"],
+      "type": "string"
+    },
+    "data processing step": {
+      "description": "Details/steps of how processed data were generated",
+      "type": "string"
+    },
+    "ref genome": {
+      "description":"UCSC or NCBI genome build number, or reference sequence used for read alignment",
+      "type": "string"
+    },
+    "processed data files format and content": {
+      "description": "For each processed data file type, provide a description of the format and content.",
+      "type": "string"
+    },
+    "processed file checksum": {
+      "description": "Checksum of processed file",
+      "type": "string"
+    },
+    "raw file checksum": {
+      "description": "Checksum of raw file",
+      "type": "string"
+    },
+    "file type": {
+      "description": "Type of File",
+      "type": "string"
+    },
+    "instrument model": {
+      "description": "Sequencing device",
+      "enum" : ["Illumina Genome Analyzer", "Illumina Genome Analyzer II", "Illumina Genome Analyzer IIx",
+        "Illumina HiSeq 2000", "Illumina HiSeq 1000", "Illumina MiSeq",
+        "AB SOLiD System", "AB SOLiD System 2.0"," AB SOLiD System 3.0", "AB SOLiD 4 System",
+        "AB SOLiD 4hq System", "AB SOLiD PI System", "AB 5500xl Genetic Analyzer",
+        "AB 5500 Genetic Analyzer",
+        "454 GS", "454 GS 20", "454 GS FLX", "454 GS Junior", "454 GS FLX Titanium",
+        "Helicos HeliScope"," PacBio RS", "PacBio RS II", "Complete Genomics", "Ion Torrent PGM"],
+      "type": "string"
+    },
+    "read length": {
+      "description": "Number of bases expected in each raw sequence. Put 0 for variable read length technologies",
+      "type": "integer"
+    },
+    "sequencing mode": {
+      "description": "Sequencing mode, single or paired-end",
+      "enum": ["single", "paired-end"],
+      "type": "string"
+    },
+    "file name 1": {
+      "description": "File name 1 for paired-end sequenced samples",
+      "type": "string"
+    },
+    "file name 2": {
+      "description": "File name 2 for paired-end sequenced samples",
+      "type": "string"
+    },
+    "average insert size": {
+      "description": "Average size of the insert for paired-end reads (excluding adapters, linkers, etc...) [only paired-end]",
+      "type": "integer"
+    },
+    "standard deviation": {
+      "description": "Standard deviation of insert size (typically ~10% of insert size) [only paired-end]",
+      "type": "string"
+    }
+  }
+}
+
+

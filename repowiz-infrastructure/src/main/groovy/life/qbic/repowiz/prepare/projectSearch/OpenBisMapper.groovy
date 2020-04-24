@@ -1,28 +1,25 @@
 package life.qbic.repowiz.prepare.projectSearch
 
 
-import life.qbic.repowiz.TemporaryDatabase
 import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class OpenBisMapper implements LocalDatabaseMapper{
+class OpenBisMapper {
 
-    //todo add interface for generalization
-    final HashMap toRepoWiz
+    final Map translateToRepoWiz
 
     private static final Logger LOG = LogManager.getLogger(OpenBisMapper.class)
 
-    OpenBisMapper(){
-        TemporaryDatabase temp = new TemporaryDatabase()
-        toRepoWiz = temp.openBisToRepoWiz
+    OpenBisMapper(Map translateToRepoWiz){
+        this.translateToRepoWiz = translateToRepoWiz
     }
 
     HashMap mapProperties(Map properties){
         HashMap repoWizTerms = new HashMap()
 
         properties.each {key, value ->
-            String repoWizTerm = toRepoWiz.get(key)
+            String repoWizTerm = translateToRepoWiz.get(key)
             if (repoWizTerm != null) repoWizTerms.put(repoWizTerm, value)
         }
         return repoWizTerms
@@ -30,12 +27,12 @@ class OpenBisMapper implements LocalDatabaseMapper{
 
     HashMap mapFiles(List files, String dataSetType){
         //keep all files in a list and separate them later on (cannot keep duplicate keys in hashmap)
-        return [ (toRepoWiz.get(dataSetType)) : files]
+        return [ (translateToRepoWiz.get(dataSetType)) : files]
     }
 
     HashMap mapConditions(List<Property> properties){
         HashMap map = new HashMap()
-        String repoWizTerm = toRepoWiz.get("Q_EXPERIMENTAL_SETUP") //todo do not hardcode??
+        String repoWizTerm = translateToRepoWiz.get("Q_EXPERIMENTAL_SETUP") //todo do not hardcode??
 
         if (properties != null) {
             properties.each { sampleProp ->

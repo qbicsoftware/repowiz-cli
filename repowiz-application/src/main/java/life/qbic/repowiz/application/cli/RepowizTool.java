@@ -11,12 +11,14 @@ import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider;
 import life.qbic.repowiz.io.JsonParser;
 import life.qbic.repowiz.observer.UserAnswer;
 import life.qbic.repowiz.prepare.openBis.OpenBisSession;
+import life.qbic.repowiz.prepare.projectSearch.OpenBisMapper;
 import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -87,14 +89,27 @@ public class RepowizTool{
             String sessionToken = session.getSessionToken();
             IApplicationServerApi v3 = session.getV3();
             IDataStoreServerApi dss = session.getDss();
+            OpenBisMapper mapper = setupMapper();
 
-            return new ProjectSearcher(v3, dss, sessionToken);
+            return new ProjectSearcher(v3, dss, sessionToken, mapper);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
         return null;
+    }
+
+    private OpenBisMapper setupMapper(){
+        //load data from file
+        String path = "metadataMapping/openbisMapping.json";
+
+        InputStream stream = OpenBisMapper.class.getClassLoader().getResourceAsStream(path);
+        JsonParser jsonParser = new JsonParser(stream);
+
+        Map repoWizTerms = jsonParser.parse();
+
+        return new OpenBisMapper(repoWizTerms);
     }
 
     private static List<String> getImplementedRepositoriesAsList(){

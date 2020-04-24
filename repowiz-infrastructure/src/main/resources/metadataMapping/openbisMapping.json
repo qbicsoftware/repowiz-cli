@@ -1,0 +1,13 @@
+{
+  "Q_PROJECT_DETAILS": "design",
+  "Q_PRIMARY_TISSUE" : "source name",
+  "Q_NCBI_ORGANISM" : "organism",
+  "Q_EXPERIMENTAL_SETUP" : "characteristics",
+  "Q_SAMPLE_TYPE": "molecule",
+  "Q_ADDITIONAL_INFO_SAMPLE": "library protocol",
+  "Q_SEQUENCING_TYPE": "sequencing type",
+  "Q_ADDITIONAL_INFO_EXPERIMENT" : "ref genome",
+  "Q_SEQUENCER_DEVICE" : "instrument model",
+  "Q_SEQUENCING_MODE" : "sequencing mode",
+  "Q_NGS_RAW_DATA":"raw file"
+}

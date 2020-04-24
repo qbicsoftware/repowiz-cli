@@ -42,15 +42,16 @@ class ProjectSearcher implements ProjectSearchInput {
     RepoWizProject repoWizProject
     List repoWizSamples = []
 
-    OpenBisMapper mapper = new OpenBisMapper()
+    OpenBisMapper mapper
 
     ConditionParser conditionParser
 
-    ProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session) {
+    ProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session, OpenBisMapper mapper) {
         this.v3 = v3
         this.dss = dss
 
         sessionToken = session
+        this.mapper = mapper
     }
 
     def addProjectSearchOutput(ProjectSearchOutput out) {
