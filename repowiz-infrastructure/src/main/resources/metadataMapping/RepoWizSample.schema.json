@@ -54,7 +54,10 @@
     },
     "raw file": {
       "description": "Files containing the raw data",
-      "type": "string"
+      "type": "array",
+      "item": {
+        "type": "string"
+      }
     },
     "growth protocol": {
       "description": "Conditions that were used to grow or maintain organisms or cells prior to extract preparation.",

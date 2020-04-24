@@ -89,9 +89,14 @@ public class RepowizTool{
             String sessionToken = session.getSessionToken();
             IApplicationServerApi v3 = session.getV3();
             IDataStoreServerApi dss = session.getDss();
+
             OpenBisMapper mapper = setupMapper();
 
-            return new ProjectSearcher(v3, dss, sessionToken, mapper);
+            String projectSchema = "metadataMapping/RepoWizProject.schema.json";
+            String sampleSchema = "metadataMapping/RepoWizSample.schema.json";
+
+
+            return new ProjectSearcher(v3, dss, sessionToken, mapper, projectSchema, sampleSchema);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

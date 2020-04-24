@@ -5,14 +5,14 @@ import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class OpenBisMapper {
+class OpenBisMapper{
 
     final Map translateToRepoWiz
 
     private static final Logger LOG = LogManager.getLogger(OpenBisMapper.class)
 
-    OpenBisMapper(Map translateToRepoWiz){
-        this.translateToRepoWiz = translateToRepoWiz
+    OpenBisMapper(Map data){
+        translateToRepoWiz = data
     }
 
     HashMap mapProperties(Map properties){
@@ -20,6 +20,7 @@ class OpenBisMapper {
 
         properties.each {key, value ->
             String repoWizTerm = translateToRepoWiz.get(key)
+
             if (repoWizTerm != null) repoWizTerms.put(repoWizTerm, value)
         }
         return repoWizTerms

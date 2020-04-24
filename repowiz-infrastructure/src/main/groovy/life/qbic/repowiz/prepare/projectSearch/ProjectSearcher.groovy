@@ -18,6 +18,7 @@ import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.DataSetFile
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSetFileFetchOptions
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.search.DataSetFileSearchCriteria
+import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
 import life.qbic.repowiz.prepare.openBis.ConditionParser
@@ -32,6 +33,8 @@ class ProjectSearcher implements ProjectSearchInput {
     private static final Logger LOG = LogManager.getLogger(ProjectSearcher.class)
 
     Project project
+    String projectSchema
+    String sampleSchema
 
     IApplicationServerApi v3
     IDataStoreServerApi dss
@@ -46,12 +49,15 @@ class ProjectSearcher implements ProjectSearchInput {
 
     ConditionParser conditionParser
 
-    ProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session, OpenBisMapper mapper) {
+    ProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session, OpenBisMapper mapper, String projectSchema, String sampleSchema) {
         this.v3 = v3
         this.dss = dss
 
         sessionToken = session
+
         this.mapper = mapper
+        this.sampleSchema = sampleSchema
+        this.projectSchema = projectSchema
     }
 
     def addProjectSearchOutput(ProjectSearchOutput out) {
@@ -90,7 +96,11 @@ class ProjectSearcher implements ProjectSearchInput {
 
 
         //todo how to get rid of code here?
-        repoWizProject = new RepoWizProject(projectID, mapper.mapProperties(["Q_PROJECT_DETAILS":project.description]))
+        Map projectInfo =  mapper.mapProperties(["Q_PROJECT_DETAILS":project.description])
+        //validate the object
+        JsonParser.validate(projectSchema,projectInfo)
+
+        repoWizProject = new RepoWizProject(projectID,projectInfo)
 
         //prepare condition parse for samples
         project.experiments.each {exp ->
@@ -127,6 +137,8 @@ class ProjectSearcher implements ProjectSearchInput {
         samples.objects.each { sample ->
             //todo mapp the terms before adding to project!!!!!
             HashMap sampleProperties = collectProperties(sample)
+            println sampleProperties
+            JsonParser.validate(sampleSchema,sampleProperties)
 
             repoWizSamples << new RepoWizSample("Sample "+counter, sampleProperties)
             counter ++
@@ -154,7 +166,9 @@ class ProjectSearcher implements ProjectSearchInput {
 
         //map openBis vocabulary to readable names
         allProperties.each {key, value ->
-            if (StringUtils.isNumeric(value.toString())) getVocabulary(value.toString())
+            allProperties.put(key.toString(), getVocabulary(value.toString()))
+            //if (StringUtils.isNumeric(value.toString())) getVocabulary(value.toString())
+            //if (key == "sequencing mode") println getVocabulary(value.toString())
         }
 
         return allProperties
@@ -255,9 +269,11 @@ class ProjectSearcher implements ProjectSearchInput {
 
         SearchResult<VocabularyTerm> vocabularyTermSearchResult = v3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
 
-        String term =  vocabularyTermSearchResult.objects.get(0).label
-
-        return term
+        if(!vocabularyTermSearchResult.objects.empty && vocabularyTermSearchResult.objects.get(0).label != null){
+            return vocabularyTermSearchResult.objects.get(0).label
+        }else{
+            return code
+        }
     }
 
     private void checkSpaceAvailability() {

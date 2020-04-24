@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 
-class JsonParser {//implements TemplateParser{
+class JsonParser {
 
     private InputStream stream
 
@@ -30,7 +30,7 @@ class JsonParser {//implements TemplateParser{
     }
 
 
-    def validate(String schemaPath, Map data){
+    def static validate(String schemaPath, Map data){
         JsonSchema schema = getJsonSchemaFromClasspath(schemaPath)
         JsonNode node = getJsonNodeFromMapContent(data)
         Set<ValidationMessage> errors = schema.validate(node)
@@ -40,14 +40,14 @@ class JsonParser {//implements TemplateParser{
         }
     }
 
-    protected JsonNode getJsonNodeFromMapContent(Map content) throws Exception {
+    protected static JsonNode getJsonNodeFromMapContent(Map content) throws Exception {
         ObjectMapper mapper = new ObjectMapper()
         JsonNode node = mapper.readTree(JsonOutput.toJson(content))
 
         return node
     }
 
-    protected JsonSchema getJsonSchemaFromClasspath(String name) throws Exception {
+    protected static JsonSchema getJsonSchemaFromClasspath(String name) throws Exception {
         JsonSchemaFactory factory = JsonSchemaFactory.instance
         InputStream is = JsonParser.class.getClassLoader().getResourceAsStream(name)
         JsonSchema schema = factory.getSchema(is)
