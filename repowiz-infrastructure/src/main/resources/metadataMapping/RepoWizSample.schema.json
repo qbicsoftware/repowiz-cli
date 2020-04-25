@@ -109,7 +109,7 @@
     "instrument model": {
       "description": "Sequencing device",
       "enum" : ["Illumina Genome Analyzer", "Illumina Genome Analyzer II", "Illumina Genome Analyzer IIx",
-        "Illumina HiSeq 2000", "Illumina HiSeq 1000", "Illumina MiSeq",
+        "Illumina HiSeq 2000", "Illumina HiSeq 1000", "Illumina MiSeq", "Illumina HiSeq 2500",
         "AB SOLiD System", "AB SOLiD System 2.0"," AB SOLiD System 3.0", "AB SOLiD 4 System",
         "AB SOLiD 4hq System", "AB SOLiD PI System", "AB 5500xl Genetic Analyzer",
         "AB 5500 Genetic Analyzer",
@@ -123,7 +123,7 @@
     },
     "sequencing mode": {
       "description": "Sequencing mode, single or paired-end",
-      "enum": ["single", "paired-end"],
+      "enum": ["SINGLE", "PAIRED_END"],
       "type": "string"
     },
     "file name 1": {
@@ -140,6 +140,10 @@
     },
     "standard deviation": {
       "description": "Standard deviation of insert size (typically ~10% of insert size) [only paired-end]",
+      "type": "string"
+    },
+    "integrity number": {
+      "description": "RIN or DIN of the biological material",
       "type": "string"
     }
   }

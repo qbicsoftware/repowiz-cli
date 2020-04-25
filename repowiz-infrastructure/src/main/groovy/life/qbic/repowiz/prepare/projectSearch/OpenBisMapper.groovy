@@ -21,7 +21,8 @@ class OpenBisMapper{
         properties.each {key, value ->
             String repoWizTerm = translateToRepoWiz.get(key)
 
-            if (repoWizTerm != null) repoWizTerms.put(repoWizTerm, value)
+            if (key == "Q_SEQUENCER_DEVICE")  value = maskSeqDevice(value.toString())
+            if (repoWizTerm != null) repoWizTerms.put(repoWizTerm, value.toString().trim())
         }
         return repoWizTerms
     }
@@ -37,7 +38,7 @@ class OpenBisMapper{
 
         if (properties != null) {
             properties.each { sampleProp ->
-                String value = sampleProp.value
+                String value = sampleProp.value.trim()
                 String label = sampleProp.label
 
                 //if(sampleProp.unit) //todo what if there is a unit?
@@ -58,5 +59,13 @@ class OpenBisMapper{
             }
         }
         return masked
+    }
+
+    String maskSeqDevice(String device){
+        if(device.contains("at")){
+            String[] model = device.split("at")
+            return model[0]
+        }
+        return device
     }
 }

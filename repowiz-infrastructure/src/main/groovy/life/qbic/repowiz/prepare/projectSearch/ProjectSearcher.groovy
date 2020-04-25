@@ -148,9 +148,7 @@ class ProjectSearcher implements ProjectSearchInput {
 
     def collectProperties(Sample sample){
         HashMap<String,String> allProperties = new HashMap()
-
-        //todo mask openbis terms tissue, ncbi organism
-
+        //fetch info about experiments and related samples
         allProperties << fetchParentSamples(sample)
         allProperties << fetchChildSamples(sample)
 
@@ -158,7 +156,7 @@ class ProjectSearcher implements ProjectSearchInput {
         LOG.info "Fetching Data Set ..."
         allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
 
-        allProperties << mapper.mapProperties(mapper.maskDuplicateProperties(sample.type.code,sample.properties))
+        allProperties << mapper.maskDuplicateProperties(sample.type.code,sample.properties)
 
         //add conditions
         List<Property> res = conditionParser.getSampleCondition(sample.code)
@@ -167,9 +165,9 @@ class ProjectSearcher implements ProjectSearchInput {
         //map openBis vocabulary to readable names
         allProperties.each {key, value ->
             allProperties.put(key.toString(), getVocabulary(value.toString()))
-            //if (StringUtils.isNumeric(value.toString())) getVocabulary(value.toString())
-            //if (key == "sequencing mode") println getVocabulary(value.toString())
         }
+
+        allProperties = mapper.mapProperties(allProperties)
 
         return allProperties
     }
@@ -244,8 +242,8 @@ class ProjectSearcher implements ProjectSearchInput {
         HashMap childProperties = new HashMap()
         sample.children.each {child ->
             childProperties << mapper.mapConditions(conditionParser.getSampleCondition(child.code))
-            childProperties << mapper.mapProperties(mapper.maskDuplicateProperties(child.type.code, child.properties))
-            childProperties << mapper.mapProperties(mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties))
+            childProperties << mapper.maskDuplicateProperties(child.type.code, child.properties)
+            childProperties <<mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties)
             childProperties << fetchChildSamples(child)
         }
         return childProperties
@@ -255,8 +253,8 @@ class ProjectSearcher implements ProjectSearchInput {
         HashMap parentProperties = new HashMap()
         sample.parents.each {parent ->
             parentProperties << mapper.mapConditions(conditionParser.getSampleCondition(parent.code))
-            parentProperties << mapper.mapProperties(mapper.maskDuplicateProperties(parent.type.code, parent.properties))
-            parentProperties << mapper.mapProperties(mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties))
+            parentProperties << mapper.maskDuplicateProperties(parent.type.code, parent.properties)
+            parentProperties << mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties)
             parentProperties << fetchParentSamples(parent)
         }
         return parentProperties

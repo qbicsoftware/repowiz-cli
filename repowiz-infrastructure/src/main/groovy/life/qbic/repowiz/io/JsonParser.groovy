@@ -10,6 +10,8 @@ import groovy.json.JsonSlurper
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.time.Year
+
 
 class JsonParser {
 
@@ -36,7 +38,10 @@ class JsonParser {
         Set<ValidationMessage> errors = schema.validate(node)
 
         if(errors.size() != 0){
-            throw new IllegalArgumentException("The repository description is not valid. Check the repository.schema for detaild specification! $errors")
+            errors.each {error ->
+                LOG.error error.message
+            }
+            throw new IllegalArgumentException("The repository description is not valid. Check the repository.schema for detailed specification!")
         }
     }
 

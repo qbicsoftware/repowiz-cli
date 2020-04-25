@@ -36,6 +36,14 @@ class OpenBisMapperSpecification extends Specification{
         res == ["design":"text"]
     }
 
+    def "Convert Sequencer Device correctly"(){
+        when:
+        def res = openBisMapper.mapProperties(["Q_SEQUENCER_DEVICE":"Illumina HiSeq 2500 at IMGAG", "this is a test":"do not map the label of this value"])
+
+        then:
+        res == ["instrument model":"Illumina HiSeq 2500"]
+    }
+
     def "DataSet files are mapped as list"(){
         when:
         def res = openBisMapper.mapFiles(["file1.fasta", "file2.fasta", "file3.fasta"],"Q_NGS_RAW_DATA")
