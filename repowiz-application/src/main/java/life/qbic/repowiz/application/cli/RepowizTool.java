@@ -12,13 +12,12 @@ import life.qbic.repowiz.io.JsonParser;
 import life.qbic.repowiz.observer.UserAnswer;
 import life.qbic.repowiz.prepare.openBis.OpenBisSession;
 import life.qbic.repowiz.prepare.projectSearch.OpenBisMapper;
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher;
+import life.qbic.repowiz.prepare.projectSearch.OpenBisProjectSearcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ public class RepowizTool{
 
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
-        ProjectSearcher searcher = setupLocalDatabaseConnection(config);
+        OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
         List<String> repos = getImplementedRepositoriesAsList();
 
         controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
@@ -77,7 +76,7 @@ public class RepowizTool{
     }
 
     //method to manage the local database connection (input domain)
-    private ProjectSearcher setupLocalDatabaseConnection(String config) {
+    private OpenBisProjectSearcher setupLocalDatabaseConnection(String config) {
         //local database connection
         try {
             InputStream stream = new FileInputStream(config);
@@ -96,7 +95,7 @@ public class RepowizTool{
             String sampleSchema = "metadataMapping/RepoWizSample.schema.json";
 
 
-            return new ProjectSearcher(v3, dss, sessionToken, mapper, projectSchema, sampleSchema);
+            return new OpenBisProjectSearcher(v3, dss, sessionToken, mapper, projectSchema, sampleSchema);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

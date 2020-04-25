@@ -13,7 +13,7 @@ import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.prepare.PrepareSubmissionImpl
 import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher
+import life.qbic.repowiz.prepare.projectSearch.OpenBisProjectSearcher
 import life.qbic.repowiz.select.SelectRepository
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.finalise.FinaliseSubmission
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.Logger
 class SubmissionController implements PropertyChangeListener{
 
     String projectID
-    ProjectSearcher projectSearch
+    OpenBisProjectSearcher projectSearch
     RepositoryDescription repoDescription
     TargetRepository repository = null
 
@@ -42,7 +42,7 @@ class SubmissionController implements PropertyChangeListener{
     private static final Logger LOG = LogManager.getLogger(SubmissionController.class)
 
 
-    SubmissionController(CommandlineView view, String projectID, ProjectSearcher searcher, Loader loader, List<String> repoFileNames) {
+    SubmissionController(CommandlineView view, String projectID, OpenBisProjectSearcher searcher, Loader loader, List<String> repoFileNames) {
         this.projectID = projectID
         // set up infrastructure classes
         presenter = new SubmissionPresenter(view)

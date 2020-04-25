@@ -5,7 +5,7 @@ import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class OpenBisMapper{
+class OpenBisMapper implements Mapper{
 
     final Map translateToRepoWiz
 
