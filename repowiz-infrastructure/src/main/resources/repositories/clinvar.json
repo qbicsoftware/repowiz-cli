@@ -4,6 +4,5 @@
   "uploadTypes": ["lite", "full"],
   "uploadFormat": "template",
   "uploadRequirements": ["miame",""],
-  "size": {"number":5 , "unit":"ddd"},
   "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
 }

@@ -19,7 +19,6 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
@@ -37,7 +36,6 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
@@ -55,7 +53,6 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 

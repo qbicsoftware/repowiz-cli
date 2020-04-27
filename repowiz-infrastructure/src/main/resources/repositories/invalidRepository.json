@@ -3,6 +3,6 @@
   "uploadTypes": ["lite", "full"],
   "uploadFormat": "template",
   "uploadRequirements": ["miame",""],
-  "size": "size in wrong format",
+  "size": "size not defined",
   "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
 }

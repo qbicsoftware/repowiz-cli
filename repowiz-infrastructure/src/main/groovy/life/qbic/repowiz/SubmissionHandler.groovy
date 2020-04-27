@@ -51,7 +51,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
-    def transferRepositoryStandard(String standard) {
+    def transferUserInformation(String standard) {
         presenter.displayUserInformation(standard)
     }
 

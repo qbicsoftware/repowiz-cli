@@ -11,7 +11,6 @@ class RepositoryCreatorSpecification extends Specification {
         uploadTypes: ["hts"],
         uploadFormat: "template",
         uploadRequirements: ["need valid identifier"],
-        characteristics: [size: "size"],
         subsequentSteps: ["",""]]
 
         when:

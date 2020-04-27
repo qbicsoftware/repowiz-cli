@@ -80,15 +80,18 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<Repository> repositories = repositoryDescription.findRepositories(matchingRepos)
 
-        //display repository standards/requirements for successful upload
-        repositories.each {repo ->
-            output.transferRepositoryStandard("The standards for a successful submission of $repo.repositoryName are: ")
-            repo.uploadRequirements.each {
-                output.transferRepositoryStandard(it)
-            }
-        }
+        displayUploadRequirements(repositories)
 
         output.transferRepositoryList(repositories)
+    }
+
+    def displayUploadRequirements(List<Repository>repositories){
+        repositories.each {repo ->
+            output.transferUserInformation("For a successful submission of $repo.repositoryName provide: ")
+            repo.uploadRequirements.each {
+                output.transferUserInformation(it)
+            }
+        }
     }
 
 }

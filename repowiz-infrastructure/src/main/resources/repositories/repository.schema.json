@@ -7,18 +7,6 @@
       "description": "Name of the repository",
       "type": "string"
     },
-    "size": {
-      "description": "An estimate about the size of the repository. How many data sets are deposited in the repository?",
-      "type": "object",
-      "properties": {
-        "number": {
-          "type": "integer"
-        },
-        "unit": {
-          "type": "string"
-        }
-      }
-    },
     "uploadFormat": {
       "description": "Upload type of the repository, is there an API or is it a submission based on a template",
       "type": "string",
@@ -49,6 +37,6 @@
       }
     }
   },
-  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes","size", "uploadFormat"]
+  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes", "uploadFormat"]
 }
 
