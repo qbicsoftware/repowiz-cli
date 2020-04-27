@@ -80,7 +80,13 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<Repository> repositories = repositoryDescription.findRepositories(matchingRepos)
 
-        //todo display repository description
+        //display repository standards/requirements for successful upload
+        repositories.each {repo ->
+            output.transferRepositoryStandard("The standards for a successful submission of $repo.repositoryName are: ")
+            repo.uploadRequirements.each {
+                output.transferRepositoryStandard(it)
+            }
+        }
 
         output.transferRepositoryList(repositories)
     }

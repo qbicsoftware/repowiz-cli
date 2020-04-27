@@ -19,8 +19,12 @@ class SubmissionPresenter {
         output.displayDecisionOverview(decisions)
     }
 
-    def displayUserInformation(List<String> decisions){
+    def displayUserDecisions(List<String> decisions){
         output.displayDecisionOverview(decisions)
+    }
+
+    def displayUserInformation(String info){
+        output.displayInformation(info)
     }
 
     def formatList(List elements){

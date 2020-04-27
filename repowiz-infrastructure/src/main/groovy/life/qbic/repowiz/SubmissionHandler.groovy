@@ -51,6 +51,11 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
+    def transferRepositoryStandard(String standard) {
+        presenter.displayUserInformation(standard)
+    }
+
+    @Override
     def transferRepositoryList(List<Repository> repositories) {
         //let the user decide which repo he wants
         repositoryInput.selectRepoFromSuggestions(repositories)
@@ -87,17 +92,17 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     //finalise submission output
     @Override
     def displayUserInformation(String information) {
-        presenter.displayUserInformation(information as List<String>)
+        presenter.displayUserDecisions(information as List<String>)
     }
 
     @Override
     def displayUserInformation(List<String> text) {
-        presenter.displayUserInformation(text)
+        presenter.displayUserDecisions(text)
     }
 
     @Override
     String verifySubmission(String verify) {
-        presenter.displayUserInformation(verify as List<String>)
+        presenter.displayUserDecisions(verify as List<String>)
     }
 
 }
