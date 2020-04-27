@@ -10,7 +10,7 @@ class GeoHtsSubmission extends GeoSubmission{
     String sheetName = "METADATA TEMPLATE"
 
     //fields with restricted values
-    List seq_type = ["single","paired-end"]
+    //List seq_type = ["single","paired-end"]
 
     private GeoTemplateParser parser
     private static final Logger LOG = LogManager.getLogger(GeoHtsSubmission.class)
@@ -31,7 +31,7 @@ class GeoHtsSubmission extends GeoSubmission{
     List<String> determineMissingFields(Map filledFields) {
         parser.requiredFields.each {requiredField ->
             if(!filledFields.keySet().contains(requiredField)){
-                super.missingFields << (requiredField as String)
+                if(!(super.missingFields.contains(requiredField))) super.missingFields << requiredField
             }
         }
 
@@ -45,6 +45,9 @@ class GeoHtsSubmission extends GeoSubmission{
         parser.writeToWorkbook(values)
     }
 
+    def markMissingFieldsInTemplate(){
+
+    }
 
 //check if other required fields, that are not marked with a comment are contained within the given fields
     static List containsOtherRequiredFields(Map fields){

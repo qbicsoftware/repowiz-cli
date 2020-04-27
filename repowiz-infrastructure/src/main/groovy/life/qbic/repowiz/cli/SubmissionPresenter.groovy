@@ -15,12 +15,12 @@ class SubmissionPresenter {
         output.displayQuestion(type,map)
     }
 
-    def displayUserChoices(List<String> decisions){
+    def displayUserDecisions(List<String> decisions){
         output.displayDecisionOverview(decisions)
     }
 
-    def displayUserDecisions(List<String> decisions){
-        output.displayDecisionOverview(decisions)
+    def displayUserInformation(List<String> infos){
+        output.displayList(infos)
     }
 
     def displayUserInformation(String info){

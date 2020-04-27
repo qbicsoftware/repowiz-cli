@@ -18,6 +18,6 @@ class GeoHtsSubmissionSpecification extends Specification{
         def res = submission.determineMissingFields(defined)
         println res
         then:
-        res.size() == 32
+        res.size() == 25
     }
 }

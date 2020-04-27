@@ -25,14 +25,18 @@ class GeoSubmissionManager implements SubmissionManager{
 
     @Override
     List validateSubmissionModel(SubmissionModel model) {//idea load the upload/submission type from the model
+        LOG.info "Mapping metadata from RepoWiz to Geo"
         mapMetadata(model)
 
         //todo check if all required fields are filled
         HashMap props = model.getAllProperties()
+        LOG.info "Determine missing fields from submission"
         List missingFields = geoSubmission.determineMissingFields(props)
-        geoSubmission.writeToWorkbook(props) //todo geoSubmission is null when this code is executed!!
+        println missingFields
 
         //todo mark required field values in output sheet
+        LOG.info "Mark missing fields in template"
+        geoSubmission.markMissingFieldsInTemplate()
 
         //todo answer with validation status and missing fields
         if (missingFields == []) LOG.info "The submission is valid, all required fields are defined"
@@ -43,12 +47,14 @@ class GeoSubmissionManager implements SubmissionManager{
     @Override
     String getSubmissionSummary() {
         //todo
-        return null
+        return "This is the submission summary"
     }
 
     @Override
     void downloadSubmission() {
+        HashMap props = geoSubmissionModel.getAllProperties()
 
+        geoSubmission.writeToWorkbook(props)
     }
 
     void createGeoSubmissionObject(String uploadType){//called in the SubmissionManager
@@ -81,7 +87,6 @@ class GeoSubmissionManager implements SubmissionManager{
 
     HashMap mapProperties(HashMap<String,String> properties){
         HashMap<String,String> mappedProperties = new HashMap<>()
-
        properties.each {k,v ->
            //map the property key to geo term
            String mappedTerm = mapper.getGeoTerm(k)

@@ -12,6 +12,7 @@ interface CommandlineView {
     void displayDecisionOverview(List<String> decisions)
     void displayInformation(List<String> info)
     void displayInformation(String info)
+    void displayList(List<String> list)
 
     void setUserAnswer(UserAnswer answer)
 

@@ -17,7 +17,7 @@ abstract class XlsxParser implements TemplateParser{
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
 
     XSSFWorkbook wb
-    List requiredFields = []
+    List<String> requiredFields = []
     HashMap<String,XSSFCell> templateFields = new HashMap<>()
     String section
 
