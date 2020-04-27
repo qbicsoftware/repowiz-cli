@@ -32,7 +32,6 @@ class GeoSubmissionManager implements SubmissionManager{
         HashMap props = model.getAllProperties()
         LOG.info "Determine missing fields from submission"
         List missingFields = geoSubmission.determineMissingFields(props)
-        println missingFields
 
         //todo mark required field values in output sheet
         LOG.info "Mark missing fields in template"

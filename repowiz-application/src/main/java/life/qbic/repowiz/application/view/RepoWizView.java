@@ -58,6 +58,8 @@ public class RepoWizView implements CommandlineView {
         //delete last comma
         information.deleteCharAt(information.length()-1);
         information.append(" ]");
+
+        System.out.println(information);
     }
 
     @Override

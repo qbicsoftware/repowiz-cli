@@ -31,7 +31,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
         manager = provider.create()
         //output.displayInformation("Validate submission data")
-        List missingFields = manager.validateSubmissionModel(submission)
+        List<String> missingFields = manager.validateSubmissionModel(submission)
 
         //tell the user which fields are missing
         output.displayUserInformation("Following required fields are missing in your submission:")
