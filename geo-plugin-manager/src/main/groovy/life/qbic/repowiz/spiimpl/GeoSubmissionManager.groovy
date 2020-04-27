@@ -50,10 +50,9 @@ class GeoSubmissionManager implements SubmissionManager{
     }
 
     @Override
-    void downloadSubmission() {
+    void downloadSubmission(String fileName) {
         HashMap props = geoSubmissionModel.getAllProperties()
-
-        geoSubmission.writeToWorkbook(props)
+        geoSubmission.writeToWorkbook(fileName, props)
     }
 
     void createGeoSubmissionObject(String uploadType){//called in the SubmissionManager

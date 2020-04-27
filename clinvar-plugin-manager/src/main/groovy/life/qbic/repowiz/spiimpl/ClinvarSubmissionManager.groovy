@@ -16,7 +16,7 @@ class ClinvarSubmissionManager implements SubmissionManager{
     }
 
     @Override
-    void downloadSubmission() {
+    void downloadSubmission(String fileName) {
 
     }
 }

@@ -112,8 +112,7 @@ class SubmissionController implements PropertyChangeListener{
                 break
             case AnswerTypes.SUBMIT.label:
                 boolean verified = false
-                println answer
-                if(answer == "yes") verified = true
+                if(userAnswer == "yes") verified = true
                 finaliseSubmission.processVerificationOfSubmission(verified)
                 break
             default:

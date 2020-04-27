@@ -7,5 +7,5 @@ interface SubmissionManager {
     List validateSubmissionModel(SubmissionModel model)
     String getSubmissionSummary()
     //service for retrieving the submission model = quote manager interface in baeldung example
-    void downloadSubmission()
+    void downloadSubmission(String filename)
 }

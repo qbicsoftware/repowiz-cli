@@ -41,12 +41,12 @@ class GeoHtsSubmission extends GeoSubmission{
     }
 
     @Override
-    void writeToWorkbook(HashMap values) {
-        parser.writeToWorkbook(values)
+    void writeToWorkbook(String fileName, HashMap values) {
+        parser.writeToWorkbook(fileName,values)
     }
 
     def markMissingFieldsInTemplate(){
-
+        //todo
     }
 
 //check if other required fields, that are not marked with a comment are contained within the given fields

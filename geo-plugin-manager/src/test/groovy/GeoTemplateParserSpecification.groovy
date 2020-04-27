@@ -9,7 +9,8 @@ class GeoTemplateParserSpecification extends Specification{
         HashMap values = ["series_title":"this is a title","data processing pipeline_data processing step":"blabljabljabkjbljlbajslbj"]
 
         when:
-        submission.writeToWorkbook(values)
+        submission.writeToWorkbook("thisIsFileName",values)
+        //todo delete file from test
 
         then:
         true

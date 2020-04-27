@@ -17,6 +17,6 @@ abstract class GeoSubmission {
     //method to determine which fields from the template are required to be valid
     abstract List<String> determineMissingFields(Map submissionFields)
     abstract def markMissingFieldsInTemplate()
-    abstract void writeToWorkbook(HashMap values)
+    abstract void writeToWorkbook(String filename, HashMap values)
 
 }

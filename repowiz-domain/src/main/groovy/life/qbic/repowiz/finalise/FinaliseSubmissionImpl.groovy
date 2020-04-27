@@ -7,6 +7,9 @@ import life.qbic.repowiz.model.SubmissionModel
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+
 class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     SubmissionOutput output
@@ -15,6 +18,11 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
     SubmissionManager manager
 
     private static final Logger LOG = LogManager.getLogger(FinaliseSubmissionImpl.class)
+
+    String home = System.getProperty("user.home")
+    String file = home+"/Downloads/" + "repoWiz_submission"
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd-HH.mm.ss")
 
     FinaliseSubmissionImpl(TargetRepository targetRepository, SubmissionOutput out){
         this.targetRepository = targetRepository
@@ -45,14 +53,13 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
     @Override
     def processVerificationOfSubmission(boolean verified) {
-        println "i verified the process"
-        println verified
 
         if(verified){
-            //todo fill template
             output.displayUserInformation("You successfully verified the submission")
-            output.displayUserInformation("The download is prepared")
-            manager.downloadSubmission()
+            LOG.info("The download is prepared ...")
+            Timestamp time = new Timestamp(System.currentTimeSeconds())
+            manager.downloadSubmission(file+ "-" +sdf.format(time))
+
             output.displayUserInformation(repository.subsequentSteps)
         }
 

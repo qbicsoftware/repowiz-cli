@@ -53,7 +53,7 @@ public class RepoWizView implements CommandlineView {
         StringBuilder information = new StringBuilder("[ ");
 
         for(String info:list){
-            information.append(info+" ,");
+            information.append(info+", ");
         }
         //delete last comma
         information.deleteCharAt(information.length()-1);
