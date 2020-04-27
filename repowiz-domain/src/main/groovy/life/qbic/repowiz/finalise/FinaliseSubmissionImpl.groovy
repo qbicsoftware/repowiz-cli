@@ -61,6 +61,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
             manager.downloadSubmission(file+ "-" +sdf.format(time))
 
             output.displayUserInformation(repository.subsequentSteps)
+            System.exit(1)
         }
 
         output.displayUserInformation("The submission was not verified. Please adjust your data and restart RepoWiz.")
