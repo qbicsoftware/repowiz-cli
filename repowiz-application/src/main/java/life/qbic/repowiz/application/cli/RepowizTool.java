@@ -35,6 +35,7 @@ public class RepowizTool{
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
+
         List<String> repos = getImplementedRepositoriesAsList();
 
         controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);

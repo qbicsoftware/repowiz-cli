@@ -32,8 +32,8 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
         List res = connector.findRepositories(["clinvar","geo"])
         then:
         res.size() == 2
-        res.each {
-            if(it.repositoryName == "Geo" ||it.repositoryName == "ClinVar")
+        assert res.each {
+            if(it.repositoryName == "Geo" || it.repositoryName == "ClinVar")
                 true
         }
     }
@@ -42,13 +42,13 @@ class RepositoryDatabaseConnectorSpecification extends Specification{
         when:
         Repository res = connector.findRepository("ega")
         then:
-        thrown NullPointerException
+        res == null
     }
 
-    def "upper_case repository not found"(){
+    def "upper_case repository is found"(){
         when:
         Repository res = connector.findRepository("GEO")
         then:
-        thrown NullPointerException
+        res.repositoryName == "Geo"
     }
 }

@@ -15,10 +15,10 @@ public class RepoWizView implements CommandlineView {
 
     @Override
     public void displayQuestion(AnswerTypes type, HashMap<Integer,String> question) {
-        String formattedChoices = "> Please choose one of the following options: \n> ";
+        String formattedChoices = "> Please choose one of the following options: \n";
         formattedChoices += mapToString(question); //todo rename: creates string from map for view
 
-        System.out.println(formattedChoices);
+        System.out.println(formattedChoices.trim());
         Scanner scan = new Scanner(System.in);
         int answerNum = scan.nextInt();
 
