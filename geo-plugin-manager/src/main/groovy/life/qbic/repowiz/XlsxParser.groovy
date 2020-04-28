@@ -10,8 +10,8 @@ import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFFont
 import org.apache.poi.xssf.usermodel.XSSFRow
+import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import org.jcodings.util.Hash
 
 
 abstract class XlsxParser implements TemplateParser{
@@ -32,25 +32,6 @@ abstract class XlsxParser implements TemplateParser{
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
 
-    def write(String fieldName, String fieldValue){
-        templateFields.each {field, cell ->
-
-            //write columnwise values first
-            if(fieldName == field && isColumnSection(fieldName)){
-                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
-                cellWithValue.setCellValue(fieldValue)
-            }
-
-            //todo write row wise values
-            if(fieldName == field && isRowSection(fieldName)){
-                //how to handle row increment per row keyword??
-                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
-                cellWithValue.setCellValue("this is the new value")
-                //need to update cell values (row) of templateField cells?
-            }
-        }
-    }
-
     def writeColumnWise(HashMap<String,String> values){
 
         values.entrySet().each{colName ->
@@ -63,26 +44,37 @@ abstract class XlsxParser implements TemplateParser{
         }
     }
 
-    def writeRowWise(List<HashMap<String,String>> rowValues){
-        int counter = 1
+    //call it per section! only bulk write
+    def writeRowWise(List<HashMap<String,String>> rowValues, String sheetName, int rowAt){
+        XSSFSheet sheet = getSheet(sheetName)
+
+
         //each list entry contains elements per row
         rowValues.each {rowEntry ->
+            //start one row below the header row
+            //shift all rows from rowAt - end of sheet, shift n number of rows
+            sheet.shiftRows(rowAt, sheet.getLastRowNum(), 1, true, false)
+
+            ///new empty row
+            sheet.createRow(rowAt)
+            XSSFRow newRow = sheet.getRow(rowAt)
+            //write content into this row
+            println newRow.rowNum
+            //todo need to copy row formatting?
+
             rowEntry.each {cellName, cellValue ->
-
-               // XSSFRow row = new XSSFRow()
-
+                //find column for new value
                 XSSFCell cell = templateFields.get(cellName)
-                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex)
+                int colNum = cell.columnIndex
+                println colNum
+                println cellValue
 
-                //get row
-                //row+n -> write value here (same! column as before
-
-
-
-                //shift all rows below!
-                counter++
-
+                //write new value to right column
+                XSSFCell cellForValue = newRow.createCell(colNum)
+                cellForValue.setCellValue(cellValue)
             }
+
+            rowAt++
         }
     }
 
@@ -146,7 +138,19 @@ abstract class XlsxParser implements TemplateParser{
                 }
             }
         }
+    }
 
+    XSSFSheet getSheet(String sheetName){
+        XSSFSheet foundSheet = null
+
+        wb.sheetIterator().each { sheet ->
+            //if (sheets.contains(sheet.sheetName.trim())) { //need to strip succeeding whitespaces todo write as regex
+            if (sheetName == sheet.sheetName.trim()) {
+                foundSheet = (XSSFSheet) sheet
+            }
+        }
+
+        return foundSheet
     }
 
     def getSectionFields(int rowNum, Sheet sheet) {

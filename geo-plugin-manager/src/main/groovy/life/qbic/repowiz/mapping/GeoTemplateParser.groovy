@@ -30,7 +30,12 @@ class GeoTemplateParser extends XlsxParser {
             super.write(k,v)//method from xlsx parser
         }*/
         super.writeColumnWise(project)
-        //super.writeRowWise(samples)
+        //todo what about columnwise values in samples --> htssubmission specific!!
+        //todo split this function to columnwise
+        //rowwise
+        //sort by section!!!
+        //samples = 20
+        super.writeRowWise(samples,sheet,20)
     }
 
 
