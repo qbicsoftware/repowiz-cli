@@ -46,20 +46,9 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         output.displayUserInformation(missingFields)
 
         //show the user the submission summary
-        //project
         output.displayUserInformation("Submission Summary:")
-        HashMap projectProperties = manager.getProviderSubmissionModel().project.properties
-        String projectID = manager.getProviderSubmissionModel().project.projectID
+        createSummary()
 
-        output.displayProjectSummary(projectProperties,projectID)
-
-        //samples
-        HashMap<String,HashMap> sampleProperties = new HashMap()
-        manager.getProviderSubmissionModel().samples.each {sample ->
-            sampleProperties.put(sample.sampleName, sample.properties)
-        }
-
-        output.displaySampleSummary(sampleProperties)
 
         //validate submission
         output.displayUserInformation("Is the displayed submission valid?")
@@ -83,6 +72,24 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
 
         System.exit(1)
         return null
+    }
+
+    def createSummary(){
+        SubmissionModel model = manager.providerSubmissionModel
+
+        //project
+        HashMap projectProperties = model.project.properties
+        String projectID = model.project.projectID
+
+        output.displayProjectSummary(projectProperties,projectID)
+
+        //samples
+        HashMap<String,HashMap> sampleProperties = new HashMap()
+        model.samples.each {sample ->
+            sampleProperties.put(sample.sampleName, sample.properties)
+        }
+
+        output.displaySampleSummary(sampleProperties)
     }
 
 
