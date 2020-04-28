@@ -44,9 +44,24 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         //tell the user which fields are missing
         output.displayUserInformation("Following required fields are missing in your submission:")
         output.displayUserInformation(missingFields)
-        //show the user the submission summary and ask him to verify the download
+
+        //show the user the submission summary
+        //project
         output.displayUserInformation("Submission Summary:")
-        output.displayUserInformation(manager.getSubmissionSummary())
+        HashMap projectProperties = manager.getProviderSubmissionModel().project.properties
+        String projectID = manager.getProviderSubmissionModel().project.projectID
+
+        output.displayProjectSummary(projectProperties,projectID)
+
+        //samples
+        HashMap<String,HashMap> sampleProperties = new HashMap()
+        manager.getProviderSubmissionModel().samples.each {sample ->
+            sampleProperties.put(sample.sampleName, sample.properties)
+        }
+
+        output.displaySampleSummary(sampleProperties)
+
+        //validate submission
         output.displayUserInformation("Is the displayed submission valid?")
         output.verifySubmission(["yes","no"])
     }

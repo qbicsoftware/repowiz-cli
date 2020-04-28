@@ -101,6 +101,16 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
+    def displayProjectSummary(HashMap project, String id) {
+        presenter.displayProjectInfo(project,id)
+    }
+
+    @Override
+    def displaySampleSummary(HashMap<String, HashMap> samples) {
+        presenter.displaySampleInfo(samples)
+    }
+
+    @Override
     String verifySubmission(List verify) {
         presenter.requestAnswer(AnswerTypes.SUBMIT, verify)
     }

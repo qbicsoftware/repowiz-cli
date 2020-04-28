@@ -1,5 +1,6 @@
 package life.qbic.repowiz.cli
 
+import life.qbic.repowiz.model.SubmissionModel
 import life.qbic.repowiz.observer.AnswerTypes
 
 class SubmissionPresenter {
@@ -25,6 +26,14 @@ class SubmissionPresenter {
 
     def displayUserInformation(String info){
         output.displayInformation(info)
+    }
+
+    def displayProjectInfo(HashMap project, String id){
+        output.displaySummaryProject(project,id)
+    }
+
+    def displaySampleInfo(HashMap<String, HashMap> samples){
+        output.displaySummarySamples(samples)
     }
 
     def formatList(List elements){

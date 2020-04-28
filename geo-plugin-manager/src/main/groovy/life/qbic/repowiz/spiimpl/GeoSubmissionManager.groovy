@@ -44,9 +44,8 @@ class GeoSubmissionManager implements SubmissionManager{
     }
 
     @Override
-    List<String> getSubmissionSummary() {
-        //todo
-        return ["This is the submission summary"]
+    SubmissionModel getProviderSubmissionModel() {
+        return geoSubmissionModel
     }
 
     @Override
@@ -93,10 +92,6 @@ class GeoSubmissionManager implements SubmissionManager{
         }
 
         return mappedProperties
-    }
-
-    SubmissionModel getGeoSubmissionModel(){
-        return geoSubmissionModel
     }
 
 }

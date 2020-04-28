@@ -13,6 +13,8 @@ interface CommandlineView {
     void displayInformation(List<String> info)
     void displayInformation(String info)
     void displayList(List<String> list)
+    void displaySummaryProject(HashMap<String,String> projectInfo, String id)
+    void displaySummarySamples(HashMap<String,HashMap<String,String>> samples)
 
     void setUserAnswer(UserAnswer answer)
 

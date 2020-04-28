@@ -11,7 +11,7 @@ class ClinvarSubmissionManager implements SubmissionManager{
     }
 
     @Override
-    String getSubmissionSummary() {
+    SubmissionModel getProviderSubmissionModel() {
         return null
     }
 

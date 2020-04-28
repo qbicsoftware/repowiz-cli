@@ -41,7 +41,7 @@ class GeoSubmissionManagerSpecification extends Specification{
 
         when:
         manager.mapMetadata(model)
-        SubmissionModel res = manager.geoSubmissionModel
+        SubmissionModel res = manager.getProviderSubmissionModel()
 
         then:
         res.samples.get(0).properties.sort() == model2.samples.get(0).properties.sort()

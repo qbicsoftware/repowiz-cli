@@ -4,10 +4,7 @@ import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.observer.AnswerTypes;
 import life.qbic.repowiz.observer.UserAnswer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class RepoWizView implements CommandlineView {
 
@@ -53,10 +50,39 @@ public class RepoWizView implements CommandlineView {
         StringBuilder information = new StringBuilder();
 
         for(String info:list){
-            information.append("- "+info+"\n");
+            information.append(" - "+info+"\n");
         }
 
         System.out.println(information);
+    }
+
+    @Override
+    public void displaySummaryProject(HashMap<String, String> projectInfo, String id) {
+        //collect all filled fields in order
+        StringBuilder summary = new StringBuilder();
+        //project
+        summary.append("> Project "+ projectInfo +" is described as follows: \n");
+
+        for(Map.Entry<String,String> info : projectInfo.entrySet()){
+                summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
+        }
+
+        System.out.println(summary);
+    }
+
+    @Override
+    public void displaySummarySamples(HashMap<String, HashMap<String, String>> samples) {
+        StringBuilder summary = new StringBuilder();
+        //samples
+        for(Map.Entry<String, HashMap<String,String>> sample:samples.entrySet()){
+            summary.append("> Sample "+ sample.getKey() +" is described as follows: \n");
+
+            for(Map.Entry<String,String> info : sample.getValue().entrySet()){
+                 summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
+            }
+        }
+
+        System.out.println(summary);
     }
 
     @Override
