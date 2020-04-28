@@ -32,18 +32,18 @@ abstract class XlsxParser implements TemplateParser{
 
     def write(String fieldName, String fieldValue){
         templateFields.each {field, cell ->
-
+            //write columnwise values first
             if(fieldName == field && isColumnSection(fieldName)){
                 XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
                 cellWithValue.setCellValue(fieldValue)
             }
             //todo write row wise values
-            /*if(fieldName == field && isRowSection(fieldName)){
-                Row row = cell.row
+            if(fieldName == field && isRowSection(fieldName)){
                 //how to handle row increment per row keyword??
+                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
                 cellWithValue.setCellValue("this is the new value")
                 //need to update cell values (row) of templateField cells?
-            }*/
+            }
         }
     }
 

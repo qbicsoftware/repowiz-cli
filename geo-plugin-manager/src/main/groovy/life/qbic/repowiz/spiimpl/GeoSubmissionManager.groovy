@@ -44,14 +44,15 @@ class GeoSubmissionManager implements SubmissionManager{
     }
 
     @Override
-    String getSubmissionSummary() {
+    List<String> getSubmissionSummary() {
         //todo
-        return "This is the submission summary"
+        return ["This is the submission summary"]
     }
 
     @Override
     void downloadSubmission(String fileName) {
         HashMap props = geoSubmissionModel.getAllProperties()
+        //todo lose information of samples need to transfer model/project/sample
         geoSubmission.writeToWorkbook(fileName, props)
     }
 

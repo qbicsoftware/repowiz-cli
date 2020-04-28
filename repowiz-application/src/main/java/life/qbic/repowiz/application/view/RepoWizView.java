@@ -50,14 +50,11 @@ public class RepoWizView implements CommandlineView {
     }
 
     public void displayList(List<String> list){
-        StringBuilder information = new StringBuilder("[ ");
+        StringBuilder information = new StringBuilder();
 
         for(String info:list){
-            information.append(info+", ");
+            information.append("- "+info+"\n");
         }
-        //delete last comma
-        information.deleteCharAt(information.length()-1);
-        information.append(" ]");
 
         System.out.println(information);
     }
