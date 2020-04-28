@@ -25,19 +25,14 @@ class GeoTemplateParser extends XlsxParser {
         super.createWorkbook(template)
     }
 
-    def writeToWorkbook(String fileName, HashMap<String,String> values){
-
-        values.each {k,v ->
-            super.write(k,v)
-        }
-
-        File file = new File(fileName+".xlsx")
-        //ignore old files with same name
-        file.createNewFile()
-        FileOutputStream out = new FileOutputStream(file)
-
-        super.wb.write(out)
+    def writeToWorkbook(HashMap<String, String> project, List<HashMap<String, String>> samples, String sheet){
+        /*values.each {k,v ->
+            super.write(k,v)//method from xlsx parser
+        }*/
+        super.writeColumnWise(project)
+        //super.writeRowWise(samples)
     }
+
 
     //a required field does not contain the keyword "[optional]" within the cells comment
     def isRequired(XSSFCell cell){

@@ -12,12 +12,28 @@ class SubmissionModel {
     }
 
     HashMap getAllProperties() {
-        HashMap properties = project.properties
+        HashMap properties = new HashMap()
+        //do so to not overwrite project properties!!
+        properties << project.properties
 
         samples.each {sample ->
             properties << sample.properties
         }
         return properties
+    }
+
+    HashMap<String,String> projectProperties(){
+        return project.properties
+    }
+
+    HashMap<String,HashMap<String,String>> sampleProperties(){
+        HashMap<String, HashMap<String,String>> sampleProperties = new HashMap<>()
+
+        samples.each {sample ->
+            properties.put(sample.sampleName, sample.properties)
+        }
+
+        return sampleProperties
     }
 
 }

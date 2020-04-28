@@ -49,7 +49,6 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         output.displayUserInformation("Submission Summary:")
         createSummary()
 
-
         //validate submission
         output.displayUserInformation("Is the displayed submission valid?")
         output.verifySubmission(["yes","no"])
@@ -64,6 +63,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
             Timestamp time = new Timestamp(System.currentTimeSeconds())
             manager.downloadSubmission(file+ "-" +sdf.format(time))
 
+            output.displayUserInformation("Further information: ")
             output.displayUserInformation(repository.subsequentSteps)
             System.exit(1)
         }

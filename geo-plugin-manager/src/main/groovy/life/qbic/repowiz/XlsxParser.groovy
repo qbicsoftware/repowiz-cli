@@ -9,7 +9,9 @@ import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFCell
 import org.apache.poi.xssf.usermodel.XSSFCellStyle
 import org.apache.poi.xssf.usermodel.XSSFFont
+import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.jcodings.util.Hash
 
 
 abstract class XlsxParser implements TemplateParser{
@@ -32,11 +34,13 @@ abstract class XlsxParser implements TemplateParser{
 
     def write(String fieldName, String fieldValue){
         templateFields.each {field, cell ->
+
             //write columnwise values first
             if(fieldName == field && isColumnSection(fieldName)){
                 XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex+1)
                 cellWithValue.setCellValue(fieldValue)
             }
+
             //todo write row wise values
             if(fieldName == field && isRowSection(fieldName)){
                 //how to handle row increment per row keyword??
@@ -47,7 +51,52 @@ abstract class XlsxParser implements TemplateParser{
         }
     }
 
+    def writeColumnWise(HashMap<String,String> values){
+
+        values.entrySet().each{colName ->
+
+            println templateFields.get(colName.key)
+
+            XSSFCell cell = templateFields.get(colName.key)
+            XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex + 1)
+            cellWithValue.setCellValue(colName.value)
+        }
+    }
+
+    def writeRowWise(List<HashMap<String,String>> rowValues){
+        int counter = 1
+        //each list entry contains elements per row
+        rowValues.each {rowEntry ->
+            rowEntry.each {cellName, cellValue ->
+
+               // XSSFRow row = new XSSFRow()
+
+                XSSFCell cell = templateFields.get(cellName)
+                XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex)
+
+                //get row
+                //row+n -> write value here (same! column as before
+
+
+
+                //shift all rows below!
+                counter++
+
+            }
+        }
+    }
+
+    def downloadWorkbook(String fileName){
+        File file = new File(fileName+".xlsx")
+        //ignore old files with same name
+        file.createNewFile()
+        FileOutputStream out = new FileOutputStream(file)
+
+        wb.write(out)
+    }
+
     def isColumnSection(String field){
+        //todo remove keywords to geohts or method header
         List keyWords = ["series", "protocols", "data processing pipeline"]
         boolean columnCell = false
 
@@ -58,6 +107,7 @@ abstract class XlsxParser implements TemplateParser{
     }
 
     def isRowSection(String field){
+        //todo remove keywords to geohts or method header
         List keyWords = ["samples", "processed data files", "raw files", "paired-end experiments"]
         boolean rowCell = false
 

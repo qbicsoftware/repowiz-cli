@@ -9,6 +9,7 @@ import life.qbic.repowiz.submissionTypes.GeoHtsSubmission
 import life.qbic.repowiz.submissionTypes.GeoSubmission
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.jcodings.util.Hash
 
 class GeoSubmissionManager implements SubmissionManager{
 
@@ -28,16 +29,17 @@ class GeoSubmissionManager implements SubmissionManager{
         LOG.info "Mapping metadata from RepoWiz to Geo"
         mapMetadata(model)
 
-        //todo check if all required fields are filled
+        //check if all required fields are filled
+        //todo with hashmap: overwrite fields that are there multiple times --> samples
         HashMap props = model.getAllProperties()
         LOG.info "Determine missing fields from submission"
         List missingFields = geoSubmission.determineMissingFields(props)
 
-        //todo mark required field values in output sheet
+        //mark required field values in output sheet
         LOG.info "Mark missing fields in template"
         geoSubmission.markMissingFieldsInTemplate()
 
-        //todo answer with validation status and missing fields
+        //answer with validation status and missing fields
         if (missingFields == []) LOG.info "The submission is valid, all required fields are defined"
 
         return missingFields
@@ -50,9 +52,19 @@ class GeoSubmissionManager implements SubmissionManager{
 
     @Override
     void downloadSubmission(String fileName) {
-        HashMap props = geoSubmissionModel.getAllProperties()
-        //todo lose information of samples need to transfer model/project/sample
-        geoSubmission.writeToWorkbook(fileName, props)
+        List<HashMap<String,String>> samples = []
+
+        //add sample name to properties and convert hashmap to list
+        //todo other place to do that?
+        geoSubmissionModel.sampleProperties().each {sample, properties ->
+            HashMap sampleProperties = properties
+            sampleProperties << ["samples_Sample name":sample]
+
+            samples << sampleProperties
+        }
+
+        geoSubmission.writeToWorkbook(geoSubmissionModel.projectProperties(), samples)
+        geoSubmission.downloadFile(fileName)
     }
 
     void createGeoSubmissionObject(String uploadType){//called in the SubmissionManager

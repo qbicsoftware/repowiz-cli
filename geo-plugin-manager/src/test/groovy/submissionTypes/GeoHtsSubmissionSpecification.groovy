@@ -16,7 +16,6 @@ class GeoHtsSubmissionSpecification extends Specification{
         Map defined = ["series_title":"this is a title"]
         when:
         def res = submission.determineMissingFields(defined)
-        println res
         then:
         res.size() == 25
     }
