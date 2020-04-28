@@ -61,7 +61,7 @@ public class RepoWizView implements CommandlineView {
         //collect all filled fields in order
         StringBuilder summary = new StringBuilder();
         //project
-        summary.append("> Project "+ projectInfo +" is described as follows: \n");
+        summary.append("> Project "+ id +" is described as follows: \n");
 
         for(Map.Entry<String,String> info : projectInfo.entrySet()){
                 summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
@@ -75,7 +75,7 @@ public class RepoWizView implements CommandlineView {
         StringBuilder summary = new StringBuilder();
         //samples
         for(Map.Entry<String, HashMap<String,String>> sample:samples.entrySet()){
-            summary.append("> Sample "+ sample.getKey() +" is described as follows: \n");
+            summary.append("> "+ sample.getKey() +" is described as follows: \n");
 
             for(Map.Entry<String,String> info : sample.getValue().entrySet()){
                  summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
