@@ -47,10 +47,12 @@ abstract class XlsxParser implements TemplateParser{
     //call it per section! only bulk write
     def writeRowWise(List<HashMap<String,String>> rowValues, String sheetName, int rowAt){
         XSSFSheet sheet = getSheet(sheetName)
-
+        println "got sheet"
+        println sheet
 
         //each list entry contains elements per row
         rowValues.each {rowEntry ->
+            println "iteration"
             //start one row below the header row
             //shift all rows from rowAt - end of sheet, shift n number of rows
             sheet.shiftRows(rowAt, sheet.getLastRowNum(), 1, true, false)

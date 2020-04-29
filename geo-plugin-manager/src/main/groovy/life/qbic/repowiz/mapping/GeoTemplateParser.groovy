@@ -35,6 +35,7 @@ class GeoTemplateParser extends XlsxParser {
         //rowwise
         //sort by section!!!
         //samples = 20
+        println "writing rowwis"
         super.writeRowWise(samples,sheet,20)
     }
 

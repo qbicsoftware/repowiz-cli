@@ -60,8 +60,10 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         if(verified){
             output.displayUserInformation("You successfully verified the submission")
             LOG.info("The download is prepared ...")
-            Timestamp time = new Timestamp(System.currentTimeSeconds())
-            manager.downloadSubmission(file+ "-" +sdf.format(time))
+            Timestamp time = new Timestamp(System.currentTimeMillis())
+
+            String projectID = manager.providerSubmissionModel.project.projectID
+            manager.downloadSubmission(file+ "-"+projectID +"-" +sdf.format(time))
 
             output.displayUserInformation("Further information: ")
             output.displayUserInformation(repository.subsequentSteps)
