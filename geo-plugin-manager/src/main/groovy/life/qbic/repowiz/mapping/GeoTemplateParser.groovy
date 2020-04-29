@@ -35,8 +35,19 @@ class GeoTemplateParser extends XlsxParser {
         //rowwise
         //sort by section!!!
         //samples = 20
-        println "writing rowwis"
-        super.writeRowWise(samples,sheet,20)
+        List sample_samples = []
+        samples.each {sample ->
+            HashMap sampleProps = new HashMap()
+            //filter properties of each sample that contain special keyword
+            sample.each {cellName, cellValue ->
+                //section samples
+                if(cellName != null && cellName.split("_")[0] == "samples") sampleProps.put(cellName,cellValue)
+            }
+            sample_samples << sampleProps
+        }
+
+        super.writeRowWise(sample_samples,sheet,20)
+
     }
 
 

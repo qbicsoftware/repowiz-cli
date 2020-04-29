@@ -30,7 +30,7 @@ class SubmissionModel {
         HashMap<String, HashMap<String,String>> sampleProperties = new HashMap<>()
 
         samples.each {sample ->
-            properties.put(sample.sampleName, sample.properties)
+            sampleProperties.put(sample.sampleName, sample.properties)
         }
 
         return sampleProperties

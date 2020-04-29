@@ -47,8 +47,7 @@ abstract class XlsxParser implements TemplateParser{
     //call it per section! only bulk write
     def writeRowWise(List<HashMap<String,String>> rowValues, String sheetName, int rowAt){
         XSSFSheet sheet = getSheet(sheetName)
-        println "got sheet"
-        println sheet
+        println rowValues
 
         //each list entry contains elements per row
         rowValues.each {rowEntry ->
@@ -66,14 +65,14 @@ abstract class XlsxParser implements TemplateParser{
 
             rowEntry.each {cellName, cellValue ->
                 //find column for new value
-                XSSFCell cell = templateFields.get(cellName)
-                int colNum = cell.columnIndex
-                println colNum
-                println cellValue
+                if(templateFields.get(cellName) != null){
+                    XSSFCell cell = templateFields.get(cellName)
+                    int colNum = cell.columnIndex
 
-                //write new value to right column
-                XSSFCell cellForValue = newRow.createCell(colNum)
-                cellForValue.setCellValue(cellValue)
+                    //write new value to right column
+                    XSSFCell cellForValue = newRow.createCell(colNum)
+                    cellForValue.setCellValue(cellValue)
+                }
             }
 
             rowAt++
