@@ -11,7 +11,7 @@ class GeoTemplateParserSpecification extends Specification{
         HashMap<String,String> values = ["series_title":"this is a title","data processing pipeline_data processing step":"blabla"]
         HashMap sample = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human",
                           "protocols_library strategy":"test", "data processing pipeline_data processing step":"blabla",
-                          "raw files_instrument model":"illumina"]
+                          "raw files_instrument model":"illumina","samples_raw file":["file1.fasta","file2.fasta","file3.fasta"]]
 
 
         when:

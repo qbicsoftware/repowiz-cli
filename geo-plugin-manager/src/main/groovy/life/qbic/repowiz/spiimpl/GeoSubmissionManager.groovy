@@ -53,8 +53,7 @@ class GeoSubmissionManager implements SubmissionManager{
     @Override
     void downloadSubmission(String fileName) {
         List<HashMap<String,String>> samples = []
-
-
+        println geoSubmissionModel.sampleProperties()
         //add sample name to properties and convert hashmap to list
         //todo other place to do that?
         geoSubmissionModel.sampleProperties().each {sampleName, properties ->

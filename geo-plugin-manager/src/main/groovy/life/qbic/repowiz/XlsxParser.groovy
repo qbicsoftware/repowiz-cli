@@ -67,7 +67,7 @@ abstract class XlsxParser implements TemplateParser{
 
                     //write new value to right column
                     XSSFCell cellForValue = newRow.createCell(colNum)
-                    cellForValue.setCellValue(cellValue)
+                    cellForValue.setCellValue(cellValue.toString())
                 }
             }
 

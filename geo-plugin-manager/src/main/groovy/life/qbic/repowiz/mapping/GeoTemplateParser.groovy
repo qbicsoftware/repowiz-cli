@@ -25,32 +25,6 @@ class GeoTemplateParser extends XlsxParser {
         super.createWorkbook(template)
     }
 
-    def writeToWorkbook(HashMap<String, String> project, List<HashMap<String, String>> samples, String sheet){
-        /*values.each {k,v ->
-            super.write(k,v)//method from xlsx parser
-        }*/
-        super.writeColumnWise(project)
-        //todo what about columnwise values in samples --> htssubmission specific!!
-        //todo split this function to columnwise
-        //rowwise
-        //sort by section!!!
-        //samples = 20
-        List sample_samples = []
-        samples.each {sample ->
-            HashMap sampleProps = new HashMap()
-            //filter properties of each sample that contain special keyword
-            sample.each {cellName, cellValue ->
-                //section samples
-                if(cellName != null && cellName.split("_")[0] == "samples") sampleProps.put(cellName,cellValue)
-            }
-            sample_samples << sampleProps
-        }
-
-        super.writeRowWise(sample_samples,sheet,20)
-
-    }
-
-
     //a required field does not contain the keyword "[optional]" within the cells comment
     def isRequired(XSSFCell cell){
         boolean required = false

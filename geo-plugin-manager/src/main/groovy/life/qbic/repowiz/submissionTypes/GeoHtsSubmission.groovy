@@ -74,6 +74,10 @@ class GeoHtsSubmission extends GeoSubmission{
 
         //write samples info
         writeSectionRow(samples,"samples")
+        //special case
+        //--> multiple insert col bzw move section header cell values to right
+        //todo raw file (outermost column.. no changes
+        //todo characteristics
 
     }
 
@@ -115,7 +119,7 @@ class GeoHtsSubmission extends GeoSubmission{
     }
 
 
-    int getSectionPosition(String section){
+    static int getSectionPosition(String section){
         switch (section){
             case "samples":
                 return 20

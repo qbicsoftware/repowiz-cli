@@ -3,7 +3,7 @@ package life.qbic.repowiz.model
 class SubmissionModel {
     RepoWizProject project
     List<RepoWizSample> samples
-    List<String> missingValues //todo required to communicate missing fields
+    List<String> missingValues //todo required to communicate missing fields ??
     String uploadType
 
     SubmissionModel(RepoWizProject project, List<RepoWizSample> samples){
@@ -20,6 +20,30 @@ class SubmissionModel {
             properties << sample.properties
         }
         return properties
+    }
+
+    HashMap<String,HashMap> getAllCharacteristics(){
+        HashMap characteristics = new ArrayList()
+
+        samples.each {sample ->
+            HashMap sampleCharactics = sample.characteristics
+            String name = sample.sampleName
+            characteristics.put(name,sampleCharactics)
+        }
+
+        return characteristics
+    }
+
+    HashMap<String,List> getAllRawFiles(){
+        HashMap rawFiles = new ArrayList()
+
+        samples.each {sample ->
+            List files = sample.rawFiles
+            String name = sample.sampleName
+            rawFiles.put(name, files)
+        }
+
+        return rawFiles
     }
 
     HashMap<String,String> projectProperties(){
