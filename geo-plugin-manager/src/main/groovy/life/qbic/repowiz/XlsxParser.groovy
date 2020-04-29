@@ -47,11 +47,9 @@ abstract class XlsxParser implements TemplateParser{
     //call it per section! only bulk write
     def writeRowWise(List<HashMap<String,String>> rowValues, String sheetName, int rowAt){
         XSSFSheet sheet = getSheet(sheetName)
-        println rowValues
 
         //each list entry contains elements per row
         rowValues.each {rowEntry ->
-            println "iteration"
             //start one row below the header row
             //shift all rows from rowAt - end of sheet, shift n number of rows
             sheet.shiftRows(rowAt, sheet.getLastRowNum(), 1, true, false)
@@ -59,10 +57,8 @@ abstract class XlsxParser implements TemplateParser{
             ///new empty row
             sheet.createRow(rowAt)
             XSSFRow newRow = sheet.getRow(rowAt)
-            //write content into this row
-            println newRow.rowNum
-            //todo need to copy row formatting?
 
+            //write content into this row
             rowEntry.each {cellName, cellValue ->
                 //find column for new value
                 if(templateFields.get(cellName) != null){

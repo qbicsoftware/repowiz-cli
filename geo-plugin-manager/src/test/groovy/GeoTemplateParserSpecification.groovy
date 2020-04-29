@@ -9,7 +9,9 @@ class GeoTemplateParserSpecification extends Specification{
         GeoHtsSubmission submission = new GeoHtsSubmission()
 
         HashMap<String,String> values = ["series_title":"this is a title","data processing pipeline_data processing step":"blabla"]
-        HashMap sample = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human"]
+        HashMap sample = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human",
+                          "protocols_library strategy":"test", "data processing pipeline_data processing step":"blabla",
+                          "raw files_instrument model":"illumina"]
 
 
         when:

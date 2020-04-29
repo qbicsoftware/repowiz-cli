@@ -59,28 +59,35 @@ class GeoHtsSubmission extends GeoSubmission{
         //series
         parser.writeColumnWise(project)
         //protocols
-
+        writeSectionCol(samples,"protocols")
         //data processing pipeline
-
-
+        writeSectionCol(samples,"data processing pipeline")
 
         //for row wise writing:
         //start from bottom to top of sheet
 
         //paired-end experiment
+        writeSectionRow(samples,"paired-end experiments")
 
         //raw files
-
+        writeSectionRow(samples,"raw files")
 
         //write samples info
-        writeSection(samples,"samples")
+        writeSectionRow(samples,"samples")
 
     }
 
-    def writeSection(List<HashMap<String, String>> samples, String keyword){
+    def writeSectionRow(List<HashMap<String, String>> samples, String keyword){
         List filtered = filterForKeyWord(samples, keyword)
         int row = getSectionPosition(keyword)
-        parser.writeRowWise(filtered,sheetName,row)
+
+        if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
+    }
+
+    def writeSectionCol(List<HashMap<String, String>> samples, String keyword){
+        List filtered = filterForKeyWord(samples, keyword)
+
+        if(! filtered.empty) parser.writeColumnWise(filtered[0])
     }
 
     @Override
@@ -115,13 +122,15 @@ class GeoHtsSubmission extends GeoSubmission{
             case "protocols":
                 return 26
             case "data processing pipeline":
-                return 36
+                return 33
             case "processed data files":
-                return 47
+                return 44
             case "raw files":
-                return 53
+                return 50
             case "paired-end experiments":
-                return 59
+                return 56
+            default:
+                return -1
         }
     }
 
@@ -136,7 +145,7 @@ class GeoHtsSubmission extends GeoSubmission{
                 //section samples
                 if(cellName != null && cellName.split(splitElem)[0] == keyword) sampleProps.put(cellName,cellValue)
             }
-            filteredList << sampleProps
+            if(!sampleProps.isEmpty()) filteredList << sampleProps
         }
         return filteredList
     }
