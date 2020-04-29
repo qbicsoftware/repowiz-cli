@@ -8,7 +8,8 @@ import org.apache.logging.log4j.Logger
 class GeoHtsSubmission extends GeoSubmission{
 
     String sheetName = "METADATA TEMPLATE"
-
+    String splitElem = '_'
+    ArrayList<Integer> rowsToDelete = [20,21,22]
     //fields with restricted values
     //List seq_type = ["single","paired-end"]
 
@@ -47,10 +48,39 @@ class GeoHtsSubmission extends GeoSubmission{
 
     @Override
     void writeToWorkbook(HashMap<String, String> project, List<HashMap<String, String>> samples) {
-        //todo need to separate sections of hts submission specifically here!
-        //write project info
-        parser.writeToWorkbook(project, samples, sheetName)
-        //write sample info
+        //first remove rows with examplary entries:
+        Collections.sort(rowsToDelete, Collections.reverseOrder()) //sort descending --> first delete lowest row!
+
+        rowsToDelete.each{rowNum ->
+            parser.removeRow(sheetName,rowNum)
+        }
+
+        //column wise entries
+        //series
+        parser.writeColumnWise(project)
+        //protocols
+
+        //data processing pipeline
+
+
+
+        //for row wise writing:
+        //start from bottom to top of sheet
+
+        //paired-end experiment
+
+        //raw files
+
+
+        //write samples info
+        writeSection(samples,"samples")
+
+    }
+
+    def writeSection(List<HashMap<String, String>> samples, String keyword){
+        List filtered = filterForKeyWord(samples, keyword)
+        int row = getSectionPosition(keyword)
+        parser.writeRowWise(filtered,sheetName,row)
     }
 
     @Override
@@ -58,7 +88,7 @@ class GeoHtsSubmission extends GeoSubmission{
         parser.downloadWorkbook(fileName)
     }
 
-//check if other required fields, that are not marked with a comment are contained within the given fields
+    //check if other required fields, that are not marked with a comment are contained within the given fields
     static List containsOtherRequiredFields(Map fields){
         List missing = []
         //some other fields are also required but not marked with a comment
@@ -77,4 +107,37 @@ class GeoHtsSubmission extends GeoSubmission{
         return missing
     }
 
+
+    int getSectionPosition(String section){
+        switch (section){
+            case "samples":
+                return 20
+            case "protocols":
+                return 26
+            case "data processing pipeline":
+                return 36
+            case "processed data files":
+                return 47
+            case "raw files":
+                return 53
+            case "paired-end experiments":
+                return 59
+        }
+    }
+
+
+    List<HashMap<String,String>> filterForKeyWord(List<HashMap<String, String>> samples, String keyword){
+        List filteredList = []
+
+        samples.each {sample ->
+            HashMap sampleProps = new HashMap()
+            //filter properties of each sample that contain special keyword
+            sample.each {cellName, cellValue ->
+                //section samples
+                if(cellName != null && cellName.split(splitElem)[0] == keyword) sampleProps.put(cellName,cellValue)
+            }
+            filteredList << sampleProps
+        }
+        return filteredList
+    }
 }

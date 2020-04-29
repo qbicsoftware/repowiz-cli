@@ -88,26 +88,22 @@ abstract class XlsxParser implements TemplateParser{
         wb.write(out)
     }
 
-    def isColumnSection(String field){
-        //todo remove keywords to geohts or method header
-        List keyWords = ["series", "protocols", "data processing pipeline"]
-        boolean columnCell = false
-
-        keyWords.each {word ->
-            if(field.startsWith(word)) columnCell = true
-        }
-        return columnCell
+    void removeRow(String sheetName, int rowIndex){
+        Sheet sheet = getSheet(sheetName)
+        removeRow(sheet,rowIndex)
     }
 
-    def isRowSection(String field){
-        //todo remove keywords to geohts or method header
-        List keyWords = ["samples", "processed data files", "raw files", "paired-end experiments"]
-        boolean rowCell = false
-
-        keyWords.each {word ->
-            if(field.startsWith(word)) rowCell = true
+    static void removeRow(Sheet sheet, int rowIndex) {
+        int lastRowNum = sheet.getLastRowNum();
+        if (rowIndex >= 0 && rowIndex < lastRowNum) {
+            sheet.shiftRows(rowIndex + 1, lastRowNum, -1);
         }
-        return rowCell
+        if (rowIndex == lastRowNum) {
+            Row removingRow = sheet.getRow(rowIndex);
+            if (removingRow != null) {
+                sheet.removeRow(removingRow);
+            }
+        }
     }
 
     abstract def isSection(XSSFCell cell)
