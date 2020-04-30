@@ -140,15 +140,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         allProperties << fetchParentSamples(sample)
         allProperties << fetchChildSamples(sample)
 
-        //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
-        LOG.info "Fetching Data Set ..."
-        allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
-
         allProperties << mapper.maskDuplicateProperties(sample.type.code,sample.properties)
-
-        //add conditions
-        List<Property> res = conditionParser.getSampleCondition(sample.code)
-        allProperties << mapper.mapConditions(res)
 
         //map openBis vocabulary to readable names
         allProperties.each {key, value ->
@@ -156,6 +148,14 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         }
 
         allProperties = mapper.mapProperties(allProperties)
+
+        //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
+        LOG.info "Fetching Data Set ..."
+        allProperties << loadOpenBisDataSetInfo(sample.code, "fastq")
+
+        //add conditions
+        List<Property> res = conditionParser.getSampleCondition(sample.code)
+        allProperties << mapper.mapConditions(res)
 
         return allProperties
     }

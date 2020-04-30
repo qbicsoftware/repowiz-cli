@@ -22,7 +22,7 @@ class SubmissionModel {
         return properties
     }
 
-    HashMap<String,HashMap> getAllCharacteristics(){
+    /*HashMap<String,HashMap> getAllCharacteristics(){
         HashMap characteristics = new ArrayList()
 
         samples.each {sample ->
@@ -44,7 +44,7 @@ class SubmissionModel {
         }
 
         return rawFiles
-    }
+    }*/
 
     HashMap<String,String> projectProperties(){
         return project.properties

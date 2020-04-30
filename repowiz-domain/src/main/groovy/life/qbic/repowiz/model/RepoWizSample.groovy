@@ -4,8 +4,8 @@ class RepoWizSample {
     String sampleName
     HashMap<String,String> properties
     //label:value
-    HashMap<String,String> characteristics
-    List<String> rawFiles
+    //HashMap<String,String> characteristics
+    //List<String> rawFiles
 
     RepoWizSample(String name, HashMap properties){
         sampleName = name

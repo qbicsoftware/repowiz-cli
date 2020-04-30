@@ -63,7 +63,7 @@ class OpenBisMapperSpecification extends Specification{
         def res = openBisMapper.mapConditions(properties)
 
         then:
-        res.sort() == ["characteristics genotype" : "mutant","characteristics healthy": "sick"].sort()
+        res.sort() == ["characteristic genotype" : "mutant","characteristic healthy": "sick"].sort()
     }
 
     def "duplicate properties are masked properly"(){

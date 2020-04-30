@@ -1,6 +1,6 @@
 package life.qbic.repowiz.submissionTypes
 
-import life.qbic.repowiz.download.GeoSubmissionDownloader
+import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.mapping.GeoTemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -12,6 +12,9 @@ class GeoHtsSubmission extends GeoSubmission{
     ArrayList<Integer> rowsToDelete = [20,21,22]
     //fields with restricted values
     //List seq_type = ["single","paired-end"]
+    List fileTypes = ["fastq", "Illumina_native_qseq", "Illumina_native" ,"SOLiD_native_csfasta",
+                      "SOLiD_native_qual", "sff", "454_native_seq", "454_native_qual", "Helicos_native", "srf",
+                      "PacBio_HDF5"]
 
     private GeoTemplateParser parser
     private static final Logger LOG = LogManager.getLogger(GeoHtsSubmission.class)
@@ -26,6 +29,17 @@ class GeoHtsSubmission extends GeoSubmission{
     void parseTemplate() {
         parser.createWorkbook(super.templatePath)
         parser.parseTemplateSheet(sheetName)
+
+        deleteSampleRows()
+    }
+
+    def deleteSampleRows(){
+        //first remove rows with examplary entries:
+        Collections.sort(rowsToDelete, Collections.reverseOrder()) //sort descending --> first delete lowest row!
+
+        rowsToDelete.each{rowNum ->
+            parser.removeRow(sheetName,rowNum)
+        }
     }
 
     @Override
@@ -47,30 +61,29 @@ class GeoHtsSubmission extends GeoSubmission{
     }
 
     @Override
-    void writeToWorkbook(HashMap<String, String> project, List<HashMap<String, String>> samples) {
-        //first remove rows with examplary entries:
-        Collections.sort(rowsToDelete, Collections.reverseOrder()) //sort descending --> first delete lowest row!
-
-        rowsToDelete.each{rowNum ->
-            parser.removeRow(sheetName,rowNum)
-        }
-
-        //column wise entries
+    void writeProjectToWorkbook(HashMap<String, String> project){
+        //column wise entry
         //series
         parser.writeColumnWise(project)
+    }
+
+    @Override
+    void writeSampleToWorkbook(List<GeoSample> samples) {
+        //column wise entry
         //protocols
         writeSectionCol(samples,"protocols")
         //data processing pipeline
         writeSectionCol(samples,"data processing pipeline")
 
         //for row wise writing:
-        //start from bottom to top of sheet
-
+        //start from bottom to top of sheet!
         //paired-end experiment
         writeSectionRow(samples,"paired-end experiments")
+        //todo paired-end data
+        //"raw files_single or paired-end" spalte
 
         //raw files
-        writeSectionRow(samples,"raw files")
+        writeRawFileSection(samples)
 
         //write samples info
         writeSectionRow(samples,"samples")
@@ -79,19 +92,69 @@ class GeoHtsSubmission extends GeoSubmission{
         //todo raw file (outermost column.. no changes
         //todo characteristics
 
+
     }
 
-    def writeSectionRow(List<HashMap<String, String>> samples, String keyword){
+    def writeSectionRow(List<GeoSample> samples, String keyword){
         List filtered = filterForKeyWord(samples, keyword)
         int row = getSectionPosition(keyword)
 
         if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
     }
 
-    def writeSectionCol(List<HashMap<String, String>> samples, String keyword){
+    def writeSectionCol(List<GeoSample> samples, String keyword){
         List filtered = filterForKeyWord(samples, keyword)
 
-        if(! filtered.empty) parser.writeColumnWise(filtered[0])
+        //todo what if samples have different sequencer types etc??! need to check
+        if(!filtered.empty) parser.writeColumnWise(filtered[0])
+    }
+
+    def writeRawFileSection(List<GeoSample> samples){
+        List filtered = []
+        int row = getSectionPosition("raw files")
+
+        //todo add information not given by samples
+        samples.each {sample ->
+            HashMap fileProperties = new HashMap()
+
+            //instrument model
+            sample.properties.each { prop ->
+                if (prop.key.toString().contains("raw files")) fileProperties.put(prop.key, prop.value)
+            }
+
+            sample.rawFiles.each {file ->
+                //file name
+                fileProperties.put("raw files_file name",file)
+                //file type
+                String[] fileSplit = file.split("\\.")
+
+                if(fileSplit.size() == 2 || fileSplit.size() == 3){
+                    String fileType = fileSplit[1]
+
+                    if(fileTypes.contains(fileType)) fileProperties.put("raw files_file type",fileType)
+                    else{
+                        LOG.info("The file type for file $file is not accepted please check manually")
+                    }
+                }
+                else{
+                    LOG.info("The file type for file $file is not valid please check manually")
+                }
+
+            }
+
+
+            //file checksum
+
+            //read length
+
+            //single or paired-end
+
+            filtered << fileProperties
+        }
+
+
+        //todo what if samples have different sequencer types etc??! need to check
+        if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
     }
 
     @Override
@@ -139,13 +202,13 @@ class GeoHtsSubmission extends GeoSubmission{
     }
 
 
-    List<HashMap<String,String>> filterForKeyWord(List<HashMap<String, String>> samples, String keyword){
+    List<HashMap<String,String>> filterForKeyWord(List<GeoSample> samples, String keyword){
         List filteredList = []
 
         samples.each {sample ->
             HashMap sampleProps = new HashMap()
             //filter properties of each sample that contain special keyword
-            sample.each {cellName, cellValue ->
+            sample.properties.each {cellName, cellValue ->
                 //section samples
                 if(cellName != null && cellName.split(splitElem)[0] == keyword) sampleProps.put(cellName,cellValue)
             }

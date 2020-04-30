@@ -1,5 +1,6 @@
 package life.qbic.repowiz.mapping
 
+import life.qbic.repowiz.io.JsonParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
@@ -15,23 +16,23 @@ class GeoMapper {
     }
 
     String getRepoWizTerm(String geoTerm){
+        if(geoTerm.contains("samples_characteristic")) return geoTerm.split("_")[1]
        return geoTermsToRepowiz.get(geoTerm)
     }
 
     String getGeoTerm(String repoWizTerm){
+        if(repoWizTerm.contains("characteristic")) return "samples_"+repoWizTerm
         return repowizTermsToGeo.get(repoWizTerm)
     }
 
     private def loadMetadataTerms(){
-        InputStream stream = GeoMapper.class.getClassLoader().getResourceAsStream("mapping/MetadataMapping.txt")
-        stream.eachLine {line ->
-            if(!line.startsWith('#')){
-                List value = line.split(",")
+        InputStream stream = GeoMapper.class.getClassLoader().getResourceAsStream("mapping/geoMapping.json")
+        JsonParser parser = new JsonParser(stream)
 
-                geoTermsToRepowiz.put(value[0],value[1])
-                repowizTermsToGeo.put(value[1],value[0])
-            }
+        repowizTermsToGeo = (HashMap) parser.parse()
+
+        repowizTermsToGeo.keySet().each {key ->
+            geoTermsToRepowiz.put(repowizTermsToGeo.get(key),key.toString())
         }
     }
-
 }

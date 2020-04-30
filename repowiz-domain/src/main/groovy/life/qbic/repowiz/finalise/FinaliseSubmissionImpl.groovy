@@ -88,7 +88,13 @@ class FinaliseSubmissionImpl implements FinaliseSubmission{
         //samples
         HashMap<String,HashMap> sampleProperties = new HashMap()
         model.samples.each {sample ->
-            sampleProperties.put(sample.sampleName, sample.properties)
+            HashMap<String,String> properties = new HashMap<>()
+
+            sample.properties.each {property ->
+                properties.put(property.key, property.value.toString())
+            }
+
+            sampleProperties.put(sample.sampleName, properties)
         }
 
         output.displaySampleSummary(sampleProperties)

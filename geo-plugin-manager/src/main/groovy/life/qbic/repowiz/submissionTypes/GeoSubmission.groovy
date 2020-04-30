@@ -1,5 +1,6 @@
 package life.qbic.repowiz.submissionTypes
 
+import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.download.GeoSubmissionDownloader
 
 abstract class GeoSubmission {
@@ -17,7 +18,8 @@ abstract class GeoSubmission {
     //method to determine which fields from the template are required to be valid
     abstract List<String> determineMissingFields(Map submissionFields)
     abstract def markMissingFieldsInTemplate()
-    abstract void writeToWorkbook(HashMap<String,String> project, List<HashMap<String,String>> samples)
+    abstract void writeProjectToWorkbook(HashMap<String,String> project)
+    abstract void writeSampleToWorkbook (List<GeoSample> samples)
     abstract void downloadFile(String fileName)
 
 }

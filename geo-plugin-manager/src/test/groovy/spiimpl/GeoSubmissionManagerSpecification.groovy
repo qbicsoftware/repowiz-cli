@@ -26,7 +26,7 @@ class GeoSubmissionManagerSpecification extends Specification{
         HashMap projectProp = ["project title":"value"]
         RepoWizProject project = new RepoWizProject("projectid",projectProp)
 
-        HashMap sampleProp = ["sample name":"value", "raw file name":"value2"]
+        HashMap sampleProp = ["sample name":"value", "raw file":["file1","file2"]]
         RepoWizSample sample = new RepoWizSample("sample1",sampleProp)
 
         SubmissionModel model = new SubmissionModel(project,[sample])
@@ -34,7 +34,7 @@ class GeoSubmissionManagerSpecification extends Specification{
         HashMap projectProp2 = ["series_title":"value"]
         RepoWizProject project2 = new RepoWizProject("projectid",projectProp2)
 
-        HashMap sampleProp2 = ["samples_Sample name":"value", "raw files_file name":"value2"]
+        HashMap sampleProp2 = ["samples_Sample name":"value", "samples_raw file":["file1","file2"]]
         RepoWizSample sample2 = new RepoWizSample("sample1",sampleProp2)
 
         SubmissionModel model2 = new SubmissionModel(project2,[sample2])
