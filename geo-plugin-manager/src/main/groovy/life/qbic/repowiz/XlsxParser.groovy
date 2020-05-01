@@ -4,6 +4,7 @@ import life.qbic.repowiz.io.TemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
+import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.xssf.usermodel.XSSFCell
@@ -80,6 +81,28 @@ abstract class XlsxParser implements TemplateParser{
 
         wb.write(out)
     }
+
+    /*void addColumnToEnd(String sheetName, int colNum){
+        Sheet sheet = getSheet(sheetName)
+        int numOfRows = sheet.getPhysicalNumberOfRows()-1
+        println "adding col"
+        XSSFCell cell
+
+        (0 .. numOfRows).each {
+            Row row = sheet.getRow(it)
+
+            if (row != null) {
+                row = sheet.getRow(it)
+                cell = (XSSFCell) row.getCell(colNum)
+
+                if (cell == null){
+                    row.createCell(colNum, CellType.STRING)
+                    cell = (XSSFCell) row.getCell(colNum)
+                    cell.setCellValue("test")
+                }
+            }
+        }
+    }*/
 
     void removeRow(String sheetName, int rowIndex){
         Sheet sheet = getSheet(sheetName)

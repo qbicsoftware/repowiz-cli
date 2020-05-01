@@ -102,6 +102,8 @@ class GeoHtsSubmission extends GeoSubmission{
         //todo raw file (outermost column.. no changes
         //todo characteristics: here only max 3 characteristics are expected adjust!!
         writeCharacteristicsSection(samples)
+        //test
+       // parser.addColumnToEnd(sheetName,12)
     }
 
     @Override
@@ -142,7 +144,6 @@ class GeoHtsSubmission extends GeoSubmission{
     def writeCharacteristicsSection(List<GeoSample> samples) {
         //need row num for the characteristics
         int baseRowNum = getSectionPosition("samples") - 1
-        println "baserow "+baseRowNum
         //need colnum for each characteristic
         samples.each {sample ->
             //+ sample number
@@ -150,13 +151,9 @@ class GeoHtsSubmission extends GeoSubmission{
             int offset = sampleNum as Integer
             int rowNum = baseRowNum + offset
 
-            println "row num " +rowNum
-
             sample.characteristics.each {characteristic ->
-                println characteristic
                 XSSFCell cell = parser.templateFields.get(characteristic.key.toString())
-                println cell
-                println cell.columnIndex
+
                 parser.setCellValue(sheetName,rowNum,cell.columnIndex,characteristic.value.toString())
             }
         }
@@ -169,6 +166,7 @@ class GeoHtsSubmission extends GeoSubmission{
 
         //todo add information not given by samples
         samples.each {sample ->
+            //hashmap --> filename needs to be unique!
             HashMap fileProperties = new HashMap()
 
             //instrument model
@@ -194,6 +192,8 @@ class GeoHtsSubmission extends GeoSubmission{
                     LOG.info("The file type for file $file is not valid please check manually")
                 }
 
+                if(fileProperties.size() > 0 && row >= 0) parser.writeRowWise([fileProperties],sheetName,row)
+
             }
             //file checksum
 
@@ -201,9 +201,9 @@ class GeoHtsSubmission extends GeoSubmission{
 
             //single or paired-end
 
-            filtered << fileProperties
+            //filtered << fileProperties
         }
-        if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
+        //if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
     }
 
 

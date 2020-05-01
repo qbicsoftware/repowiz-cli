@@ -57,7 +57,6 @@ class GeoSubmissionManager implements SubmissionManager{
     @Override
     void downloadSubmission(String fileName) {
         List<GeoSample> samples = []
-        println geoSubmissionModel.sampleProperties()
         //add sample name to properties and convert hashmap to list
         //todo other place to do that?
         geoSubmissionModel.sampleProperties().each {sampleName, properties ->
@@ -111,7 +110,7 @@ class GeoSubmissionManager implements SubmissionManager{
         properties.each {k,v ->
             String mappedTerm = mapper.getGeoTerm(k)
 
-            if(mappedTerm == "samples_raw file") sampleFiles.put(mappedTerm,v.toList())
+            if(mappedTerm == "samples_raw file") sampleFiles.put(name,v.toList())
 
             if(mappedTerm != null && mappedTerm.contains("characteristics")){
                 //String tag = mappedTerm.split(":")[0]

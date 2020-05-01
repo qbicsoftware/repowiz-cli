@@ -13,7 +13,7 @@ class GeoTemplateParserSpecification extends Specification{
                           "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
                           "raw files_instrument model":"illumina"]
 
-        GeoSample sample = new GeoSample("Sample 1",properties,["file1.fastq","file2.fastq","file3.fastq"],new HashMap())
+        GeoSample sample = new GeoSample("Sample 1",properties,["file4.fastq","file5.fastq","file6.fastq"],new HashMap())
 
         HashMap properties2 = ["samples_Sample name":"sample 2","samples_title": "blablbl", "samples_source name":"Human",
                               "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
@@ -25,7 +25,7 @@ class GeoTemplateParserSpecification extends Specification{
                               "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
                               "raw files_instrument model":"illumina"]
 
-        GeoSample sample3 = new GeoSample("Sample 3",properties3,["file1.fastq","file2.fastq","file3.fastq"],["characteristics: treatment":"non","characteristics: genotype":"wildtype","characteristics: other":"non"])
+        GeoSample sample3 = new GeoSample("Sample 3",properties3,["file1.fastq.gz","file2.fastq.gz","file3.fastq.gz"],["characteristics: treatment":"non","characteristics: genotype":"wildtype","characteristics: other":"non"])
 
 
         when:
