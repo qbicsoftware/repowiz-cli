@@ -15,7 +15,6 @@ class GeoTemplateParser extends XlsxParser {
 
     private static final Logger LOG = LogManager.getLogger(GeoTemplateParser.class)
 
-
     GeoTemplateParser(){
         super.commentMarker = '#'
     }

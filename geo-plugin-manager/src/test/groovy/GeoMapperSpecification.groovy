@@ -27,13 +27,13 @@ class GeoMapperSpecification extends Specification{
         def res = mapper.getGeoTerm("characteristic genotype")
 
         then:
-        res == "samples_characteristic genotype"
+        res == "characteristics: genotype"
     }
 
     def "map characteristics to repoWizterm"(){
         when:
         GeoMapper mapper = new GeoMapper()
-        def res = mapper.getRepoWizTerm("samples_characteristic genotype")
+        def res = mapper.getRepoWizTerm("characteristics: genotype")
 
         then:
         res == "characteristic genotype"

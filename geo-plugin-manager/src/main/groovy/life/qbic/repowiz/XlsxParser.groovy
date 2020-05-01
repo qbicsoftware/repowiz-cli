@@ -35,9 +35,6 @@ abstract class XlsxParser implements TemplateParser{
     def writeColumnWise(HashMap<String,String> values){
 
         values.entrySet().each{colName ->
-
-            println templateFields.get(colName.key)
-
             XSSFCell cell = templateFields.get(colName.key)
             XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex + 1)
             cellWithValue.setCellValue(colName.value)
@@ -87,6 +84,37 @@ abstract class XlsxParser implements TemplateParser{
     void removeRow(String sheetName, int rowIndex){
         Sheet sheet = getSheet(sheetName)
         removeRow(sheet,rowIndex)
+    }
+
+    private XSSFCell getCell(String sheetName, int rowNum, int colNum){
+
+        Row row = getSheet(sheetName).getRow(rowNum)
+        XSSFCell cell = row.getCell(colNum)
+
+        return cell
+    }
+
+    String getCellValue(String sheetName, int rowNum, int colNum){
+
+        XSSFCell cell = getCell(sheetName,rowNum,colNum)
+
+        return cell.stringCellValue
+    }
+
+    void setCellValue(String sheetName, int rowNum, int colNum, String newValue){
+
+        XSSFCell cell = getCell(sheetName,rowNum,colNum)
+
+        if(cell == null){
+            //create new cell
+            Row row = getSheet(sheetName).getRow(rowNum)
+            cell = row.createCell(colNum)
+        }
+
+        cell.setCellValue(newValue)
+
+        //add new values to template fields
+        templateFields.put(newValue,cell)
     }
 
     static void removeRow(Sheet sheet, int rowIndex) {
@@ -171,8 +199,7 @@ abstract class XlsxParser implements TemplateParser{
                         String maskedValue = maskDuplicates(rawValue,section)
                         //LOG.debug("Mapping Geo terms to RepoWiz terms ...")
                         //String cellValue = mapper.mapPropertiesToRepoWiz(maskedValue)
-
-                        templateFields.put(maskedValue,cell)
+                        if(!templateFields.containsKey(maskedValue))templateFields.put(maskedValue,cell)
 
                         if(isRequired(cell)) requiredFields.add(maskedValue)
 

@@ -8,16 +8,29 @@ class GeoTemplateParserSpecification extends Specification{
         given:
         GeoHtsSubmission submission = new GeoHtsSubmission()
 
-        HashMap<String,String> values = ["series_title":"this is a title","data processing pipeline_data processing step":"blabla"]
+        HashMap<String,String> values = ["series_title":"this is a title"]
         HashMap properties = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human",
-                          "protocols_library strategy":"test", "data processing pipeline_data processing step":"blabla",
+                          "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
                           "raw files_instrument model":"illumina"]
-        GeoSample sample = new GeoSample("name",properties,["file1.fastq","file2.fastq","file3.fastq"])
+
+        GeoSample sample = new GeoSample("Sample 1",properties,["file1.fastq","file2.fastq","file3.fastq"],new HashMap())
+
+        HashMap properties2 = ["samples_Sample name":"sample 2","samples_title": "blablbl", "samples_source name":"Human",
+                              "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
+                              "raw files_instrument model":"illumina"]
+
+        GeoSample sample2 = new GeoSample("Sample 2",properties2,["file1.fastq","file2.fastq","file3.fastq"],["characteristics: treatment":"non","characteristics: genotype":"mutant"])
+
+        HashMap properties3 = ["samples_Sample name":"sample 3","samples_title": "blablbl", "samples_source name":"Human",
+                              "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
+                              "raw files_instrument model":"illumina"]
+
+        GeoSample sample3 = new GeoSample("Sample 3",properties3,["file1.fastq","file2.fastq","file3.fastq"],["characteristics: treatment":"non","characteristics: genotype":"wildtype","characteristics: other":"non"])
 
 
         when:
         submission.writeProjectToWorkbook(values)
-        submission.writeSampleToWorkbook([sample,sample,sample])
+        submission.writeSampleToWorkbook([sample3,sample,sample2])
         submission.downloadFile("fileName")
 
         then:

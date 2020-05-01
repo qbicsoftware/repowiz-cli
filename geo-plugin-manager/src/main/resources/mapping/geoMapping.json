@@ -9,7 +9,7 @@
   "sample title": "samples_title",
   "source name": "samples_source name",
   "organism": "samples_organism",
-  "characteristic": "samples_characteristic",
+  "characteristic": "samples_characteristics:",
   "molecule": "samples_molecule",
   "sample description": "samples_description",
   "processed data file": "samples_processed data file",

@@ -4,6 +4,8 @@ import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.mapping.GeoTemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
+import org.apache.poi.xssf.usermodel.XSSFCell
+import org.jcodings.util.Hash
 
 class GeoHtsSubmission extends GeoSubmission{
 
@@ -81,18 +83,30 @@ class GeoHtsSubmission extends GeoSubmission{
         writeSectionRow(samples,"paired-end experiments")
         //todo paired-end data
         //"raw files_single or paired-end" spalte
+        //paired end illumina file handling!
+        //https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/NamingConvention_FASTQ-files-swBS.htm
 
         //raw files
         writeRawFileSection(samples)
+
+        //prepare samples section header
+        List characteristicTypes = getAllCharacteristicsTags(samples)
+        int maxFiles = maxNumFiles(samples)
+
+        writeSamplesSectionHeader(characteristicTypes,maxFiles)
 
         //write samples info
         writeSectionRow(samples,"samples")
         //special case
         //--> multiple insert col bzw move section header cell values to right
         //todo raw file (outermost column.. no changes
-        //todo characteristics
+        //todo characteristics: here only max 3 characteristics are expected adjust!!
+        writeCharacteristicsSection(samples)
+    }
 
-
+    @Override
+    void downloadFile(String fileName) {
+        parser.downloadWorkbook(fileName)
     }
 
     def writeSectionRow(List<GeoSample> samples, String keyword){
@@ -105,8 +119,48 @@ class GeoHtsSubmission extends GeoSubmission{
     def writeSectionCol(List<GeoSample> samples, String keyword){
         List filtered = filterForKeyWord(samples, keyword)
 
-        //todo what if samples have different sequencer types etc??! need to check
         if(!filtered.empty) parser.writeColumnWise(filtered[0])
+    }
+
+    def writeSamplesSectionHeader(List<String> characteristicTypes, int maxNumRawFiles){
+        //rawfiles todo
+        //XSSFCell cell = parser.templateFields.get("samples_raw file")
+
+        //write characteristics
+        //todo extend to write more than 3 characteristics
+        List<Integer> colNums = [4,5,6]
+        int rowNum = getSectionPosition("samples")-1
+        int counter = 0
+
+        colNums.each {colNum ->
+            if (characteristicTypes[counter] != null) parser.setCellValue(sheetName, rowNum, colNum, characteristicTypes[counter])
+            counter ++
+        }
+
+    }
+
+    def writeCharacteristicsSection(List<GeoSample> samples) {
+        //need row num for the characteristics
+        int baseRowNum = getSectionPosition("samples") - 1
+        println "baserow "+baseRowNum
+        //need colnum for each characteristic
+        samples.each {sample ->
+            //+ sample number
+            String sampleNum = sample.sampleName.split(" ")[1]
+            int offset = sampleNum as Integer
+            int rowNum = baseRowNum + offset
+
+            println "row num " +rowNum
+
+            sample.characteristics.each {characteristic ->
+                println characteristic
+                XSSFCell cell = parser.templateFields.get(characteristic.key.toString())
+                println cell
+                println cell.columnIndex
+                parser.setCellValue(sheetName,rowNum,cell.columnIndex,characteristic.value.toString())
+            }
+        }
+
     }
 
     def writeRawFileSection(List<GeoSample> samples){
@@ -141,8 +195,6 @@ class GeoHtsSubmission extends GeoSubmission{
                 }
 
             }
-
-
             //file checksum
 
             //read length
@@ -151,16 +203,10 @@ class GeoHtsSubmission extends GeoSubmission{
 
             filtered << fileProperties
         }
-
-
-        //todo what if samples have different sequencer types etc??! need to check
         if(!filtered.empty && row >= 0) parser.writeRowWise(filtered,sheetName,row)
     }
 
-    @Override
-    void downloadFile(String fileName) {
-        parser.downloadWorkbook(fileName)
-    }
+
 
     //check if other required fields, that are not marked with a comment are contained within the given fields
     static List containsOtherRequiredFields(Map fields){
@@ -181,6 +227,46 @@ class GeoHtsSubmission extends GeoSubmission{
         return missing
     }
 
+    List<HashMap<String,String>> filterForKeyWord(List<GeoSample> samples, String keyword){
+        List<HashMap> filteredList = []
+
+        samples.sort(){a,b -> a.sampleName <=> b.sampleName}
+
+        samples.each {sample ->
+            HashMap sampleProps = new HashMap()
+            //filter properties of each sample that contain special keyword
+            sample.properties.each {cellName, cellValue ->
+                //section samples
+                if(cellName != null && cellName.split(splitElem)[0] == keyword) sampleProps.put(cellName,cellValue)
+            }
+            if(!sampleProps.isEmpty()) filteredList << sampleProps
+        }
+
+        return filteredList
+    }
+
+    static List<String> getAllCharacteristicsTags(List<GeoSample> samples){
+        List<String> allCharact = []
+        samples.each {sample ->
+            sample.characteristics.keySet().each {characteristic ->
+                if(! allCharact.contains(characteristic)) allCharact << characteristic.toString()
+            }
+        }
+        return allCharact
+    }
+
+    static int maxNumFiles(List<GeoSample> samples){
+        int max = -1
+
+        samples.each {sample ->
+            int numFiles = 0
+            if(sample.rawFiles != null) numFiles = sample.rawFiles.size()
+
+            if(numFiles > max) max = numFiles
+        }
+
+        return max
+    }
 
     static int getSectionPosition(String section){
         switch (section){
@@ -199,21 +285,5 @@ class GeoHtsSubmission extends GeoSubmission{
             default:
                 return -1
         }
-    }
-
-
-    List<HashMap<String,String>> filterForKeyWord(List<GeoSample> samples, String keyword){
-        List filteredList = []
-
-        samples.each {sample ->
-            HashMap sampleProps = new HashMap()
-            //filter properties of each sample that contain special keyword
-            sample.properties.each {cellName, cellValue ->
-                //section samples
-                if(cellName != null && cellName.split(splitElem)[0] == keyword) sampleProps.put(cellName,cellValue)
-            }
-            if(!sampleProps.isEmpty()) filteredList << sampleProps
-        }
-        return filteredList
     }
 }

@@ -16,12 +16,18 @@ class GeoMapper {
     }
 
     String getRepoWizTerm(String geoTerm){
-        if(geoTerm.contains("samples_characteristic")) return geoTerm.split("_")[1]
+        if(geoTerm.contains("characteristics")){
+            String label = geoTerm.split(" ")[1]
+            return "characteristic "+label
+        }
        return geoTermsToRepowiz.get(geoTerm)
     }
 
     String getGeoTerm(String repoWizTerm){
-        if(repoWizTerm.contains("characteristic")) return "samples_"+repoWizTerm
+        if(repoWizTerm.contains("characteristic")){
+            String label = repoWizTerm.split(" ")[1]
+            return "characteristics: "+label
+        }
         return repowizTermsToGeo.get(repoWizTerm)
     }
 
