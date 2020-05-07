@@ -1,4 +1,4 @@
-package life.qbic.repowiz.finalise.api
+package life.qbic.repowiz.spi
 
 import life.qbic.repowiz.model.SubmissionModel
 

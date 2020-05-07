@@ -7,7 +7,7 @@ import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
 
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider;
+import life.qbic.repowiz.spi.TargetRepositoryProvider;
 import life.qbic.repowiz.io.JsonParser;
 import life.qbic.repowiz.observer.UserAnswer;
 import life.qbic.repowiz.prepare.openBis.OpenBisSession;

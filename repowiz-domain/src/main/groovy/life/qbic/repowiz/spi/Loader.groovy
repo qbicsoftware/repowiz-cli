@@ -1,7 +1,6 @@
-package life.qbic.repowiz.finalise
+package life.qbic.repowiz.spi
 
-import life.qbic.repowiz.Repository
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
+import life.qbic.repowiz.spi.TargetRepositoryProvider
 
 import java.lang.reflect.InvocationTargetException
 

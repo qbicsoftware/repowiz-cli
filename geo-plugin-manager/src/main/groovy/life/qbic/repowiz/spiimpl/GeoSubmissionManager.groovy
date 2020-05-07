@@ -1,7 +1,7 @@
 package life.qbic.repowiz.spiimpl
 
 import life.qbic.repowiz.model.GeoSample
-import life.qbic.repowiz.finalise.api.SubmissionManager
+import life.qbic.repowiz.spi.SubmissionManager
 import life.qbic.repowiz.mapping.GeoMapper
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample

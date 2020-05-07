@@ -1,71 +1,66 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.io.JsonParser
+import life.qbic.repowiz.spi.TargetRepository
+import life.qbic.repowiz.spi.TargetRepositoryProvider
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 //todo also move repository descriptions to external repository
-class RepositoryDatabaseConnector implements RepositoryDescription{
+class RepositoryDatabaseConnector implements RepositoryDescription {
 
-    String path //= "repositories"
-    String schema
-    List<String> validRepos
+    String schema = "repositories/repository.schema.json"
+    TargetRepository repository
 
     private static final Logger LOG = LogManager.getLogger(RepositoryDatabaseConnector.class)
 
 
-    RepositoryDatabaseConnector(String repositoryFolder, String repositorySchemaPath, List validRepoFileNames){
-        path = repositoryFolder
-        schema = repositorySchemaPath
-        this.validRepos = validRepoFileNames
+    RepositoryDatabaseConnector(TargetRepository targetRepo) {
+        repository = targetRepo
     }
 
     @Override
-    Repository findRepository(String name){
-        //String resourceFile1 = "repositories/geo.json"
-        String fileName = getFileName(name)
-        if (fileName != null){
-            InputStream stream = RepositoryDatabaseConnector.class.getClassLoader().getResourceAsStream(path+"/"+fileName)
+    Repository findRepository(String name) {
 
-            JsonParser parser = new JsonParser(stream)
-            Map repositoryMap = parser.parse()
-            parser.validate(schema,repositoryMap)
+        List<TargetRepositoryProvider> providers = repository.providers()
+        TargetRepositoryProvider targetProvider = null
 
-            RepositoryCreator creator = new RepositoryCreator(repositoryMap)
-
-            return creator.create()
-        }else {
-            LOG.error "No repository description (json file) was found for $name"
-            return null
+        providers.each { provider ->
+            if (provider.providerName.toLowerCase() == name) {
+                targetProvider = provider
+            }
         }
+
+        if(targetProvider != null) return targetProvider.getRepositoryDescription()
+
+       return null
+    }
+
+    Repository parseRepo(InputStream stream) {
+        JsonParser parser = new JsonParser(stream)
+        Map repositoryMap = parser.parse()
+        parser.validate(schema, repositoryMap)
+
+        RepositoryCreator creator = new RepositoryCreator(repositoryMap)
+
+        return creator.create()
     }
 
     @Override
     List<Repository> findRepositories(List<String> repoNames) {
         List<Repository> repos = []
-        repoNames.each {repo ->
+        repoNames.each { repo ->
             //match name to file
-            //String fileName = getFileName(repo)
             Repository foundRepo = findRepository(repo)
-            if(foundRepo != null){
+            if (foundRepo != null) {
                 repos << foundRepo
             }
         }
-        if(repos.empty){
+        if (repos.empty) {
             LOG.error "For the repositories $repoNames no submission support is provided!"
             System.exit(1)
         }
         return repos
     }
 
-    private String getFileName(String repoName){
-        String filePath = null
-
-        validRepos.each{validRepo ->
-            if(validRepo.contains(repoName) || validRepo.toLowerCase().contains(repoName.toLowerCase())) {
-                filePath = validRepo
-            }
-        }
-        return filePath
-    }
 }

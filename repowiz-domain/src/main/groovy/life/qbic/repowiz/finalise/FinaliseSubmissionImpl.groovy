@@ -1,9 +1,10 @@
 package life.qbic.repowiz.finalise
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.finalise.api.SubmissionManager
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
+import life.qbic.repowiz.spi.SubmissionManager
+import life.qbic.repowiz.spi.TargetRepositoryProvider
 import life.qbic.repowiz.model.SubmissionModel
+import life.qbic.repowiz.spi.TargetRepository
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 

@@ -5,8 +5,8 @@ import life.qbic.repowiz.RepositoryDatabaseConnector
 import life.qbic.repowiz.RepositoryDescription
 import life.qbic.repowiz.SubmissionHandler
 import life.qbic.repowiz.finalise.FinaliseSubmissionImpl
-import life.qbic.repowiz.finalise.Loader
-import life.qbic.repowiz.finalise.TargetRepository
+import life.qbic.repowiz.spi.Loader
+import life.qbic.repowiz.spi.TargetRepository
 import life.qbic.repowiz.find.FindMatchingRepositories
 import life.qbic.repowiz.find.FindMatchingRepositoriesInput
 import life.qbic.repowiz.observer.AnswerTypes
@@ -54,7 +54,7 @@ class SubmissionController implements PropertyChangeListener{
         repository = new TargetRepository(loader)
 
         // set up repository database
-        repoDescription = new RepositoryDatabaseConnector("repositories","repositories/repository.schema.json",repoFileNames)
+        repoDescription = new RepositoryDatabaseConnector(repository)
     }
 
 

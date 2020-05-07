@@ -1,6 +1,6 @@
-package life.qbic.repowiz.finalise.spi
+package life.qbic.repowiz.spi
 
-import life.qbic.repowiz.finalise.api.SubmissionManager
+import life.qbic.repowiz.Repository
 
 abstract class TargetRepositoryProvider {
     //creates validated objects???
@@ -8,4 +8,5 @@ abstract class TargetRepositoryProvider {
     abstract String getProviderName()
     abstract void setUploadType(String type)
     abstract SubmissionManager create()
+    abstract Repository getRepositoryDescription()
 }

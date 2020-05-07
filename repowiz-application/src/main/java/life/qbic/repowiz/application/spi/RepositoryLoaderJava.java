@@ -1,7 +1,7 @@
 package life.qbic.repowiz.application.spi;
 
-import life.qbic.repowiz.finalise.Loader;
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider;
+import life.qbic.repowiz.spi.Loader;
+import life.qbic.repowiz.spi.TargetRepositoryProvider;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +14,7 @@ import java.util.List;
 
 public class RepositoryLoaderJava implements Loader {
 
-    String repositoryListFile = "services/life.qbic.repowiz.spi.TargetRepositoryProvider.txt";
+    private String repositoryListFile = "services/life.qbic.repowiz.spi.TargetRepositoryProvider.txt";
     private static final Logger LOG = LogManager.getLogger(RepositoryLoaderJava.class);
 
 
