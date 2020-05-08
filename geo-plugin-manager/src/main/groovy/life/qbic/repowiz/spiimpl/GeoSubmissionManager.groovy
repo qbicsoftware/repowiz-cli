@@ -1,11 +1,11 @@
 package life.qbic.repowiz.spiimpl
 
 import life.qbic.repowiz.model.GeoSample
-import life.qbic.repowiz.spi.SubmissionManager
 import life.qbic.repowiz.mapping.GeoMapper
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
 import life.qbic.repowiz.model.SubmissionModel
+import life.qbic.repowiz.spi.SubmissionManager
 import life.qbic.repowiz.submissionTypes.GeoHtsSubmission
 import life.qbic.repowiz.submissionTypes.GeoSubmission
 import org.apache.logging.log4j.LogManager
