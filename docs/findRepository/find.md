@@ -33,3 +33,7 @@ Part of the decision tree considering data from any other organism like microorg
 
 ### Architecture
 ![architecture](architecture-FingMatchingRepositories.png)
+
+The observer pattern is implemented by using a PropertyChangeSupport.
+If the UserAnswer class registers a change in the answer variable 
+the new information is forwarded to the core.

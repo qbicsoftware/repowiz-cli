@@ -14,4 +14,9 @@ It also checks if the project is valid for the selected repository.
 
 ### Architecture
 ![architecture](architecture-PrepareSubmission.png)
+
+The input plugin, namely the local DMS of choice, implements
+the ProjectSearcher class. This class obtains information on the required
+project and returns the project information in form of the RepoWiz
+SubmissionModel
 		
