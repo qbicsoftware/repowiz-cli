@@ -6,7 +6,7 @@ The system suggests suitable repositories based on the characteristics of a proj
 This is implemented with a decision tree. the first level is based on the source organism of the data. In further levels 
 information about data and study types are considered.
 
-Part of the decision tree considering human data, for this data one needs to consider if the data should be publicly available:
+Part of the decision tree considering human data, it needs to be considered if should be publicly accessible.
 
 ![human](decisionTree_human.png)
 

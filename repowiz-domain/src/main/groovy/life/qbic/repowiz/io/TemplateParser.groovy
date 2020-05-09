@@ -2,8 +2,11 @@ package life.qbic.repowiz.io
 
 interface TemplateParser {
 
-    //do i need the first method? --> probably stream is enough
-    //def parseAsFile()
+    /**
+     * Function to create a workbook from a given filename
+     * @param fileName
+     * @return
+     */
     def createWorkbook(String fileName)
 
 }

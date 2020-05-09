@@ -3,6 +3,9 @@ package life.qbic.repowiz.prepare.projectSearch
 import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.model.RepoWizProject
 
+/**
+ * Class to define the project searcher. Each input plugin must extend this class
+ */
 abstract class ProjectSearcher implements ProjectSearchInput{
 
     Mapper mapper

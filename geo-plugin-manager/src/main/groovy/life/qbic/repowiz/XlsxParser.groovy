@@ -14,7 +14,9 @@ import org.apache.poi.xssf.usermodel.XSSFRow
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 
-
+/**
+ * Class to parse XLSX file with XSSFWorkbooks
+ */
 abstract class XlsxParser implements TemplateParser{
 
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
@@ -153,9 +155,29 @@ abstract class XlsxParser implements TemplateParser{
         }
     }
 
+    /**
+     * Method that determines if a cell is a section
+     * @param cell
+     * @return
+     */
     abstract def isSection(XSSFCell cell)
+    /**
+     * Method that defines if a cell contains information about a metadata term
+     * @param cell
+     * @return
+     */
     abstract def isField(XSSFCell cell)
+    /**
+     * Method that determines if a cell the metadata term in this cell is required
+     * @param cell
+     * @return
+     */
     abstract def isRequired(XSSFCell cell)
+    /**
+     * Method to determine if a cell is valid and can accept values
+     * @param cell
+     * @return
+     */
     abstract def isValidCell(XSSFCell cell)
     //method to write information back/to know where to write information
     //abstract HashMap<String,List<String>> writeToSheet(String sheetName)
