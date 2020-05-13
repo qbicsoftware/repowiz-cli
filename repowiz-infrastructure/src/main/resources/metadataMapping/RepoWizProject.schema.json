@@ -1,0 +1,33 @@
+{
+  "title": "metadata mapping",
+  "description": "Mapping schema for metadata in tool RepoWiz",
+  "type": "object",
+  "properties": {
+    "project title": {
+      "description": "title describing the overall study",
+      "type": "string",
+      "maxLength": 255
+    },
+    "summary": {
+      "description": "goals and objectives of the project (can be abstract of publication)",
+      "type": "string"
+    },
+    "design": {
+      "description": "how many Samples are analyzed, if replicates are included, are there control and/or reference Samples, etc...",
+      "type": "string"
+    },
+    "contributor": {
+      "description": "Each contributor on a separate line",
+      "type": "string"
+    },
+    "supplementary file": {
+      "description":"If you submit a matrix table with processed data for all samples, include the file name here.",
+      "type": "string"
+    },
+    "SRA_center_name_code": {
+      "description":"Only add if institute has it ",
+      "type": "string"
+    }
+  }
+}
+

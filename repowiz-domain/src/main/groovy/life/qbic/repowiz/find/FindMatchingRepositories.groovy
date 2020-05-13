@@ -34,8 +34,8 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
             organisms << it.data
         }
 
-        String user_answer = output.transferAnswerPossibilities(organisms)//todo use observer pattern!
-        validateDecision(user_answer)
+        output.transferAnswerPossibilities(organisms)//todo use observer pattern!
+        //validateDecision(user_answer)
     }
 
     @Override
@@ -75,9 +75,23 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
 
         List<String> matchingRepos = tree.getChildrenData(currentDecisionLevel)
 
+        LOG.info "Following repositories accept your data"
+        LOG.info matchingRepos
+
         List<Repository> repositories = repositoryDescription.findRepositories(matchingRepos)
 
+        displayUploadRequirements(repositories)
+
         output.transferRepositoryList(repositories)
+    }
+
+    def displayUploadRequirements(List<Repository>repositories){
+        repositories.each {repo ->
+            output.transferUserInformation("For a successful submission of $repo.repositoryName provide: ")
+            repo.uploadRequirements.each {
+                output.transferUserInformation(it)
+            }
+        }
     }
 
 }

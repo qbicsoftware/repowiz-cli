@@ -12,11 +12,11 @@
     <artifactId>geo-plugin-manager</artifactId>
 
     <dependencies>
-        <dependency>
+       <!-- <dependency>
             <groupId>life.qbic</groupId>
             <artifactId>repowiz-domain</artifactId>
             <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>life.qbic</groupId>
             <artifactId>repowiz-infrastructure</artifactId>
@@ -28,6 +28,7 @@
             <version>2.0.0</version>
         </dependency>
     </dependencies>
+
 
     <build>
         <resources>

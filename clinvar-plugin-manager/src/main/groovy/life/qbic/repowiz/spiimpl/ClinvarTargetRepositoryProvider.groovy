@@ -1,7 +1,10 @@
 package life.qbic.repowiz.spiimpl
 
-import life.qbic.repowiz.finalise.api.SubmissionManager
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider
+import life.qbic.repowiz.Repository
+import life.qbic.repowiz.RepositoryDatabaseConnector
+import life.qbic.repowiz.spi.SubmissionManager
+import life.qbic.repowiz.spi.TargetRepository
+import life.qbic.repowiz.spi.TargetRepositoryProvider
 
 class ClinvarTargetRepositoryProvider extends TargetRepositoryProvider{
 
@@ -16,5 +19,13 @@ class ClinvarTargetRepositoryProvider extends TargetRepositoryProvider{
     @Override
     SubmissionManager create() {
         return new ClinvarSubmissionManager()
+    }
+
+    @Override
+    Repository getRepositoryDescription() {
+        RepositoryDatabaseConnector connector = new RepositoryDatabaseConnector(new TargetRepository())
+        InputStream stream = ClinvarTargetRepositoryProvider.class.getClassLoader().getResourceAsStream("clinvar.json")
+
+        return connector.parseRepo(stream)
     }
 }

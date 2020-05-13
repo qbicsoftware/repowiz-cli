@@ -59,4 +59,15 @@ class JsonParserSpecification extends Specification {
         then:
         thrown IllegalArgumentException
     }
+
+    def "validate integrity number"(){
+        given:
+        def map = ["integrity number":"9.1"]
+
+        when:
+        JsonParser.validate("metadataMapping/RepoWizSample.schema.json",map)
+
+        then:
+        noExceptionThrown()
+    }
 }

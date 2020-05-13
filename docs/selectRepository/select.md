@@ -15,3 +15,4 @@ If the user started the guide he can now select one repository from the tools su
 ### Architecture
 
 ![architecture](architecture-SelectRepository.png)
+

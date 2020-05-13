@@ -1,0 +1,12 @@
+{
+  "Q_PROJECT_DETAILS": "design",
+  "Q_PRIMARY_TISSUE" : "source name",
+  "Q_NCBI_ORGANISM" : "organism",
+  "Q_EXPERIMENTAL_SETUP" : "characteristic",
+  "Q_SAMPLE_TYPE": "molecule",
+  "Q_ADDITIONAL_INFO_Q_NGS_SINGLE_SAMPLE_RUN" : "ref genome",
+  "Q_ADDITIONAL_INFO_Q_NGS_MEASUREMENT" : "library protocol",
+  "Q_SEQUENCER_DEVICE" : "instrument model",
+  "Q_NGS_RAW_DATA":"raw file",
+  "Q_RNA_INTEGRITY_NUMBER": "integrity number"
+}

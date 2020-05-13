@@ -7,11 +7,12 @@ import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
 
-import life.qbic.repowiz.finalise.spi.TargetRepositoryProvider;
+import life.qbic.repowiz.spi.TargetRepositoryProvider;
 import life.qbic.repowiz.io.JsonParser;
 import life.qbic.repowiz.observer.UserAnswer;
 import life.qbic.repowiz.prepare.openBis.OpenBisSession;
-import life.qbic.repowiz.prepare.projectSearch.ProjectSearcher;
+import life.qbic.repowiz.prepare.projectSearch.OpenBisMapper;
+import life.qbic.repowiz.prepare.projectSearch.OpenBisProjectSearcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +34,8 @@ public class RepowizTool{
 
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
-        ProjectSearcher searcher = setupLocalDatabaseConnection(config);
+        OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
+
         List<String> repos = getImplementedRepositoriesAsList();
 
         controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
@@ -75,7 +77,7 @@ public class RepowizTool{
     }
 
     //method to manage the local database connection (input domain)
-    private ProjectSearcher setupLocalDatabaseConnection(String config) {
+    private OpenBisProjectSearcher setupLocalDatabaseConnection(String config) {
         //local database connection
         try {
             InputStream stream = new FileInputStream(config);
@@ -88,13 +90,31 @@ public class RepowizTool{
             IApplicationServerApi v3 = session.getV3();
             IDataStoreServerApi dss = session.getDss();
 
-            return new ProjectSearcher(v3, dss, sessionToken);
+            OpenBisMapper mapper = setupMapper();
+
+            String projectSchema = "metadataMapping/RepoWizProject.schema.json";
+            String sampleSchema = "metadataMapping/RepoWizSample.schema.json";
+
+
+            return new OpenBisProjectSearcher(v3, dss, sessionToken, mapper, projectSchema, sampleSchema);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.exit(1);
         }
         return null;
+    }
+
+    private OpenBisMapper setupMapper(){
+        //load data from file
+        String path = "metadataMapping/openbisMapping.json";
+
+        InputStream stream = OpenBisMapper.class.getClassLoader().getResourceAsStream(path);
+        JsonParser jsonParser = new JsonParser(stream);
+
+        Map repoWizTerms = jsonParser.parse();
+
+        return new OpenBisMapper(repoWizTerms);
     }
 
     private static List<String> getImplementedRepositoriesAsList(){

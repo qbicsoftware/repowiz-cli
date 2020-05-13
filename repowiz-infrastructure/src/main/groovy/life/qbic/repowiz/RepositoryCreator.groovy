@@ -13,8 +13,7 @@ class RepositoryCreator {
                 uploadTypes: (List)data.get("uploadTypes"),
                 uploadFormat: (String)data.get("uploadFormat"),
                 uploadRequirements:(List)data.get("uploadRequirements"),
-                characteristics: (HashMap)[size:(String)data.get("size")],
-                subsequentSteps: (List) ["",""])
+                subsequentSteps: (List) data.get("subsequentSteps"))
     }
 
 

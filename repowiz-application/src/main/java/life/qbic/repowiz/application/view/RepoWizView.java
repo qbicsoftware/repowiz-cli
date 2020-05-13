@@ -4,10 +4,7 @@ import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.observer.AnswerTypes;
 import life.qbic.repowiz.observer.UserAnswer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class RepoWizView implements CommandlineView {
 
@@ -15,10 +12,10 @@ public class RepoWizView implements CommandlineView {
 
     @Override
     public void displayQuestion(AnswerTypes type, HashMap<Integer,String> question) {
-        String formattedChoices = "> Please choose one of the following options: \n> ";
+        String formattedChoices = "> Please choose one of the following options: \n";
         formattedChoices += mapToString(question); //todo rename: creates string from map for view
 
-        System.out.println(formattedChoices);
+        System.out.println(formattedChoices.trim());
         Scanner scan = new Scanner(System.in);
         int answerNum = scan.nextInt();
 
@@ -47,6 +44,45 @@ public class RepoWizView implements CommandlineView {
         }
 
         System.out.println(formattedDecisions);
+    }
+
+    public void displayList(List<String> list){
+        StringBuilder information = new StringBuilder();
+
+        for(String info:list){
+            information.append(" - "+info+"\n");
+        }
+
+        System.out.println(information);
+    }
+
+    @Override
+    public void displaySummaryProject(HashMap<String, String> projectInfo, String id) {
+        //collect all filled fields in order
+        StringBuilder summary = new StringBuilder();
+        //project
+        summary.append("> Project "+ id +" is described as follows: \n");
+
+        for(Map.Entry<String,String> info : projectInfo.entrySet()){
+                summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
+        }
+
+        System.out.println(summary);
+    }
+
+    @Override
+    public void displaySummarySamples(HashMap<String, HashMap<String, String>> samples) {
+        StringBuilder summary = new StringBuilder();
+        //samples
+        for(Map.Entry<String, HashMap<String,String>> sample:samples.entrySet()){
+            summary.append("> "+ sample.getKey() +" is described as follows: \n");
+
+            for(Map.Entry<String,String> info : sample.getValue().entrySet()){
+                 summary.append(" "+info.getKey()+": "+info.getValue()+"\n");
+            }
+        }
+
+        System.out.println(summary);
     }
 
     @Override

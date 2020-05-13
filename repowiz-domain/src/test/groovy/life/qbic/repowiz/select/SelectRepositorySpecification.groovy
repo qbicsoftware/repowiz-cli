@@ -19,15 +19,14 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
-        def res = selectRepository.isValidRepository("clinvaar")
+        def res = selectRepository.getValidRepository("clinvaar")
 
         then:
-        !res
+        res == null
     }
 
     def "defining valid repository "(){
@@ -37,15 +36,14 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
-        def res = selectRepository.isValidRepository("clinvar")
+        def res = selectRepository.getValidRepository("clinvar")
 
         then:
-        res
+        res == repo
     }
 
     def "retrieve correct repository"(){
@@ -55,7 +53,6 @@ class SelectRepositorySpecification extends Specification{
                 uploadTypes: [],
                 uploadFormat: "",
                 uploadRequirements:[],
-                characteristics: ["size":"100"],
                 subsequentSteps: ["",""])
         selectRepository.setSuggestedRepos([repo])
 

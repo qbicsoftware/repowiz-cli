@@ -47,7 +47,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def transferDecisionStack(List<String> decisions) {
-        presenter.displayUserChoices(decisions)
+        presenter.displayUserDecisions(decisions)
+    }
+
+    @Override
+    def transferUserInformation(String standard) {
+        presenter.displayUserInformation(standard)
     }
 
     @Override
@@ -64,7 +69,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def selectedRepository(Repository repository) {
-        presenter.displayUserChoices([repository.repositoryName])
+        presenter.displayUserDecisions([repository.repositoryName])
         prepareSubmissionInput.prepareSubmissionToRepository(repository)
     }
 
@@ -81,13 +86,13 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def displayAnswer(String choice) { //todo rename: selected uploadtype is shown
-        presenter.displayUserChoices([choice])
+        presenter.displayUserDecisions([choice])
     }
 
     //finalise submission output
     @Override
     def displayUserInformation(String information) {
-        presenter.displayUserInformation(information as List<String>)
+        presenter.displayUserInformation(information)
     }
 
     @Override
@@ -96,8 +101,18 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
-    String verifySubmission(String verify) {
-        presenter.displayUserInformation(verify as List<String>)
+    def displayProjectSummary(HashMap project, String id) {
+        presenter.displayProjectInfo(project,id)
+    }
+
+    @Override
+    def displaySampleSummary(HashMap<String, HashMap> samples) {
+        presenter.displaySampleInfo(samples)
+    }
+
+    @Override
+    String verifySubmission(List verify) {
+        presenter.requestAnswer(AnswerTypes.SUBMIT, verify)
     }
 
 }

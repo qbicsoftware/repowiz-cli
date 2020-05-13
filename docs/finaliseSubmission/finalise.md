@@ -13,5 +13,7 @@ The final submission is then forwarded to the desired output plugin which can be
 1. validated RepoWizSamples and RepoWizProject objects
 
 ### Architecture
-![architecture](architecture-FinaliseSubmission.png)
+![architecture](architecture-FinaliseSubmission_SPI.png)
 
+The implementation of the Service Provider Interface (SPI) pattern 
+allows to handel an unknown number of repository providers 

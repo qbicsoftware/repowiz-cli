@@ -21,4 +21,22 @@ class GeoMapperSpecification extends Specification{
         res == "project title"
     }
 
+    def "map characteristics to geoterm"(){
+        when:
+        GeoMapper mapper = new GeoMapper()
+        def res = mapper.getGeoTerm("characteristic genotype")
+
+        then:
+        res == "characteristics: genotype"
+    }
+
+    def "map characteristics to repoWizterm"(){
+        when:
+        GeoMapper mapper = new GeoMapper()
+        def res = mapper.getRepoWizTerm("characteristics: genotype")
+
+        then:
+        res == "characteristic genotype"
+    }
+
 }
