@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>repowiz-cli</artifactId>
+        <groupId>life.qbic</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>repowiz-infrastructure</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>life.qbic</groupId>
+            <artifactId>repowiz-domain</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>life.qbic.openbis</groupId>
+            <artifactId>openbis_api</artifactId>
+            <version>3-S253.0</version>
+        </dependency>
+        <dependency>
+            <groupId>life.qbic.openbis</groupId>
+            <artifactId>dss_client</artifactId>
+            <version>13.04.8</version>
+        </dependency>
+        <!-- for xml study parser -->
+        <dependency>
+            <groupId>life.qbic</groupId>
+            <artifactId>data-model-lib</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <!-- json validation -->
+        <dependency>
+            <groupId>com.networknt</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>1.0.36</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>**/*.xlsx</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xlsx</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

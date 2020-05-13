@@ -3,20 +3,25 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>life.qbic</groupId>
-		<artifactId>cli-parent-pom</artifactId>
-		<version>1.4.0</version>
-		<!-- update to 2.1.0 -->
-	</parent>
-	<groupId>life.qbic</groupId>
-	<artifactId>repowiz</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<name>RepoWiz</name>
-	<url>http://github.com/qbicsoftware/repowiz</url>
-	<description>Command-line utility to...</description>
-	<packaging>pom</packaging>
-	<!-- we only need to tell maven where to find our parent pom and other QBiC dependencies -->
+	<modules>
+		<module>repowiz-domain</module>
+		<module>repowiz-infrastructure</module>
+		<module>geo-plugin-manager</module>
+		<module>clinvar-plugin-manager</module>
+		<module>repowiz-application</module>
+	</modules>
+    <parent>
+        <groupId>life.qbic</groupId>
+        <artifactId>cli-parent-pom</artifactId>
+        <version>2.1.0</version>
+    </parent>
+    <artifactId>repowiz-cli</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <name>RepoWiz</name>
+    <url>http://github.com/qbicsoftware/repowiz</url>
+    <description>Command-line utility to find a suitable repository for your data and prepares your submission</description>
+    <packaging>pom</packaging>
+    <!-- we only need to tell maven where to find our parent pom and other QBiC dependencies -->
 	<repositories>
 		<repository>
 			<releases>
@@ -50,7 +55,14 @@
 		<dependency>
 			<groupId>life.qbic</groupId>
 			<artifactId>core-utils-lib</artifactId>
-			<version>1.0.0</version>
+			<version>1.3.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.spockframework/spock-core -->
+		<dependency>
+			<groupId>org.spockframework</groupId>
+			<artifactId>spock-core</artifactId>
+			<version>1.3-groovy-2.5</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
@@ -58,22 +70,21 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M2</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
+						<id>default-cli</id>
+						<phase>verify</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>enforce</goal>
 						</goals>
 						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>life.qbic.application.cli.RepowizEntryPoint</mainClass>
-								</manifest>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
+							<rules>
+								<dependencyConvergence/>
+								<banDuplicatePomDependencyVersions/>
+							</rules>
+							<fail>false</fail>
 						</configuration>
 					</execution>
 				</executions>

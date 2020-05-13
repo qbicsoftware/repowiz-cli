@@ -1,0 +1,42 @@
+{
+  "title": "repository description",
+  "description": "Description schema for different types of repositories for the tool RepoWiz",
+  "type": "object",
+  "properties": {
+    "repositoryName": {
+      "description": "Name of the repository",
+      "type": "string"
+    },
+    "uploadFormat": {
+      "description": "Upload type of the repository, is there an API or is it a submission based on a template",
+      "type": "string",
+      "enum": [
+        "api",
+        "template"
+      ]
+    },
+    "uploadTypes": {
+      "description": "List of accepted experiment types like e.g microarray data",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "uploadRequirements": {
+      "description": "Information about essential/absolute requirements for a successful upload",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "subsequentSteps": {
+      "description": "What is to be done after a submission with RepoWiz",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes", "uploadFormat"]
+}
+
