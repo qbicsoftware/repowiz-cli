@@ -31,7 +31,11 @@ public class RepowizTool{
     private SubmissionController controller;
     private CommandlineView commandlineView = new RepoWizView();
 
-
+    /**
+     * Sets up the infrastructure of RepoWiz by building the connection to the local database, assembling the controller class and change listener
+     * @param projectID of the project that needs to be prepared for an uploaded
+     * @param config with data to connect to the local database
+     */
     public RepowizTool(String projectID, String config){
         // set up infrastructure classes
         OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
@@ -40,6 +44,7 @@ public class RepowizTool{
 
         controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
 
+        //set up ChangeListener to handle user answers
         UserAnswer answer = new UserAnswer();
         answer.addPropertyChangeListener(controller);
 
@@ -50,13 +55,24 @@ public class RepowizTool{
         //add spi provider here!
     }
 
+    /**
+     * Starts the tool with the use case FindRepository (suggested for inexperienced scientists)
+     */
     public void executeFindRepository(){
         controller.initWithGuide();
     }
+
+    /**
+     * Starts the tool with the use case SelectRepository (suggested for experienced scientists)
+     * @param selectedRepository defines the repository which is selected by the user
+     */
     public void executeSelectRepository(String selectedRepository) {
         controller.initWithSelection(selectedRepository);
     }
 
+    /**
+     * Lists all repositories which are supported by RepoWiz.
+     */
     public void executeListing(){
         RepositoryLoaderJava loader = new RepositoryLoaderJava();
         try{
@@ -67,16 +83,22 @@ public class RepowizTool{
                 repoNames.add(provider.getProviderName());
             }
 
-            commandlineView.displayInformation("The following Repositories are implemented: ");
+            commandlineView.displayInformation("The following repositories are implemented: ");
             commandlineView.displayInformation(repoNames);
 
         }catch (Exception e){
-            LOG.error("Cannot load the implemented Plugins");
+            LOG.error("Cannot load the implemented plugins");
             e.printStackTrace();
         }
     }
 
     //method to manage the local database connection (input domain)
+
+    /**
+     * Manages the setup of the connection to the local database instance based on the user credentials from the config
+     * @param config contains information about user credentials and local db instance
+     * @return a searcher object which can be used for searching OpenBis projects OR null
+     */
     private OpenBisProjectSearcher setupLocalDatabaseConnection(String config) {
         //local database connection
         try {
@@ -105,6 +127,10 @@ public class RepowizTool{
         return null;
     }
 
+    /**
+     * Sets up the OpenBis mapper class which translates OpenBis terms into RepoWiz terms
+     * @return a mapper which is capable to translate OpenBis vocabulary
+     */
     private OpenBisMapper setupMapper(){
         //load data from file
         String path = "metadataMapping/openbisMapping.json";
@@ -117,6 +143,10 @@ public class RepowizTool{
         return new OpenBisMapper(repoWizTerms);
     }
 
+    /**
+     * Determines all repository plugins that can be accessed by RepoWiz
+     * @return a list of all repository plugins
+     */
     private static List<String> getImplementedRepositoriesAsList(){
         List<String> repos = new ArrayList<>();
         String fileName = "services/RepositoryJsonFiles.txt";
