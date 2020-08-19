@@ -5,6 +5,12 @@ import life.qbic.repowiz.model.SubmissionModel
 
 /**
  * Interface to define what information is required to finalise the submission
+ *
+ * It should be used to make data accessible from the {@link FinaliseSubmissionImpl} class
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface FinaliseSubmission {
 
@@ -14,16 +20,14 @@ interface FinaliseSubmission {
      *
      * @param submission
      * @param repository
-     * @return
      */
-    def transferSubmissionData(SubmissionModel submission, Repository repository)
+    void transferSubmissionData(SubmissionModel submission, Repository repository)
 
     /**
      * Process if the submission is verified by the user and download the submission.
      * If not, stop the process.
      *
      * @param userAnswer
-     * @return
      */
-    def processVerificationOfSubmission(boolean userAnswer)
+    void processVerificationOfSubmission(boolean userAnswer)
 }

@@ -1,46 +1,47 @@
 package life.qbic.repowiz.finalise
 
 /**
- * Information about the submission that is accessible from outside the FinaliseSubmission use case
+ * Information about the submission that is accessible from outside the {@link FinaliseSubmission} use case
+ *
+ * This interface should be implemented whenever information needs to be injected into {@link FinaliseSubmission}
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface SubmissionOutput {
 
     /**
      * Information that should be displayed to the user
      * @param information
-     * @return
      */
-    def displayUserInformation(String information)
+    void displayUserInformation(String information)
 
     /**
      * Information for the user in form of a list
      * @param text
-     * @return
      */
-    def displayUserInformation(List<String> text)
+    void displayUserInformation(List<String> text)
 
     /**
      * Summary of the project with the properties of the provider
      * that shall be displayed to the user
      * @param project
      * @param id
-     * @return
      */
-    def displayProjectSummary(HashMap project, String id)
+    void displayProjectSummary(HashMap project, String id)
 
     /**
      * Summary of each samples with the properties for the provider
      * that shall be displayed to the user
      * @param samples
-     * @return
      */
-    def displaySampleSummary(HashMap<String, HashMap> samples)
+    void displaySampleSummary(HashMap<String, HashMap> samples)
 
     /**
      * Answer Possibilities based on which the user can verify his data
      * @param choices
-     * @return
      */
-    def verifySubmission(List<String> choices)
+    void verifySubmission(List<String> choices)
 
 }

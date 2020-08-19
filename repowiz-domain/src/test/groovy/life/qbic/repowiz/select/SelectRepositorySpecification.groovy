@@ -5,21 +5,21 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.RepositoryDescription
 import spock.lang.Specification
 
-class SelectRepositorySpecification extends Specification{
+class SelectRepositorySpecification extends Specification {
 
     def repositoryDescription = Mock(RepositoryDescription)
     def output = Mock(SelectRepositoryOutput)
 
-    def selectRepository = new SelectRepository(output,repositoryDescription)
+    def selectRepository = new SelectRepository(output, repositoryDescription)
 
-    def "defining non suggested repository returns null"(){
+    def "defining non suggested repository returns null"() {
         given:
-        Repository repo = new Repository(repositoryName:"clinvar",
+        Repository repo = new Repository(repositoryName: "clinvar",
                 dataType: "",
                 uploadTypes: [],
                 uploadFormat: "",
-                uploadRequirements:[],
-                subsequentSteps: ["",""])
+                uploadRequirements: [],
+                subsequentSteps: ["", ""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
@@ -29,14 +29,14 @@ class SelectRepositorySpecification extends Specification{
         res == null
     }
 
-    def "defining valid repository "(){
+    def "defining valid repository "() {
         given:
-        Repository repo = new Repository(repositoryName:"clinvar",
+        Repository repo = new Repository(repositoryName: "clinvar",
                 dataType: "",
                 uploadTypes: [],
                 uploadFormat: "",
-                uploadRequirements:[],
-                subsequentSteps: ["",""])
+                uploadRequirements: [],
+                subsequentSteps: ["", ""])
         selectRepository.setSuggestedRepos([repo])
 
         when:
@@ -46,14 +46,14 @@ class SelectRepositorySpecification extends Specification{
         res == repo
     }
 
-    def "retrieve correct repository"(){
+    def "retrieve correct repository"() {
         given:
-        Repository repo = new Repository(repositoryName:"clinvar",
+        Repository repo = new Repository(repositoryName: "clinvar",
                 dataType: "",
                 uploadTypes: [],
                 uploadFormat: "",
-                uploadRequirements:[],
-                subsequentSteps: ["",""])
+                uploadRequirements: [],
+                subsequentSteps: ["", ""])
         selectRepository.setSuggestedRepos([repo])
 
         when:

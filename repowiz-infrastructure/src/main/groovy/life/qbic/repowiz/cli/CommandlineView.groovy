@@ -4,7 +4,13 @@ import life.qbic.repowiz.observer.AnswerTypes
 import life.qbic.repowiz.observer.UserAnswer
 
 /**
- * Interface defining view methods
+ * Interface defining how a class can transfer information to the view
+ *
+ * This class should be used to transfer information that needs to be displayed to the view
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface CommandlineView {
 
@@ -13,7 +19,7 @@ interface CommandlineView {
      * @param type
      * @param choices
      */
-    void displayQuestion(AnswerTypes type, HashMap <Integer,String> choices)
+    void displayQuestion(AnswerTypes type, HashMap<Integer, String> choices)
 
     /**
      * Displays decision of the user to give feedback on made decisions
@@ -44,13 +50,13 @@ interface CommandlineView {
      * @param projectInfo
      * @param id
      */
-    void displaySummaryProject(HashMap<String,String> projectInfo, String id)
+    void displaySummaryProject(HashMap<String, String> projectInfo, String id)
 
     /**
      * Displays a summary of all samples with their properties
      * @param samples
      */
-    void displaySummarySamples(HashMap<String,HashMap<String,String>> samples)
+    void displaySummarySamples(HashMap<String, HashMap<String, String>> samples)
 
     /**
      * Sets the user answer in the observer UserAnswer

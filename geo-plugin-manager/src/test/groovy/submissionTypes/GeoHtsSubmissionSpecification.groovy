@@ -4,68 +4,66 @@ import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.submissionTypes.GeoHtsSubmission
 import spock.lang.Specification
 
-class GeoHtsSubmissionSpecification extends Specification{
+class GeoHtsSubmissionSpecification extends Specification {
 
     GeoHtsSubmission submission
 
-    def setup(){
+    def setup() {
         submission = new GeoHtsSubmission()
     }
 
-    def "detect all missing fields"(){
+    def "detect all missing fields"() {
         given:
-        Map defined = ["series_title":"this is a title"]
+        Map defined = ["series_title": "this is a title"]
         when:
         def res = submission.determineMissingFields(defined)
         then:
         res.size() == 25
     }
 
-    def "get list of all characteristics for all samples"(){
+    def "get list of all characteristics for all samples"() {
         given:
         GeoHtsSubmission submission = new GeoHtsSubmission()
 
-        HashMap properties = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human",
-                              "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
-                              "raw files_instrument model":"illumina"]
+        HashMap properties = ["samples_Sample name"       : "sample 1", "samples_title": "blablbl", "samples_source name": "Human",
+                              "protocols_library strategy": "test", "data processing pipeline_genome build": "blabla",
+                              "raw files_instrument model": "illumina"]
 
-        GeoSample sample = new GeoSample("name1",properties,["file1.fastq","file2.fastq","file3.fastq", "file4.fastq"],["characteristic: treatment":"non","characteristic: genotype":"mutant"])
+        GeoSample sample = new GeoSample("name1", properties, ["file1.fastq", "file2.fastq", "file3.fastq", "file4.fastq"], ["characteristic: treatment": "non", "characteristic: genotype": "mutant"])
 
-        HashMap properties2 = ["samples_Sample name":"sample 2","samples_title": "blablbl", "samples_source name":"Human",
-                              "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
-                              "raw files_instrument model":"illumina"]
+        HashMap properties2 = ["samples_Sample name"       : "sample 2", "samples_title": "blablbl", "samples_source name": "Human",
+                               "protocols_library strategy": "test", "data processing pipeline_genome build": "blabla",
+                               "raw files_instrument model": "illumina"]
 
-        GeoSample sample2 = new GeoSample("name2",properties2,["file1.fastq","file2.fastq","file3.fastq"],["characteristic: treatment":"non","characteristic: genotype":"wildtype","characteristic: other":"non"])
-
+        GeoSample sample2 = new GeoSample("name2", properties2, ["file1.fastq", "file2.fastq", "file3.fastq"], ["characteristic: treatment": "non", "characteristic: genotype": "wildtype", "characteristic: other": "non"])
 
 
         when:
-        List res = submission.getAllCharacteristicsTags([sample,sample2])
+        List res = submission.getAllCharacteristicsTags([sample, sample2])
 
         then:
-        res.sort() == ["characteristic: treatment","characteristic: genotype","characteristic: other"].sort()
+        res.sort() == ["characteristic: treatment", "characteristic: genotype", "characteristic: other"].sort()
     }
 
-    def "get max num of files for all samples"(){
+    def "get max num of files for all samples"() {
         given:
         GeoHtsSubmission submission = new GeoHtsSubmission()
 
-        HashMap properties = ["samples_Sample name":"sample 1","samples_title": "blablbl", "samples_source name":"Human",
-                              "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
-                              "raw files_instrument model":"illumina"]
+        HashMap properties = ["samples_Sample name"       : "sample 1", "samples_title": "blablbl", "samples_source name": "Human",
+                              "protocols_library strategy": "test", "data processing pipeline_genome build": "blabla",
+                              "raw files_instrument model": "illumina"]
 
-        GeoSample sample = new GeoSample("name1",properties,["file1.fastq","file2.fastq","file3.fastq", "file4.fastq"],["characteristic: treatment":"non","characteristic: genotype":"mutant"])
+        GeoSample sample = new GeoSample("name1", properties, ["file1.fastq", "file2.fastq", "file3.fastq", "file4.fastq"], ["characteristic: treatment": "non", "characteristic: genotype": "mutant"])
 
-        HashMap properties2 = ["samples_Sample name":"sample 2","samples_title": "blablbl", "samples_source name":"Human",
-                               "protocols_library strategy":"test", "data processing pipeline_genome build":"blabla",
-                               "raw files_instrument model":"illumina"]
+        HashMap properties2 = ["samples_Sample name"       : "sample 2", "samples_title": "blablbl", "samples_source name": "Human",
+                               "protocols_library strategy": "test", "data processing pipeline_genome build": "blabla",
+                               "raw files_instrument model": "illumina"]
 
-        GeoSample sample2 = new GeoSample("name2",properties2,["file1.fastq","file2.fastq","file3.fastq"],["characteristic: treatment":"non","characteristic: genotype":"wildtype","characteristic: other":"non"])
-
+        GeoSample sample2 = new GeoSample("name2", properties2, ["file1.fastq", "file2.fastq", "file3.fastq"], ["characteristic: treatment": "non", "characteristic: genotype": "wildtype", "characteristic: other": "non"])
 
 
         when:
-        int res = submission.maxNumFiles([sample,sample2])
+        int res = submission.maxNumFiles([sample, sample2])
 
         then:
         res == 4

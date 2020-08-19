@@ -4,14 +4,14 @@ import spock.lang.Specification
 
 class RepositoryCreatorSpecification extends Specification {
 
-    def "create a valid repository without exception"(){
+    def "create a valid repository without exception"() {
         given:
-        Map test = [repositoryName: "name",
-        dataType: "type",
-        uploadTypes: ["hts"],
-        uploadFormat: "template",
-        uploadRequirements: ["need valid identifier"],
-        subsequentSteps: ["",""]]
+        Map test = [repositoryName    : "name",
+                    dataType          : "type",
+                    uploadTypes       : ["hts"],
+                    uploadFormat      : "template",
+                    uploadRequirements: ["need valid identifier"],
+                    subsequentSteps   : ["", ""]]
 
         when:
         RepositoryCreator creator = new RepositoryCreator(test)

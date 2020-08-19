@@ -4,7 +4,13 @@ import life.qbic.repowiz.Repository
 import life.qbic.repowiz.model.SubmissionModel
 
 /**
- * Defines what information flows form the PrepareSubmission use case
+ * Defines what information prepared in {@link PrepareSubmissionImpl} can be obtained outside the class
+ *
+ * This class should be used whenever information about the submission need to be accessed
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface PrepareSubmissionOutput {
 

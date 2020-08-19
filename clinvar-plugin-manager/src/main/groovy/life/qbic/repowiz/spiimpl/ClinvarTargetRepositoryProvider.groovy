@@ -6,7 +6,7 @@ import life.qbic.repowiz.spi.SubmissionManager
 import life.qbic.repowiz.spi.TargetRepository
 import life.qbic.repowiz.spi.TargetRepositoryProvider
 
-class ClinvarTargetRepositoryProvider extends TargetRepositoryProvider{
+class ClinvarTargetRepositoryProvider extends TargetRepositoryProvider {
 
     String providerName = "Clinvar"
     String uploadType

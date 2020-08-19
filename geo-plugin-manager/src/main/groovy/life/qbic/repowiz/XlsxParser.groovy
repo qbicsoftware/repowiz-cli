@@ -4,26 +4,20 @@ import life.qbic.repowiz.io.TemplateParser
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.ss.usermodel.Cell
-import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
-import org.apache.poi.xssf.usermodel.XSSFCell
-import org.apache.poi.xssf.usermodel.XSSFCellStyle
-import org.apache.poi.xssf.usermodel.XSSFFont
-import org.apache.poi.xssf.usermodel.XSSFRow
-import org.apache.poi.xssf.usermodel.XSSFSheet
-import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import org.apache.poi.xssf.usermodel.*
 
 /**
  * Class to parse XLSX file with XSSFWorkbooks
  */
-abstract class XlsxParser implements TemplateParser{
+abstract class XlsxParser implements TemplateParser {
 
     private static final Logger LOG = LogManager.getLogger(XlsxParser.class)
 
     XSSFWorkbook wb
     List<String> requiredFields = []
-    HashMap<String,XSSFCell> templateFields = new HashMap<>()
+    HashMap<String, XSSFCell> templateFields = new HashMap<>()
     String section
 
     String commentMarker
@@ -35,9 +29,9 @@ abstract class XlsxParser implements TemplateParser{
         wb = (XSSFWorkbook) new XSSFWorkbook(stream)
     }
 
-    def writeColumnWise(HashMap<String,String> values){
+    def writeColumnWise(HashMap<String, String> values) {
 
-        values.entrySet().each{colName ->
+        values.entrySet().each { colName ->
             XSSFCell cell = templateFields.get(colName.key)
             XSSFCell cellWithValue = cell.row.getCell(cell.columnIndex + 1)
             cellWithValue.setCellValue(colName.value)
@@ -45,11 +39,11 @@ abstract class XlsxParser implements TemplateParser{
     }
 
     //call it per section! only bulk write
-    def writeRowWise(List<HashMap<String,String>> rowValues, String sheetName, int rowAt){
+    def writeRowWise(List<HashMap<String, String>> rowValues, String sheetName, int rowAt) {
         XSSFSheet sheet = getSheet(sheetName)
 
         //each list entry contains elements per row
-        rowValues.each {rowEntry ->
+        rowValues.each { rowEntry ->
             //start one row below the header row
             //shift all rows from rowAt - end of sheet, shift n number of rows
             sheet.shiftRows(rowAt, sheet.getLastRowNum(), 1, true, false)
@@ -59,9 +53,9 @@ abstract class XlsxParser implements TemplateParser{
             XSSFRow newRow = sheet.getRow(rowAt)
 
             //write content into this row
-            rowEntry.each {cellName, cellValue ->
+            rowEntry.each { cellName, cellValue ->
                 //find column for new value
-                if(templateFields.get(cellName) != null){
+                if (templateFields.get(cellName) != null) {
                     XSSFCell cell = templateFields.get(cellName)
                     int colNum = cell.columnIndex
 
@@ -75,8 +69,8 @@ abstract class XlsxParser implements TemplateParser{
         }
     }
 
-    def downloadWorkbook(String fileName){
-        File file = new File(fileName+".xlsx")
+    def downloadWorkbook(String fileName) {
+        File file = new File(fileName + ".xlsx")
         //ignore old files with same name
         file.createNewFile()
         FileOutputStream out = new FileOutputStream(file)
@@ -106,12 +100,12 @@ abstract class XlsxParser implements TemplateParser{
         }
     }*/
 
-    void removeRow(String sheetName, int rowIndex){
+    void removeRow(String sheetName, int rowIndex) {
         Sheet sheet = getSheet(sheetName)
-        removeRow(sheet,rowIndex)
+        removeRow(sheet, rowIndex)
     }
 
-    private XSSFCell getCell(String sheetName, int rowNum, int colNum){
+    private XSSFCell getCell(String sheetName, int rowNum, int colNum) {
 
         Row row = getSheet(sheetName).getRow(rowNum)
         XSSFCell cell = row.getCell(colNum)
@@ -119,18 +113,18 @@ abstract class XlsxParser implements TemplateParser{
         return cell
     }
 
-    String getCellValue(String sheetName, int rowNum, int colNum){
+    String getCellValue(String sheetName, int rowNum, int colNum) {
 
-        XSSFCell cell = getCell(sheetName,rowNum,colNum)
+        XSSFCell cell = getCell(sheetName, rowNum, colNum)
 
         return cell.stringCellValue
     }
 
-    void setCellValue(String sheetName, int rowNum, int colNum, String newValue){
+    void setCellValue(String sheetName, int rowNum, int colNum, String newValue) {
 
-        XSSFCell cell = getCell(sheetName,rowNum,colNum)
+        XSSFCell cell = getCell(sheetName, rowNum, colNum)
 
-        if(cell == null){
+        if (cell == null) {
             //create new cell
             Row row = getSheet(sheetName).getRow(rowNum)
             cell = row.createCell(colNum)
@@ -139,7 +133,7 @@ abstract class XlsxParser implements TemplateParser{
         cell.setCellValue(newValue)
 
         //add new values to template fields
-        templateFields.put(newValue,cell)
+        templateFields.put(newValue, cell)
     }
 
     static void removeRow(Sheet sheet, int rowIndex) {
@@ -194,7 +188,8 @@ abstract class XlsxParser implements TemplateParser{
                         XSSFCell cell = (XSSFCell) row.getCell(col)
 
                         if (isValidCell(cell) && isSection(cell)) {
-                            section = cell.stringCellValue.trim().toLowerCase() //need section because of duplicate field names
+                            section = cell.stringCellValue.trim().toLowerCase()
+                            //need section because of duplicate field names
                             getSectionFields(row.rowNum, sheet)
 
                             //section is all fields assigned to a section in the metadata sheet
@@ -206,7 +201,7 @@ abstract class XlsxParser implements TemplateParser{
         }
     }
 
-    XSSFSheet getSheet(String sheetName){
+    XSSFSheet getSheet(String sheetName) {
         XSSFSheet foundSheet = null
 
         wb.sheetIterator().each { sheet ->
@@ -238,15 +233,15 @@ abstract class XlsxParser implements TemplateParser{
                     if (isSection(cell)) {
                         nextSection = true
                     }
-                    if (isField(cell)){
+                    if (isField(cell)) {
                         String rawValue = cell.stringCellValue.trim()
                         //LOG.debug("Masking Geo terms ...")
-                        String maskedValue = maskDuplicates(rawValue,section)
+                        String maskedValue = maskDuplicates(rawValue, section)
                         //LOG.debug("Mapping Geo terms to RepoWiz terms ...")
                         //String cellValue = mapper.mapPropertiesToRepoWiz(maskedValue)
-                        if(!templateFields.containsKey(maskedValue))templateFields.put(maskedValue,cell)
+                        if (!templateFields.containsKey(maskedValue)) templateFields.put(maskedValue, cell)
 
-                        if(isRequired(cell)) requiredFields.add(maskedValue)
+                        if (isRequired(cell)) requiredFields.add(maskedValue)
 
                     }
                 }
@@ -268,7 +263,7 @@ abstract class XlsxParser implements TemplateParser{
         return cell.stringCellValue.startsWith(commentMarker)
     }
 
-    static def maskDuplicates(String prop, String section){
+    static def maskDuplicates(String prop, String section) {
         return section + "_" + prop
     }
 

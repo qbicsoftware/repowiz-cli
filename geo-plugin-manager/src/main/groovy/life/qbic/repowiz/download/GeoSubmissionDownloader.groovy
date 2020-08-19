@@ -1,7 +1,7 @@
 package life.qbic.repowiz.download
 
 
-class GeoSubmissionDownloader{
+class GeoSubmissionDownloader {
 
     void download() {
 

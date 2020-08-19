@@ -1,14 +1,12 @@
 package life.qbic.repowiz.spiimpl
 
 import life.qbic.repowiz.Repository
-import life.qbic.repowiz.RepositoryCreator
 import life.qbic.repowiz.RepositoryDatabaseConnector
-import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.spi.SubmissionManager
 import life.qbic.repowiz.spi.TargetRepository
 import life.qbic.repowiz.spi.TargetRepositoryProvider
 
-class GeoTargetRepositoryProvider extends TargetRepositoryProvider{
+class GeoTargetRepositoryProvider extends TargetRepositoryProvider {
 
     String providerName = "Geo"
     String uploadType
@@ -21,7 +19,7 @@ class GeoTargetRepositoryProvider extends TargetRepositoryProvider{
     @Override
     SubmissionManager create() {
         GeoSubmissionManager manager = new GeoSubmissionManager()
-        if(uploadType != null) manager.createGeoSubmissionObject(uploadType)
+        if (uploadType != null) manager.createGeoSubmissionObject(uploadType)
         return manager
     }
 

@@ -9,9 +9,9 @@ class FindMatchingRepositoriesSpecification extends Specification {
     def mockedMatchingRepositoriesOutput = Mock(MatchingRepositoriesOutput)
     def mockedRepositoryDescription = Mock(RepositoryDescription)
 
-    def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput,mockedRepositoryDescription)
+    def findMatchingRepositories = new FindMatchingRepositories(mockedMatchingRepositoriesOutput, mockedRepositoryDescription)
 
-    def "suggests the correct organisms"(){
+    def "suggests the correct organisms"() {
         when:
         findMatchingRepositories.startGuide()
         def node = findMatchingRepositories.currentDecisionLevel
@@ -21,7 +21,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         res.sort() == ["human", "other", "environmental community", "plants"].sort()
     }
 
-    def "wrong name"(){
+    def "wrong name"() {
         when:
         boolean res = findMatchingRepositories.validateDecision("HUUMAN")
 
@@ -29,7 +29,7 @@ class FindMatchingRepositoriesSpecification extends Specification {
         !res
     }
 
-    def "case sensitive"(){
+    def "case sensitive"() {
         when:
         boolean res = findMatchingRepositories.validateDecision("Human")
 
@@ -38,27 +38,27 @@ class FindMatchingRepositoriesSpecification extends Specification {
     }
 
 
-    def "suggest access type for human as organism"(){
+    def "suggest access type for human as organism"() {
         when:
         findMatchingRepositories.validateDecision("human")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["open access","controlled access"].sort()
+        res.sort() == ["open access", "controlled access"].sort()
     }
 
-    def "suggest data type for other as organism"(){
+    def "suggest data type for other as organism"() {
         when:
         findMatchingRepositories.validateDecision("other")
         def node = findMatchingRepositories.currentDecisionLevel
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["variants","expression data","dna/rna","protein"].sort()
+        res.sort() == ["variants", "expression data", "dna/rna", "protein"].sort()
     }
 
-    def "suggest experiment type for other"(){
+    def "suggest experiment type for other"() {
         given:
         findMatchingRepositories.validateDecision("other")
 
@@ -69,10 +69,10 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["structural variants","genetic variants"].sort()
+        res.sort() == ["structural variants", "genetic variants"].sort()
     }
 
-    def "suggest repository type for other,variants,structural"(){
+    def "suggest repository type for other,variants,structural"() {
         given:
         findMatchingRepositories.validateDecision("other")
         findMatchingRepositories.validateDecision("variants")
@@ -84,80 +84,58 @@ class FindMatchingRepositoriesSpecification extends Specification {
         def res = findMatchingRepositories.tree.getChildrenData(node)
 
         then:
-        res.sort() == ["eva","dbvar"].sort()
+        res.sort() == ["eva", "dbvar"].sort()
     }
 
 
     /**
-    def "correct submission type specifications leads to correct repository"(){
-        given:
-        DecisionTree tree = new DecisionTree()
+     def "correct submission type specifications leads to correct repository"(){given:
+     DecisionTree tree = new DecisionTree()
 
-        HashMap<String,String> map = new HashMap<>()
-        map.put("organism","human")
-        map.put("access_type","open")
-        map.put("data_type","dna_rna")
-        map.put("experiment_type","raw_reads")
+     HashMap<String,String> map = new HashMap<>()
+     map.put("organism","human")
+     map.put("access_type","open")
+     map.put("data_type","dna_rna")
+     map.put("experiment_type","raw_reads")
 
-        when:
-        List<String> res =  tree.findRepository(map)
+     when:
+     List<String> res =  tree.findRepository(map)
 
-        then:
-        ["ena","sra"].sort() == res.sort()
-    }
+     then:
+     ["ena","sra"].sort() == res.sort()}def "wrong submission type specification leads to error"(){given:
+     DecisionTree tree = new DecisionTree()
 
+     HashMap<String,String> map = new HashMap<>()
+     map.put("organism","human")
+     map.put("data_type","dna_rna")
+     map.put("experiment_type","raw_reads")
 
+     when:
+     tree.findRepository(map)
 
-     def "wrong submission type specification leads to error"(){
-        given:
-        DecisionTree tree = new DecisionTree()
+     then:
+     thrown(NullPointerException)}def "wrong project identifier is detected as wrong"(){given:
+     def projectCode = "XXXXX"
 
-        HashMap<String,String> map = new HashMap<>()
-        map.put("organism","human")
-        map.put("data_type","dna_rna")
-        map.put("experiment_type","raw_reads")
+     when:
+     def valid = findMatchingRepositories.isProjectIdValid(projectCode)
 
-        when:
-        tree.findRepository(map)
+     then:
+     !valid}def "wrong project identifier produces warning"(){given:
+     def projectCode = "XXXXX"
 
-        then:
-        thrown(NullPointerException)
-    }
+     when:
+     def valid = findMatchingRepositories.isProjectIdValid(projectCode)
 
-    def "wrong project identifier is detected as wrong"(){
-        given:
-        def projectCode = "XXXXX"
+     then:
+     thrown(IllegalArgumentException)}def "correct project identifier produces is detected as valid"(){given:
+     def projectCode = "QXXXX"
 
-        when:
-        def valid = findMatchingRepositories.isProjectIdValid(projectCode)
+     when:
+     def valid = findMatchingRepositories.isProjectIdValid(projectCode)
 
-        then:
-        !valid
-    }
-
-    def "wrong project identifier produces warning"(){
-        given:
-        def projectCode = "XXXXX"
-
-        when:
-        def valid = findMatchingRepositories.isProjectIdValid(projectCode)
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
-    def "correct project identifier produces is detected as valid"(){
-        given:
-        def projectCode = "QXXXX"
-
-        when:
-        def valid = findMatchingRepositories.isProjectIdValid(projectCode)
-
-        then:
-        valid
-    }
-*/
-
+     then:
+     valid}*/
 
 
 }

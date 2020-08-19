@@ -1,7 +1,13 @@
 package life.qbic.repowiz.prepare.projectSearch
 
 /**
- * Interface to define the input of the ProjectSearch class
+ * Interface to define the input of a project search
+ *
+ * This interface should be used whenever a project search is defined
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface ProjectSearchInput {
 

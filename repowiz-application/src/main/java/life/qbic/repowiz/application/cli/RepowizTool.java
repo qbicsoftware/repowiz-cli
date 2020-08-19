@@ -6,13 +6,12 @@ import life.qbic.repowiz.application.spi.RepositoryLoaderJava;
 import life.qbic.repowiz.application.view.RepoWizView;
 import life.qbic.repowiz.cli.CommandlineView;
 import life.qbic.repowiz.cli.SubmissionController;
-
-import life.qbic.repowiz.spi.TargetRepositoryProvider;
 import life.qbic.repowiz.io.JsonParser;
 import life.qbic.repowiz.observer.UserAnswer;
 import life.qbic.repowiz.prepare.openBis.OpenBisSession;
 import life.qbic.repowiz.prepare.projectSearch.OpenBisMapper;
 import life.qbic.repowiz.prepare.projectSearch.OpenBisProjectSearcher;
+import life.qbic.repowiz.spi.TargetRepositoryProvider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,8 +22,13 @@ import java.util.Map;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
+ *
+ * This class should be used to access RepoWiz and start the tool
+ *
+ * @since: 1.0.0
+ * @author: Jennifer Bödker
  */
-public class RepowizTool{
+public class RepowizTool {
 
     private static final Logger LOG = LogManager.getLogger(RepowizTool.class);
 
@@ -33,16 +37,17 @@ public class RepowizTool{
 
     /**
      * Sets up the infrastructure of RepoWiz by building the connection to the local database, assembling the controller class and change listener
+     *
      * @param projectID of the project that needs to be prepared for an uploaded
-     * @param config with data to connect to the local database
+     * @param config    with data to connect to the local database
      */
-    public RepowizTool(String projectID, String config){
+    public RepowizTool(String projectID, String config) {
         // set up infrastructure classes
         OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
 
         List<String> repos = getImplementedRepositoriesAsList();
 
-        controller = new SubmissionController(commandlineView,projectID, searcher, new RepositoryLoaderJava(),repos);
+        controller = new SubmissionController(commandlineView, projectID, searcher, new RepositoryLoaderJava(), repos);
 
         //set up ChangeListener to handle user answers
         UserAnswer answer = new UserAnswer();
@@ -51,51 +56,78 @@ public class RepowizTool{
         commandlineView.setUserAnswer(answer);
     }
 
-    public RepowizTool(){
+    public RepowizTool() {
         //add spi provider here!
+    }
+
+    /**
+     * Determines all repository plugins that can be accessed by RepoWiz
+     *
+     * @return a list of all repository plugins
+     */
+    private static List<String> getImplementedRepositoriesAsList() {
+        List<String> repos = new ArrayList<>();
+        String fileName = "services/RepositoryJsonFiles.txt";
+
+        try {
+            InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
+            assert stream != null;
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+            for (String line; (line = reader.readLine()) != null; ) {
+                repos.add(line);
+            }
+
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
+
+        return repos;
     }
 
     /**
      * Starts the tool with the use case FindRepository (suggested for inexperienced scientists)
      */
-    public void executeFindRepository(){
+    public void executeFindRepository() {
         controller.initWithGuide();
     }
 
     /**
      * Starts the tool with the use case SelectRepository (suggested for experienced scientists)
+     *
      * @param selectedRepository defines the repository which is selected by the user
      */
     public void executeSelectRepository(String selectedRepository) {
         controller.initWithSelection(selectedRepository);
     }
 
+    //method to manage the local database connection (input domain)
+
     /**
      * Lists all repositories which are supported by RepoWiz.
      */
-    public void executeListing(){
+    public void executeListing() {
         RepositoryLoaderJava loader = new RepositoryLoaderJava();
-        try{
+        try {
             List<TargetRepositoryProvider> providers = loader.load();
 
             List<String> repoNames = new ArrayList<>();
-            for (TargetRepositoryProvider provider:providers) {
+            for (TargetRepositoryProvider provider : providers) {
                 repoNames.add(provider.getProviderName());
             }
 
             commandlineView.displayInformation("The following repositories are implemented: ");
             commandlineView.displayInformation(repoNames);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             LOG.error("Cannot load the implemented plugins");
             e.printStackTrace();
         }
     }
 
-    //method to manage the local database connection (input domain)
-
     /**
      * Manages the setup of the connection to the local database instance based on the user credentials from the config
+     *
      * @param config contains information about user credentials and local db instance
      * @return a searcher object which can be used for searching OpenBis projects OR null
      */
@@ -129,9 +161,10 @@ public class RepowizTool{
 
     /**
      * Sets up the OpenBis mapper class which translates OpenBis terms into RepoWiz terms
+     *
      * @return a mapper which is capable to translate OpenBis vocabulary
      */
-    private OpenBisMapper setupMapper(){
+    private OpenBisMapper setupMapper() {
         //load data from file
         String path = "metadataMapping/openbisMapping.json";
 
@@ -141,29 +174,5 @@ public class RepowizTool{
         Map repoWizTerms = jsonParser.parse();
 
         return new OpenBisMapper(repoWizTerms);
-    }
-
-    /**
-     * Determines all repository plugins that can be accessed by RepoWiz
-     * @return a list of all repository plugins
-     */
-    private static List<String> getImplementedRepositoriesAsList(){
-        List<String> repos = new ArrayList<>();
-        String fileName = "services/RepositoryJsonFiles.txt";
-
-        try{
-            InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
-            assert stream != null;
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            for (String line; (line = reader.readLine()) != null; ) {
-                repos.add(line);
-            }
-
-        }catch (IOException io){
-           io.printStackTrace();
-        }
-
-        return repos;
     }
 }

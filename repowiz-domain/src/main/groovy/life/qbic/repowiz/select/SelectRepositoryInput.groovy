@@ -3,7 +3,13 @@ package life.qbic.repowiz.select
 import life.qbic.repowiz.Repository
 
 /**
- * Interface to the define the input of SelectRepository
+ * Interface to define the input of {@link SelectRepository}
+ *
+ * Should be used whenever a selected repository should be the input of a class
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface SelectRepositoryInput {
 

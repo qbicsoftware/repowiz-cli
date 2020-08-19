@@ -11,6 +11,4 @@ class Repository {
     String uploadFormat
     List<String> uploadRequirements
     ArrayList<String> subsequentSteps
-
-
 }

@@ -1,6 +1,7 @@
 package life.qbic.repowiz
 
 import life.qbic.repowiz.cli.SubmissionPresenter
+import life.qbic.repowiz.finalise.FinaliseSubmission
 import life.qbic.repowiz.finalise.SubmissionOutput
 import life.qbic.repowiz.find.MatchingRepositoriesOutput
 import life.qbic.repowiz.model.SubmissionModel
@@ -9,54 +10,85 @@ import life.qbic.repowiz.prepare.PrepareSubmissionInput
 import life.qbic.repowiz.prepare.PrepareSubmissionOutput
 import life.qbic.repowiz.select.SelectRepositoryInput
 import life.qbic.repowiz.select.SelectRepositoryOutput
-import life.qbic.repowiz.finalise.FinaliseSubmission
 
-//todo do i really want to keep one class implementing so many interfaces?
-class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput, SubmissionOutput{
+/**
+ * This class serves as an interactor or connector of all use cases.
+ *
+ * This class should be used whenever data needs to be orchestrated between different use cases. It implements the output interfaces
+ * of these interfaces and delegates the data obtained by the use cases to the next use case
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
+ */
+class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryOutput, PrepareSubmissionOutput, SubmissionOutput {
 
-    SubmissionPresenter presenter
+    private SubmissionPresenter presenter
 
-    SelectRepositoryInput repositoryInput
-    PrepareSubmissionInput prepareSubmissionInput
-    FinaliseSubmission finaliseSubmissionInput
+    private SelectRepositoryInput repositoryInput
+    private PrepareSubmissionInput prepareSubmissionInput
+    private FinaliseSubmission finaliseSubmissionInput
 
-    SubmissionHandler(SubmissionPresenter presenter){
+    /**
+     * Creates a submission handler with a presenter
+     *
+     * @param presenter which defines how data is presented to the user
+     */
+    SubmissionHandler(SubmissionPresenter presenter) {
         this.presenter = presenter
     }
 
-    SubmissionHandler(SelectRepositoryInput repositoryInput, SubmissionPresenter presenter){
+    /**
+     * Creates a submission handler for delegating data from the select repository use case into other classes
+     *
+     * @param repositoryInput which allows the class to forward data to the select repository use case
+     * @param presenter which defines how data is presented to the user
+     */
+    SubmissionHandler(SelectRepositoryInput repositoryInput, SubmissionPresenter presenter) {
         this.repositoryInput = repositoryInput
         this.presenter = presenter
     }
 
-    SubmissionHandler(PrepareSubmissionInput prepareSubmissionInput, SubmissionPresenter presenter){
+    /**
+     * Creates a submission handler for delegating data from the prepare submission use case into other classes
+     *
+     * @param prepareSubmissionInput which allows the class to forward data to the prepare submission use case
+     * @param presenter which defines how data is presented to the user
+     */
+    SubmissionHandler(PrepareSubmissionInput prepareSubmissionInput, SubmissionPresenter presenter) {
         this.prepareSubmissionInput = prepareSubmissionInput
         this.presenter = presenter
     }
 
-    SubmissionHandler(FinaliseSubmission finaliseSubmissionInput, SubmissionPresenter presenter){
+    /**
+     * Creates a submission handler for delegating data from the finalise submission use case into other classes
+     *
+     * @param finaliseSubmissionInput which allows the class to forward data to the finalise submission use case
+     * @param presenter which defines how data is presented to the user
+     */
+    SubmissionHandler(FinaliseSubmission finaliseSubmissionInput, SubmissionPresenter presenter) {
         this.finaliseSubmissionInput = finaliseSubmissionInput
         this.presenter = presenter
     }
 
     //MatchingRepositories output
     @Override
-    def transferAnswerPossibilities(List<String> choices) {
-        presenter.requestAnswer(AnswerTypes.DECISION,choices)
+    void transferAnswerPossibilities(List<String> choices) {
+        presenter.requestAnswer(AnswerTypes.DECISION, choices)
     }
 
     @Override
-    def transferDecisionStack(List<String> decisions) {
+    void transferDecisionStack(List<String> decisions) {
         presenter.displayUserDecisions(decisions)
     }
 
     @Override
-    def transferUserInformation(String standard) {
+    void transferUserInformation(String standard) {
         presenter.displayUserInformation(standard)
     }
 
     @Override
-    def transferRepositoryList(List<Repository> repositories) {
+    void transferRepositoryList(List<Repository> repositories) {
         //let the user decide which repo he wants
         repositoryInput.selectRepoFromSuggestions(repositories)
     }
@@ -81,7 +113,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     def transferQuestion(List<String> uploadTypes) { //todo rename: transfer uploadtypes from usecase to handler
-        presenter.requestAnswer(AnswerTypes.UPLOADTYPE,uploadTypes)
+        presenter.requestAnswer(AnswerTypes.UPLOADTYPE, uploadTypes)
     }
 
     @Override
@@ -91,27 +123,27 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     //finalise submission output
     @Override
-    def displayUserInformation(String information) {
+    void displayUserInformation(String information) {
         presenter.displayUserInformation(information)
     }
 
     @Override
-    def displayUserInformation(List<String> text) {
+    void displayUserInformation(List<String> text) {
         presenter.displayUserInformation(text)
     }
 
     @Override
-    def displayProjectSummary(HashMap project, String id) {
-        presenter.displayProjectInfo(project,id)
+    void displayProjectSummary(HashMap project, String id) {
+        presenter.displayProjectInfo(project, id)
     }
 
     @Override
-    def displaySampleSummary(HashMap<String, HashMap> samples) {
+    void displaySampleSummary(HashMap<String, HashMap> samples) {
         presenter.displaySampleInfo(samples)
     }
 
     @Override
-    String verifySubmission(List verify) {
+    void verifySubmission(List verify) {
         presenter.requestAnswer(AnswerTypes.SUBMIT, verify)
     }
 

@@ -3,36 +3,38 @@ package life.qbic.repowiz.find
 import life.qbic.repowiz.Repository
 
 /**
- * This interface defines what information is leaves FindMatchingRepositories
+ * This interface defines what information leaves {@link FindMatchingRepositories}
+ *
+ * This interface should be used whenever information should be obtained from the {@link FindMatchingRepositories} class
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface MatchingRepositoriesOutput {
 
     /**
      * The answer choices for the next level in the tree are forwarded
      * @param list of choices
-     * @return -
      */
-    def transferAnswerPossibilities(List<String> choices)
+    void transferAnswerPossibilities(List<String> choices)
 
     /**
      * The currently made decisions of the user are forwarded
      * @param decisions
-     * @return
      */
-    def transferDecisionStack(List<String> decisions)
+    void transferDecisionStack(List<String> decisions)
 
     /**
      * Information to be displayed to the user
      * @param info
-     * @return
      */
-    def transferUserInformation(String info)
+    void transferUserInformation(String info)
 
     /**
      * List of repositories from which the user must decide
      * @param repositories
-     * @return
      */
-    def transferRepositoryList(List<Repository>repositories)
+    void transferRepositoryList(List<Repository> repositories)
 
 }

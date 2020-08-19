@@ -21,11 +21,11 @@
       "type": "string"
     },
     "supplementary file": {
-      "description":"If you submit a matrix table with processed data for all samples, include the file name here.",
+      "description": "If you submit a matrix table with processed data for all samples, include the file name here.",
       "type": "string"
     },
     "SRA_center_name_code": {
-      "description":"Only add if institute has it ",
+      "description": "Only add if institute has it ",
       "type": "string"
     }
   }

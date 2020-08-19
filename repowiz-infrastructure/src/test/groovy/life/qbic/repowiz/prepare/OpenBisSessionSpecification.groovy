@@ -3,7 +3,7 @@ package life.qbic.repowiz.prepare
 
 import spock.lang.Specification
 
-class OpenBisSessionSpecification extends Specification{
+class OpenBisSessionSpecification extends Specification {
 
     /*OpenBisSession session
     ProjectSearchOutput out = Mock(ProjectSearchOutput)

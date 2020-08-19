@@ -1,15 +1,7 @@
 package life.application.spi;
 
-import life.qbic.repowiz.application.spi.RepositoryLoaderJava;
-import life.qbic.repowiz.spi.SubmissionManager;
-import life.qbic.repowiz.spi.TargetRepositoryProvider;
 //import life.qbic.repowiz.spiimpl.ClinvarTargetRepositoryProvider;
 //import life.qbic.repowiz.spiimpl.GeoTargetRepositoryProvider;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 public class RepositoryLoaderJavaTest {
 /*    @Test

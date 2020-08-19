@@ -3,7 +3,13 @@ package life.qbic.repowiz.select
 import life.qbic.repowiz.Repository
 
 /**
- * Interface defining the information that flows from SelectRepository towards an implementing class
+ * Interface defining the information that flows from {@link SelectRepository} towards an implementing class
+ *
+ * This class should be used whenever information about the selected repository needs to be transferred out of the class
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface SelectRepositoryOutput {
 

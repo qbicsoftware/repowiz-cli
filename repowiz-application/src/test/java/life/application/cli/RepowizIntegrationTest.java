@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Integration tests for RepowizTool.
  */
-public class RepowizIntegrationTest  {
+public class RepowizIntegrationTest {
     // TODO: write unit tests (you do not need to test ToolExecutor, just test the execute() and shutdown() methods of your tool)
 
     @Test

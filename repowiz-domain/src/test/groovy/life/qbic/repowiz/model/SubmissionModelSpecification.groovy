@@ -2,7 +2,7 @@ package life.qbic.repowiz.model
 
 import spock.lang.Specification
 
-class SubmissionModelSpecification extends Specification{
+class SubmissionModelSpecification extends Specification {
 
     /*def "getRawFiles() returns list with sample names mapped to files"(){
         given:
