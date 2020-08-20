@@ -124,7 +124,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
     /**
      * Loads the OpenBis sample information that is stored for the previously fetched OpenBis project
      */
-    void loadOpenBisSampleInfo() { //do that for a experiment or generally?? Experiment experiment
+    void loadOpenBisSampleInfo() {
         LOG.info "Fetching Sample Information ..."
 
         SampleFetchOptions fetchOptions = new SampleFetchOptions()
