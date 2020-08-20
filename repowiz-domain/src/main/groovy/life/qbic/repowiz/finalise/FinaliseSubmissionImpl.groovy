@@ -14,8 +14,7 @@ import java.text.SimpleDateFormat
 /**
  * This class finalizes submissions.
  *
- * This class implements the use case FinaliseSubmission and should be used whenever the submission created with RepoWiz
- * needs to be transferred to the repository plugins in order to finalize the submission.
+ * This class implements the use case FinaliseSubmission. During finalization, whenever a submission created by RepoWiz is transferred to a repository plugin, this class should be used. 
  *
  *  @since: 1.0.0
  *  @author: Jennifer Bödker
