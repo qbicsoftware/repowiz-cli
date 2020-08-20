@@ -103,7 +103,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission {
         output.displayProjectSummary(projectProperties, projectID)
 
         //samples
-        HashMap<String, HashMap> sampleProperties = new HashMap()
+        Map<String, Map> sampleProperties = new HashMap()
         model.samples.each { sample ->
             HashMap<String, String> properties = new HashMap<>()
 
