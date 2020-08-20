@@ -150,9 +150,10 @@ public class RepowizTool {
     }
 
     /**
-     * Sets up the OpenBis mapper class which translates OpenBis terms into RepoWiz terms
+     * Set up the OpenBis mapper instance. The OpenBisMapper translates OpenBis terms into RepoWiz terms
      *
      * @return a mapper which is capable to translate OpenBis vocabulary
+     * @see ObenBisMapper
      */
     private OpenBisMapper setupMapper() {
         //load data from file
