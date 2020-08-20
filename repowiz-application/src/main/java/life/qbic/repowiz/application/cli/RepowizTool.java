@@ -77,7 +77,8 @@ public class RepowizTool {
     }
 
     /**
-     * Starts the tool with the use case FindRepository (suggested for inexperienced scientists)
+     * Start the tool with the use case FindRepository (suggested for inexperienced scientists).
+     * @see Controller#initWithGuide()
      */
     public void executeFindRepository() {
         controller.initWithGuide();
