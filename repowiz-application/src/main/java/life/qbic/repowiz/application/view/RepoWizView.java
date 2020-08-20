@@ -116,7 +116,7 @@ public class RepoWizView implements CommandlineView {
      * @param map with Integers as keys and Strings as values
      * @return text with information of the map
      */
-    private String mapToString(HashMap<Integer, String> map) {
+    private String mapToString(Map<Integer, String> map) {
         StringBuilder text = new StringBuilder();
 
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
