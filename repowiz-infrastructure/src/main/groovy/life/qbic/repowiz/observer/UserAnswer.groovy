@@ -26,18 +26,18 @@ class UserAnswer {
 
     /**
      * Adds a {@link PropertyChangeListener} to the {@link PropertyChangeSupport}
-     * @param pcl
+     * @param propertyChangeListener
      */
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl)
+    public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+        support.addPropertyChangeListener(propertyChangeListener)
     }
 
     /**
      * Removes a specific {@link PropertyChangeListener} from the {@link PropertyChangeSupport}
-     * @param pcl as a specific change listener that should be removed
+     * @param propertyChangeListener as a specific change listener that should be removed
      */
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        support.removePropertyChangeListener(pcl)
+    public void removePropertyChangeListener(PropertyChangeListener propertyChangeListener) {
+        support.removePropertyChangeListener(propertyChangeListener)
     }
 
     /**
