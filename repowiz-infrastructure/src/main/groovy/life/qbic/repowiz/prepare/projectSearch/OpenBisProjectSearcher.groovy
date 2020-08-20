@@ -147,7 +147,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         int counter = 1
         samples.objects.each { sample ->
             //todo mapp the terms before adding to project!!!!!
-            HashMap sampleProperties = collectProperties(sample)
+            Map sampleProperties = collectProperties(sample)
             sampleValidation(sampleProperties)
 
             repoWizSamples << new RepoWizSample("Sample " + counter, sampleProperties)
