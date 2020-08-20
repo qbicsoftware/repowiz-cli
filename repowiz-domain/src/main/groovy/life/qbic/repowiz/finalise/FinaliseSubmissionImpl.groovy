@@ -12,7 +12,7 @@ import java.sql.Timestamp
 import java.text.SimpleDateFormat
 
 /**
- * This class handles the finalization of the submission
+ * This class finalizes submissions.
  *
  * This class implements the use case FinaliseSubmission and should be used whenever the submission created with RepoWiz
  * needs to be transferred to the repository plugins in order to finalize the submission.
