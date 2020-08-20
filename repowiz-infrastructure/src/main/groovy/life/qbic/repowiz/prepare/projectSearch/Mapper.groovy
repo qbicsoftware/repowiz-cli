@@ -17,7 +17,7 @@ interface Mapper {
      * @param properties
      * @return
      */
-    HashMap mapProperties(Map properties)
+    Map mapProperties(Map properties)
 
     /**
      * Properties that are duplicates must be masked
@@ -25,6 +25,6 @@ interface Mapper {
      * @param properties
      * @return
      */
-    HashMap maskDuplicateProperties(String mask, Map properties)
+    Map maskDuplicateProperties(String mask, Map properties)
 
 }
