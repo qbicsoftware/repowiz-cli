@@ -13,12 +13,13 @@ package life.qbic.repowiz.model
 class SubmissionModel {
     final RepoWizProject project
     final List<RepoWizSample> samples
-    //do not delete this fields, they are used during runtime!
-    public List<String> missingValues
-    String uploadType
+
+    private List<String> missingValues
+    private String uploadType
 
     /**
      * Creates a submission model based on a project and a list of samples
+     *
      * @param project for which the submission is created
      * @param samples of the project
      */
@@ -29,6 +30,7 @@ class SubmissionModel {
 
     /**
      * Collects the properties from the project and all samples
+     *
      * @return a map with the submission properties
      */
     HashMap getAllProperties() {
@@ -44,6 +46,7 @@ class SubmissionModel {
 
     /**
      * Returns a hashmap of properties of the project
+     *
      * @return project properties
      */
     HashMap<String, String> projectProperties() {
@@ -52,6 +55,7 @@ class SubmissionModel {
 
     /**
      * Returns a hashmap of the properties of the samples
+     *
      * @return sample properties
      */
     HashMap<String, HashMap<String, String>> sampleProperties() {
@@ -63,4 +67,43 @@ class SubmissionModel {
         return sampleProperties
     }
 
+    /**
+     * Returns the class variable storing missing values of a submission
+     *
+     * @return list of missing values
+     */
+    List<String> getMissingValues() {
+        return missingValues
+    }
+
+    /**
+     * Stores a list of missing values of a submission. This method should be used when the submission has been validated
+     * and it is determined what values were missing in the submission
+     *
+     * @param missingValues is a list of values missing in the submission
+     */
+    void setMissingValues(List<String> missingValues) {
+        this.missingValues = missingValues
+    }
+
+    /**
+     * States the type of submission that is uploaded. For GEO this would be e.g. HTS if the submission
+     * is a high-throughput submission
+     *
+     * @return the upload type of a submission
+     */
+    String getUploadType() {
+        return uploadType
+    }
+
+    /**
+     * Sets the type of submission that is uploaded. For GEO this would be e.g. HTS if the submission
+     * is a high-throughput submission
+     * This method should be used when the upload type is defined by the user.
+     *
+     * @param uploadType describes of what type the submission is
+     */
+    void setUploadType(String uploadType) {
+        this.uploadType = uploadType
+    }
 }
