@@ -41,8 +41,8 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
     private Project project
 
-    private final IApplicationServerApi v3
-    private final IDataStoreServerApi dss
+    private final IApplicationServerApi applicationServerApiV3
+    private final IDataStoreServerApi dataStoreServer
     private final String sessionToken
 
     private final OpenBisMapper openBisMapper
@@ -51,16 +51,16 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
     /**
      * Creates a ProjectSearch object with a connection to OpenBis and the required schemata for mapping project data from OpenBis to RepoWiz
      *
-     * @param v3 server api of OpenBis
-     * @param dss data storage server api of OpenBis
+     * @param applicationServerApiV3 server api of OpenBis
+     * @param dataStoreServer data storage server api of OpenBis
      * @param session for querying OpenBis
      * @param openBisMapper for translating OpenBis terms into RepoWiz terms
      * @param projectSchema for translating project terms
      * @param sampleSchema for translating sample terms
      */
-    OpenBisProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session, OpenBisMapper openBisMapper, String projectSchema, String sampleSchema) {
-        this.v3 = v3
-        this.dss = dss
+    OpenBisProjectSearcher(IApplicationServerApi applicationServerApiV3, IDataStoreServerApi dataStoreServer, String session, OpenBisMapper openBisMapper, String projectSchema, String sampleSchema) {
+        this.applicationServerApiV3 = applicationServerApiV3
+        this.dataStoreServer = dataStoreServer
 
         sessionToken = session
 
@@ -100,7 +100,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
         projectFetchOptions.withExperimentsUsing(experimentFetchOptions)
 
-        SearchResult<Project> projects = v3.searchProjects(sessionToken, projectSearchCriteria, projectFetchOptions)
+        SearchResult<Project> projects = applicationServerApiV3.searchProjects(sessionToken, projectSearchCriteria, projectFetchOptions)
         project = projects.getObjects().get(0)
 
         checkSpaceAvailability()
@@ -143,7 +143,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         sampleSearchCriteria.withExperiment().withProject().withCode().thatEquals(project.code)
         sampleSearchCriteria.withType().withCode().thatEquals("Q_TEST_SAMPLE")
 
-        SearchResult<Sample> samples = v3.searchSamples(sessionToken, sampleSearchCriteria, fetchOptions)
+        SearchResult<Sample> samples = applicationServerApiV3.searchSamples(sessionToken, sampleSearchCriteria, fetchOptions)
 
         int counter = 1
         samples.objects.each { sample ->
@@ -204,7 +204,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
             DataSetFileSearchCriteria criteria = new DataSetFileSearchCriteria()
             criteria.withDataSet().withPermId().thatEquals(dataSet.permId.permId)
 
-            SearchResult<DataSetFile> result = dss.searchFiles(sessionToken, criteria, new DataSetFileFetchOptions())
+            SearchResult<DataSetFile> result = dataStoreServer.searchFiles(sessionToken, criteria, new DataSetFileFetchOptions())
             List<DataSetFile> files = result.getObjects()
 
             List<String> dataFiles = []
@@ -237,7 +237,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         dsFetchOptions.withType()
         fetchOptions.withChildrenUsing(fetchOptions)
         fetchOptions.withDataSetsUsing(dsFetchOptions)
-        SearchResult<Sample> result = v3.searchSamples(sessionToken, criteria, fetchOptions)
+        SearchResult<Sample> result = applicationServerApiV3.searchSamples(sessionToken, criteria, fetchOptions)
 
         List<DataSet> foundDatasets = new ArrayList<>()
 
@@ -314,7 +314,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         VocabularyTermSearchCriteria vocabularyTermSearchCriteria = new VocabularyTermSearchCriteria()
         vocabularyTermSearchCriteria.withCode().thatEquals(code)
 
-        SearchResult<VocabularyTerm> vocabularyTermSearchResult = v3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
+        SearchResult<VocabularyTerm> vocabularyTermSearchResult = applicationServerApiV3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
 
         if (!vocabularyTermSearchResult.objects.empty && vocabularyTermSearchResult.objects.get(0).label != null) {
             return vocabularyTermSearchResult.objects.get(0).label
@@ -330,7 +330,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
         if (project == null) {
             LOG.error "Project " + project.code + " does not exist for user"
-            v3.logout(sessionToken)
+            applicationServerApiV3.logout(sessionToken)
             System.exit(0)
         } else {
             LOG.info "Found project " + project.code + " for user"
