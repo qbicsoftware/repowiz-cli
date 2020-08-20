@@ -71,7 +71,6 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
         this.presenter = presenter
     }
 
-    //MatchingRepositories output
     @Override
     void transferAnswerPossibilities(List<String> choices) {
         presenter.requestAnswer(AnswerTypes.DECISION, choices)
@@ -89,7 +88,7 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
 
     @Override
     void transferRepositoryList(List<Repository> repositories) {
-        //let the user decide which repo he wants
+        // We want the user to decide which repo to submit to.
         repositoryInput.selectRepoFromSuggestions(repositories)
     }
 
