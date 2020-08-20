@@ -72,7 +72,7 @@ class SelectRepository implements SelectRepositoryInput {
     }
 
     /**
-     * Retrieves a list with the repository names
+     * Retrieves a list with names of suggested repositories
      * @param suggestedRepo is a list of suggested repositories
      * @return a list of the names of the suggested repositories
      */
