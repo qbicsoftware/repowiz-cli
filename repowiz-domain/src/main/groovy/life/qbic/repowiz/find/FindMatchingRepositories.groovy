@@ -90,7 +90,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput {
 
     /**
      * If a decision ends in a leaf the next decision will be a decision for a repository.
-     * After this decision no further decision can be made
+     * After this decision no further decisions on repository selection can be made
      */
     void leafDecision() {
 
