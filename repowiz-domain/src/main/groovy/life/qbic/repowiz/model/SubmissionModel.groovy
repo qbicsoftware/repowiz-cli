@@ -49,7 +49,7 @@ class SubmissionModel {
      *
      * @return project properties
      */
-    HashMap<String, String> projectProperties() {
+    Map<String, String> projectProperties() {
         return project.projectProperties as HashMap<String, String>
     }
 
