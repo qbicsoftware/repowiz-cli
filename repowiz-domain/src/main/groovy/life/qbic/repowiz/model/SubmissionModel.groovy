@@ -58,8 +58,8 @@ class SubmissionModel {
      *
      * @return sample properties
      */
-    HashMap<String, HashMap<String, String>> sampleProperties() {
-        HashMap<String, HashMap<String, String>> sampleProperties = new HashMap<>()
+    Map<String, Map<String, String>> sampleProperties() {
+        Map<String, Map<String, String>> sampleProperties = new HashMap<>()
 
         samples.each { sample ->
             sampleProperties.put(sample.sampleName, sample.sampleProperties)
