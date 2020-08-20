@@ -124,7 +124,6 @@ class DecisionTree {
         open.addChild(protein_human)
         protein_human.addChild("pride")
 
-        //env tree
         root.addChild(env)
 
         env.addChild(expression_data_env)
