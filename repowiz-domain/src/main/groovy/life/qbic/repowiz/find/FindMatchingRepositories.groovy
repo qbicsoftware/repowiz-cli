@@ -77,7 +77,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput {
      * If a decison is a on the node level this function should be called.
      * It traverses all children and jumps into a selected child node
      */
-    void nodeDecision() {
+    private void nodeDecision() {
         def decisionPossibilities = []
 
         currentDecisionLevel.children.each {
