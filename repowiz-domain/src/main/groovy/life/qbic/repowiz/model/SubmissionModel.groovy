@@ -34,7 +34,7 @@ class SubmissionModel {
      * @return a map with the submission properties
      */
     Map getAllProperties() {
-        HashMap properties = new HashMap()
+        Map properties = new HashMap()
         //do so to not overwrite project properties!!
         properties << project.projectProperties
 
