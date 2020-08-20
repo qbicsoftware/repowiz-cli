@@ -42,7 +42,6 @@ public class RepowizTool {
      * @param config    configuration with data to connect to the local database
      */
     public RepowizTool(String projectID, String config) {
-        // set up infrastructure classes
         OpenBisProjectSearcher searcher = setupLocalDatabaseConnection(config);
 
         List<String> repos = getImplementedRepositoriesAsList();
