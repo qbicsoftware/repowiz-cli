@@ -28,13 +28,13 @@ class OpenBisSession {
      */
     OpenBisSession(String user, String password, String url) {
 
-        String ass = url + "/openbis/openbis" + IApplicationServerApi.SERVICE_URL
-        String ds = url + ":444" + "/datastore_server" + IDataStoreServerApi.SERVICE_URL
+        String applicationServer = url + "/openbis/openbis" + IApplicationServerApi.SERVICE_URL
+        String dataStoreServer = url + ":444" + "/datastore_server" + IDataStoreServerApi.SERVICE_URL
 
-        v3 = HttpInvokerUtils.createServiceStub(IApplicationServerApi.class, ass, 10000)
+        v3 = HttpInvokerUtils.createServiceStub(IApplicationServerApi.class, applicationServer, 10000)
 
         this.dss = HttpInvokerUtils.createStreamSupportingServiceStub(IDataStoreServerApi.class,
-                ds, 10000)
+                dataStoreServer, 10000)
 
         sessionToken = v3.login(user, password)
     }
