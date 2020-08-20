@@ -93,7 +93,6 @@ public class RepowizTool {
         controller.initWithSelection(selectedRepository);
     }
 
-    //method to manage the local database connection (input domain)
 
     /**
      * Lists all repositories which are supported by RepoWiz.
