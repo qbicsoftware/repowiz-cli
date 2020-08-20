@@ -74,9 +74,7 @@ public class RepoWizView implements CommandlineView {
 
     @Override
     public void displaySummaryProject(HashMap<String, String> projectInfo, String id) {
-        //collect all filled fields in order
         StringBuilder summary = new StringBuilder();
-        //project
         summary.append("> Project " + id + " is described as follows: \n");
 
         for (Map.Entry<String, String> info : projectInfo.entrySet()) {
@@ -112,7 +110,7 @@ public class RepoWizView implements CommandlineView {
     }
 
     /**
-     * Creates a String from a map whereas each key value is printed next its value in a single line
+     * Creates a String from a map. Each key-value is printed next to its value in a single line
      * @param map with Integers as keys and Strings as values
      * @return text with information of the map
      */
