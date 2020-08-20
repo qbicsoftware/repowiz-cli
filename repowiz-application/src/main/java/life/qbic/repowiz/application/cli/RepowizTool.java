@@ -123,7 +123,6 @@ public class RepowizTool {
      * @return a searcher object which can be used for searching OpenBis projects OR null
      */
     private OpenBisProjectSearcher setupLocalDatabaseConnection(String config) {
-        //local database connection
         try {
             InputStream stream = new FileInputStream(config);
             JsonParser confParser = new JsonParser(stream);
