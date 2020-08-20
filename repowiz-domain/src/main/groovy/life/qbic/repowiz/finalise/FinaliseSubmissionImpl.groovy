@@ -91,7 +91,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission {
     }
 
     /**
-     * Creates a summary of the project and samples
+     * Creates a summary of the submitted project and its samples
      */
     void createSummary() {
         SubmissionModel model = manager.providerSubmissionModel
