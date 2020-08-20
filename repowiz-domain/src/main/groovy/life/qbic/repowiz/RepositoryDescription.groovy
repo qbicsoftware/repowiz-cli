@@ -1,7 +1,7 @@
 package life.qbic.repowiz
 
 /**
- * Interface to delegate repository objects from the infrastructure into the core
+ * Interface to transfer repository objects from the infrastructure into the core
  *
  * This class should be used to transfer information about repositories into a class
  *
