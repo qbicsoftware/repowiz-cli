@@ -107,7 +107,6 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
         //todo how to get rid of code here?
         Map projectInfo = openBisMapper.mapProperties(["Q_PROJECT_DETAILS": project.description])
-        //validate the object
         projectValidation(projectInfo)
 
         repoWizProject = new RepoWizProject(projectID, projectInfo)
