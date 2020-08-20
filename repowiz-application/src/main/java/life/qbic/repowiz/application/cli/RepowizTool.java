@@ -39,7 +39,7 @@ public class RepowizTool {
      * Sets up the infrastructure of RepoWiz by building the connection to the local database, assembling the controller class and add a change listener to the user answer.
      *
      * @param projectID id of the project that needs to be prepared for an uploaded
-     * @param config    with data to connect to the local database
+     * @param config    configuration with data to connect to the local database
      */
     public RepowizTool(String projectID, String config) {
         // set up infrastructure classes
