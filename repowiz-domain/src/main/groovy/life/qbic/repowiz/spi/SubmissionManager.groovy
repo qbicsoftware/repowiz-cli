@@ -5,8 +5,9 @@ import life.qbic.repowiz.model.SubmissionModel
 /**
  * Interface for managing the submission within the {@link TargetRepositoryProvider}
  *
- * The SumbissionModel interface provides methods to manage repository requirements. It provides methods to validate a submission model and methods to retrieve a submission model.
- * the {@link SubmissionModel} and to download the submission
+ * The SubmissionModel interface provides methods to manage repository requirements. It provides methods to validate a submission model
+ * and methods to retrieve a submission model.
+ *
  *
  *  @since: 1.0.0
  *  @author: Jennifer Bödker
