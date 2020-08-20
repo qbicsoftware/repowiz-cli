@@ -29,14 +29,14 @@ interface SubmissionOutput {
      * @param project
      * @param id
      */
-    void displayProjectSummary(HashMap project, String id)
+    void displayProjectSummary(Map project, String id)
 
     /**
      * Summary of each samples with the properties for the provider
      * that shall be displayed to the user
      * @param samples
      */
-    void displaySampleSummary(HashMap<String, HashMap> samples)
+    void displaySampleSummary(Map<String, Map> samples)
 
     /**
      * Answer Possibilities based on which the user can verify his data

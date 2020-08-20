@@ -29,7 +29,7 @@ class SubmissionPresenter {
      * @param choices as a list of answer choices the user has
      */
     void requestAnswer(AnswerTypes type, List<String> choices) {
-        HashMap map = formatList(choices) //todo rename: adds numbers for the users choice
+        Map map = formatList(choices) //todo rename: adds numbers for the users choice
         output.displayQuestion(type, map)
     }
 
@@ -62,7 +62,7 @@ class SubmissionPresenter {
      * @param project described by its properties
      * @param id which specifies the project by its id
      */
-    void displayProjectInfo(HashMap project, String id) {
+    void displayProjectInfo(Map project, String id) {
         output.displaySummaryProject(project, id)
     }
 
@@ -70,7 +70,7 @@ class SubmissionPresenter {
      * Displays the information of a sample to the user
      * @param samples with information of their properties
      */
-    void displaySampleInfo(HashMap<String, HashMap> samples) {
+    void displaySampleInfo(Map<String, Map> samples) {
         output.displaySummarySamples(samples)
     }
 

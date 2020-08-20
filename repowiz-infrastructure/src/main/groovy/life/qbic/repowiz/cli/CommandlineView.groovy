@@ -19,7 +19,7 @@ interface CommandlineView {
      * @param type
      * @param choices
      */
-    void displayQuestion(AnswerTypes type, HashMap<Integer, String> choices)
+    void displayQuestion(AnswerTypes type, Map<Integer, String> choices)
 
     /**
      * Displays decision of the user to give feedback on made decisions
@@ -50,13 +50,13 @@ interface CommandlineView {
      * @param projectInfo
      * @param id
      */
-    void displaySummaryProject(HashMap<String, String> projectInfo, String id)
+    void displaySummaryProject(Map<String, String> projectInfo, String id)
 
     /**
      * Displays a summary of all samples with their properties
      * @param samples
      */
-    void displaySummarySamples(HashMap<String, HashMap<String, String>> samples)
+    void displaySummarySamples(Map<String, Map<String, String>> samples)
 
     /**
      * Sets the user answer in the observer UserAnswer

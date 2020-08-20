@@ -133,12 +133,12 @@ class SubmissionHandler implements MatchingRepositoriesOutput, SelectRepositoryO
     }
 
     @Override
-    void displayProjectSummary(HashMap project, String id) {
+    void displayProjectSummary(Map project, String id) {
         presenter.displayProjectInfo(project, id)
     }
 
     @Override
-    void displaySampleSummary(HashMap<String, HashMap> samples) {
+    void displaySampleSummary(Map<String, Map> samples) {
         presenter.displaySampleInfo(samples)
     }
 

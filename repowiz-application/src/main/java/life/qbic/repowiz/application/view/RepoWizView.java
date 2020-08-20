@@ -23,7 +23,7 @@ public class RepoWizView implements CommandlineView {
     private UserAnswer answer;
 
     @Override
-    public void displayQuestion(AnswerTypes type, HashMap<Integer, String> question) {
+    public void displayQuestion(AnswerTypes type, Map<Integer, String> question) {
         String formattedChoices = "> Please choose one of the following options: \n";
         formattedChoices += mapToString(question); //todo rename: creates string from map for view
 
@@ -73,7 +73,7 @@ public class RepoWizView implements CommandlineView {
     }
 
     @Override
-    public void displaySummaryProject(HashMap<String, String> projectInfo, String id) {
+    public void displaySummaryProject(Map<String, String> projectInfo, String id) {
         StringBuilder summary = new StringBuilder();
         summary.append("> Project " + id + " is described as follows: \n");
 
@@ -85,10 +85,10 @@ public class RepoWizView implements CommandlineView {
     }
 
     @Override
-    public void displaySummarySamples(HashMap<String, HashMap<String, String>> samples) {
+    public void displaySummarySamples(Map<String, Map<String, String>> samples) {
         StringBuilder summary = new StringBuilder();
         //samples
-        for (Map.Entry<String, HashMap<String, String>> sample : samples.entrySet()) {
+        for (Map.Entry<String, Map<String, String>> sample : samples.entrySet()) {
             summary.append("> " + sample.getKey() + " is described as follows: \n");
 
             for (Map.Entry<String, String> info : sample.getValue().entrySet()) {
