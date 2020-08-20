@@ -25,6 +25,7 @@ class SelectRepository implements SelectRepositoryInput {
 
     /**
      * Creates a SelectRepository object
+     *
      * @param output defines how data can be transferred out of this class
      * @param description describes repository traists and characteristics
      */
@@ -72,7 +73,9 @@ class SelectRepository implements SelectRepositoryInput {
     }
 
     /**
-     * Retrieves a list with names of suggested repositories
+     * Retrieves a list with names of suggested repositories.
+     * A repository is valid if an upload to it is supported by RepoWiz.
+     *
      * @param suggestedRepo is a list of suggested repositories
      * @return a list of the names of the suggested repositories
      */
@@ -86,6 +89,8 @@ class SelectRepository implements SelectRepositoryInput {
 
     /**
      * Checks if the given choice fits the repositories from which he can choose
+     *
+     *
      * @param user_choice is the choice of a user
      * @return a repository if the choice is valid or else null
      */
