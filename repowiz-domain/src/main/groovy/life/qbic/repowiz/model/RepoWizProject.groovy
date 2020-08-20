@@ -24,5 +24,4 @@ class RepoWizProject {
         projectProperties = meta
     }
 
-    //todo do not implement any logic in here!!!!
 }
