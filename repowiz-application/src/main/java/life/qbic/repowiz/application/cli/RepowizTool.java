@@ -36,7 +36,7 @@ public class RepowizTool {
     private CommandlineView commandlineView = new RepoWizView();
 
     /**
-     * Sets up the infrastructure of RepoWiz by building the connection to the local database, assembling the controller class and change listener
+     * Sets up the infrastructure of RepoWiz by building the connection to the local database, assembling the controller class and add a change listener to the user answer.
      *
      * @param projectID id of the project that needs to be prepared for an uploaded
      * @param config    with data to connect to the local database
