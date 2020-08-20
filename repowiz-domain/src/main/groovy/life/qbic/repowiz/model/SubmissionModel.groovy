@@ -54,7 +54,7 @@ class SubmissionModel {
     }
 
     /**
-     * Returns a hashmap of the properties of the samples
+     * Returns a map of the sample properties
      *
      * @return sample properties
      */
