@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
 /**
- * This class is responsible for finding a matching repository for a users data
+ * This class is responsible for finding a matching repository for data that was submitted by the user.
  *
  * This class should be used whenever a matching repository needs to be found. A decision tree is used in order to find a repository.
  *
