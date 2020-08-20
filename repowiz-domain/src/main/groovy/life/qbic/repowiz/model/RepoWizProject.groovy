@@ -19,7 +19,7 @@ class RepoWizProject {
      * @param project defined by a code
      * @param meta describing the metadata of the project
      */
-    RepoWizProject(String project, HashMap meta) {
+    RepoWizProject(String project, Map meta) {
         projectID = project
         projectProperties = meta
     }
