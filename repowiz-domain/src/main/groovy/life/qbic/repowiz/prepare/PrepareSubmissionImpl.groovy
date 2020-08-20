@@ -51,10 +51,9 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
         LOG.info "Request upload type "
         output.transferQuestion(repository.uploadTypes)
 
-        //project data
         LOG.info "Fetch Project Data"
         projectSearch.loadProjectInformation(project)
-        //todo close openbis session
+        //TODO close openbis session
     }
 
     //PrepareSubmissionInput
@@ -78,8 +77,6 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
             output.finaliseSubmission(model, repo)
         } else {
             throw new InvalidProjectException("Your project does not fit the selected repository " + repo.repositoryName)
-            //todo throw exception/warning
-            // output.displayAnswer() ?
         }
     }
 
@@ -96,7 +93,7 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
      * @return true if the actual sample data fits the repository requirements
      */
     static boolean isValid(List<RepoWizSample> samples, Repository repo) {
-        //todo
+        //TODO: Implement method
         return true
     }
 
