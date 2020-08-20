@@ -12,7 +12,7 @@ package life.qbic.repowiz.model
 class RepoWizProject {
 
     final String projectID
-    final HashMap<String, String> projectProperties
+    final Map<String, String> projectProperties
 
     /**
      * Creates a RepoWizProject based on the project code and the metadata
