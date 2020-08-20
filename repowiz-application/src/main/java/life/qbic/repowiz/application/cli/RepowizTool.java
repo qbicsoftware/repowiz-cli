@@ -60,7 +60,7 @@ public class RepowizTool {
     /**
      * Determines all repository plugins that can be accessed by RepoWiz
      *
-     * @return a list of all repository plugins
+     * @return a list of all accessible repository plugins
      */
     private static List<String> getImplementedRepositoriesAsList() {
         List<String> repos = new ArrayList<>();
