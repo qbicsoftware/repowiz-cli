@@ -54,7 +54,7 @@ class OpenBisMapper implements Mapper {
      * @param dataSetType is the dataset type in OpenBis
      * @return a map of size 1 containing the files
      */
-    HashMap mapFiles(List files, String dataSetType) {
+    Map mapFiles(List files, String dataSetType) {
         //keep all files in a list and separate them later on (cannot keep duplicate keys in hashmap)
         return [(translateToRepoWiz.get(dataSetType)): files]
     }
@@ -65,7 +65,7 @@ class OpenBisMapper implements Mapper {
      * @param properties as a list of properties of a project
      * @return a map with the properties splitted into label as key and value as value
      */
-    HashMap mapConditions(List<Property> properties) {
+    Map mapConditions(List<Property> properties) {
         HashMap map = new HashMap()
         String repoWizTerm = translateToRepoWiz.get("Q_EXPERIMENTAL_SETUP") //todo do not hardcode??
 
@@ -89,8 +89,8 @@ class OpenBisMapper implements Mapper {
      * @param properties as a map containing a property which may needs to be masked
      * @return a map containing the same properties but some of them might be masked
      */
-    HashMap maskDuplicateProperties(String type, Map properties) {
-        HashMap masked = new HashMap()
+    Map maskDuplicateProperties(String type, Map properties) {
+        Map masked = new HashMap()
 
         properties.each { key, value ->
             if (key == "Q_SECONDARY_NAME") masked.put("Q_SECONDARY_NAME_" + type, value)
