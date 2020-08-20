@@ -80,7 +80,7 @@ class SubmissionPresenter {
      * @return a map containing the elements of the list
      */
     Map formatList(List elements) {
-        HashMap map = new HashMap()
+        Map map = new HashMap()
         int counter = 1
 
         elements.each {
