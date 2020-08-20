@@ -110,7 +110,7 @@ public class RepoWizView implements CommandlineView {
     }
 
     /**
-     * Creates a String from a map whereas each key value is printed next its value in a single line
+     * Creates a String from a map. Each key-value is printed next to its value in a single line
      * @param map with Integers as keys and Strings as values
      * @return text with information of the map
      */
