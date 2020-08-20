@@ -55,7 +55,6 @@ public class RepowizTool {
     }
 
     public RepowizTool() {
-        //add spi provider here!
     }
 
     /**
