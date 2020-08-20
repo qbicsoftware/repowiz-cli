@@ -71,9 +71,7 @@ public class RepowizTool {
             assert stream != null;
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            for (String line; (line = reader.readLine()) != null; ) {
-                repos.add(line);
-            }
+            repos = reader.lines().collect(Collectors.toList());
 
         } catch (IOException io) {
             io.printStackTrace();
