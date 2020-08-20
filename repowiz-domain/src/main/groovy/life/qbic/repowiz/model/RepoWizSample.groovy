@@ -12,7 +12,7 @@ package life.qbic.repowiz.model
 class RepoWizSample {
 
     final String sampleName
-    final HashMap<String, String> sampleProperties
+    final Map<String, String> sampleProperties
 
 
     /**
