@@ -48,7 +48,6 @@ public class RepowizTool {
 
         controller = new SubmissionController(commandlineView, projectID, searcher, new RepositoryLoaderJava(), repos);
 
-        //set up ChangeListener to handle user answers
         UserAnswer answer = new UserAnswer();
         answer.addPropertyChangeListener(controller);
 
