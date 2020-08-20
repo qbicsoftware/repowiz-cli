@@ -11,7 +11,7 @@ public class RepositoryGuideCommand implements Runnable {
 
     @CommandLine.Option(names = {"-h", "--help"}, description = "Prints usage and exists.", usageHelp = true)
     public volatile boolean printHelp;
-    @CommandLine.Option(names = {"-conf", "--config"}, required = true, description = "RepoWiz config file")
+    @CommandLine.Option(names = {"-c", "--config"}, required = true, description = "RepoWiz config file")
     String conf;
     @CommandLine.Option(names = {"-p", "--projectId"}, required = true, description = "Project for which the submission is prepared")
     String projectID;
