@@ -21,7 +21,7 @@ class RepoWizSample {
      * @param name describing the sample (e.g. code)
      * @param sampleProperties describing the samples properties
      */
-    RepoWizSample(String name, HashMap sampleProperties) {
+    RepoWizSample(String name, Map sampleProperties) {
         sampleName = name
         this.sampleProperties = sampleProperties
     }
