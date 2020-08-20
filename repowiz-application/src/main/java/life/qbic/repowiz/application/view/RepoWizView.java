@@ -74,7 +74,6 @@ public class RepoWizView implements CommandlineView {
 
     @Override
     public void displaySummaryProject(HashMap<String, String> projectInfo, String id) {
-        //collect all filled fields in order
         StringBuilder summary = new StringBuilder();
         //project
         summary.append("> Project " + id + " is described as follows: \n");
