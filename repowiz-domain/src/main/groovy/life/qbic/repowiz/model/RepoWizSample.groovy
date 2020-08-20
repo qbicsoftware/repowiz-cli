@@ -26,5 +26,4 @@ class RepoWizSample {
         this.sampleProperties = sampleProperties
     }
 
-    //todo do not implement any logic in here!!!!
 }
