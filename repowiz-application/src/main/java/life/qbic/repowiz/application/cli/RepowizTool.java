@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of RepoWiz. Its command-line arguments are contained in instances of {@link RepowizCommand}.
@@ -66,16 +67,11 @@ public class RepowizTool {
         List<String> repos = new ArrayList<>();
         String fileName = "services/RepositoryJsonFiles.txt";
 
-        try {
-            InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
-            assert stream != null;
+        InputStream stream = SubmissionController.class.getClassLoader().getResourceAsStream(fileName);
+        assert stream != null;
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            repos = reader.lines().collect(Collectors.toList());
-
-        } catch (IOException io) {
-            io.printStackTrace();
-        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        repos = reader.lines().collect(Collectors.toList());
 
         return repos;
     }
