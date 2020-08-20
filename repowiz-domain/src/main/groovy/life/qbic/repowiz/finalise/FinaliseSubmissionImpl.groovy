@@ -97,7 +97,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission {
         SubmissionModel model = manager.providerSubmissionModel
 
         //project
-        HashMap projectProperties = model.project.projectProperties as HashMap
+        Map projectProperties = model.project.projectProperties as Map
         String projectID = model.project.projectID
 
         output.displayProjectSummary(projectProperties, projectID)
