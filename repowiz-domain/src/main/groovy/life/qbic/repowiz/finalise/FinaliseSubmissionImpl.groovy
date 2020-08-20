@@ -65,7 +65,6 @@ class FinaliseSubmissionImpl implements FinaliseSubmission {
         output.displayUserInformation("Submission Summary:")
         createSummary()
 
-        //validate submission
         output.displayUserInformation("Is the displayed submission valid?")
         output.verifySubmission(["yes", "no"])
     }
