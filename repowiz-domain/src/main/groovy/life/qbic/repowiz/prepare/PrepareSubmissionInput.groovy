@@ -5,7 +5,7 @@ import life.qbic.repowiz.Repository
 /**
  * Interface defining what information flows into the user case
  *
- * This class should be used whenever information about the selected repository needs to be transferred into a class
+ * The PrepareSubmissionInput interface provides methods to transfer repository submission information into an object.
  *
  *  @since: 1.0.0
  *  @author: Jennifer Bödker
