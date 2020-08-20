@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * This class is responsible for loading repositories in order to be accessible for RepoWiz
  *
- * It should be used when a repository class from a maven module needs to be loaded
+ * It should be used every time a repository class is loaded from any maven module.
  *
  * @since: 1.0.0
  * @author: Jennifer Bödker
