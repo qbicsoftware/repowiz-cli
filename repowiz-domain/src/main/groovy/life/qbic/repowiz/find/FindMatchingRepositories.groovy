@@ -77,7 +77,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput {
      * If the answer given by the user specifies his experiment data, the corresponding node is not a leave node and this function should be called.
      * It traverses all children of the current node in the decision tree and sets the child node with the respective node content as current node
      */
-    void nodeDecision() {
+    private void nodeDecision() {
         def decisionPossibilities = []
 
         currentDecisionLevel.children.each {
