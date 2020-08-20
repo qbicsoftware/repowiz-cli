@@ -1,7 +1,7 @@
 package life.qbic.repowiz.prepare
 
 /**
- * Describes an {@link IllegalArgumentException} that can be thrown
+ * An exception that is thrown when an invalid project structure was obtained.
  *
  * This class should be used whenever an invalid project structure is obtained.
  *
