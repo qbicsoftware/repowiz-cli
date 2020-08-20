@@ -107,17 +107,17 @@ class GeoSubmissionManager implements SubmissionManager {
         HashMap<String, String> mappedProperties = new HashMap<>()
         HashMap samples_characteristics = new HashMap()
 
-        properties.each { k, v ->
-            String mappedTerm = mapper.getGeoTerm(k)
+        properties.each { key, value ->
+            String mappedTerm = mapper.getGeoTerm(key)
 
-            if (mappedTerm == "samples_raw file") sampleFiles.put(name, v.toList())
+            if (mappedTerm == "samples_raw file") sampleFiles.put(name, value.toList())
 
             if (mappedTerm != null && mappedTerm.contains("characteristics")) {
                 //String tag = mappedTerm.split(":")[0]
-                samples_characteristics.put(mappedTerm, v)
+                samples_characteristics.put(mappedTerm, value)
 
             } else {
-                mappedProperties.put(mappedTerm, v)
+                mappedProperties.put(mappedTerm, value)
             }
         }
         characteristics.put(name, samples_characteristics)
