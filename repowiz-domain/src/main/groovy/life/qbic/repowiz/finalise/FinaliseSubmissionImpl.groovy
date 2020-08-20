@@ -82,7 +82,7 @@ class FinaliseSubmissionImpl implements FinaliseSubmission {
 
             output.displayUserInformation("Further information: ")
             output.displayUserInformation(repository.subsequentSteps)
-            System.exit(1)
+            System.exit(0)
         }
 
         output.displayUserInformation("The submission was not verified. Please adjust your data and restart RepoWiz.")
