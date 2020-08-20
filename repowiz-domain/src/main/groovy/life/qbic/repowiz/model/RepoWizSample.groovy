@@ -12,18 +12,18 @@ package life.qbic.repowiz.model
 class RepoWizSample {
 
     final String sampleName
-    final HashMap<String, String> sampleProperties
+    final Map<String, String> sampleProperties
 
 
     /**
      * Creates a RepoWizSample based on a sample name and its properties
+     *
      * @param name describing the sample (e.g. code)
      * @param sampleProperties describing the samples properties
      */
-    RepoWizSample(String name, HashMap sampleProperties) {
+    RepoWizSample(String name, Map sampleProperties) {
         sampleName = name
         this.sampleProperties = sampleProperties
     }
 
-    //todo do not implement any logic in here!!!!
 }

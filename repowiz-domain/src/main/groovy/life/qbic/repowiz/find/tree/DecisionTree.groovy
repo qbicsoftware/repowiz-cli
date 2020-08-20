@@ -28,7 +28,6 @@ class DecisionTree {
     void buildTree() {
         root = new Node<String>("Root");
 
-        //organism type
         Node<String> human = new Node<String>("human")
         Node<String> env = new Node<String>("environmental community")
         Node<String> plant = new Node<String>("plants")
@@ -125,7 +124,6 @@ class DecisionTree {
         open.addChild(protein_human)
         protein_human.addChild("pride")
 
-        //env tree
         root.addChild(env)
 
         env.addChild(expression_data_env)

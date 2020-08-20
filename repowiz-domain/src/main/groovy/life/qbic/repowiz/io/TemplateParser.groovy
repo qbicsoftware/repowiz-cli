@@ -3,7 +3,7 @@ package life.qbic.repowiz.io
 /**
  * Interface determining how a template is parsed
  *
- * This interface should be implemented  whenever a file needs to be parsed.
+ * The TemplateParser interface provides methods for template file parsing.
  *
  *  @since: 1.0.0
  *  @author: Jennifer Bödker

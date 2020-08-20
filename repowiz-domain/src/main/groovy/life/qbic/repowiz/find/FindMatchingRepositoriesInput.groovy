@@ -3,7 +3,8 @@ package life.qbic.repowiz.find
 /**
  * Input interface determining what information is accepted by FindMatchingRepositories
  *
- * This interface should be used whenever the {@link FindMatchingRepositories} class should be started for finding a matching repository for the user
+ * Classes implementing this interface offer functionality to search for repositories filtered by provided parameters.
+ * @see FindMatchingRepositories
  *
  *  @since: 1.0.0
  *  @author: Jennifer Bödker
