@@ -34,7 +34,7 @@ class SubmissionPresenter {
     }
 
     /**
-     * Should be called to display a list of decisions
+     * Displays a list of decisions.
      * @param decisions that the user made before
      */
     void displayUserDecisions(List<String> decisions) {
