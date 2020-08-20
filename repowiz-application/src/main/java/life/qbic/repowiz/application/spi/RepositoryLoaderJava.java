@@ -106,7 +106,7 @@ public class RepositoryLoaderJava implements Loader {
     /**
      * Creates an instance of provider class defined as a string
      * @param repositoryProviderClass defines the class to be instantiated
-     * @return
+     * @return a list of repository instances
      * @throws ClassNotFoundException
      * @throws NoSuchMethodException
      * @throws IllegalAccessException
