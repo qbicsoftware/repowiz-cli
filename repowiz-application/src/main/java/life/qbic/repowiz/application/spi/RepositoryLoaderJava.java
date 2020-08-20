@@ -17,7 +17,11 @@ import java.util.List;
 /**
  * This class is responsible for loading repositories in order to be accessible for RepoWiz
  *
- * It should be used every time a repository class is loaded from any maven module.
+ * It should be used every time a repository class is loaded from any maven module. The loader is responsible for loading the repository from an external module.
+ * Note that the repository plugins are not explicitly loaded for the modules of RepoWiz. We don't know which repository the user selects.
+ * Therefore, we need a loader that loads the repository. The {@link TargetRepositoryProvider} provides an access point for the repository and returns an
+ * instance of some classes of the module. Every module must follow the implementation of some interfaces in order to be usable by RepoWiz.
+ * These classes are then used from the loaded instance.
  *
  * @since: 1.0.0
  * @author: Jennifer Bödker
