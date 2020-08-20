@@ -112,7 +112,7 @@ public class RepowizTool {
 
         } catch (Exception e) {
             LOG.error("Cannot load the implemented plugins");
-            e.printStackTrace();
+            LOG.debug(e);
         }
     }
 
