@@ -17,6 +17,7 @@ class RepoWizSample {
 
     /**
      * Creates a RepoWizSample based on a sample name and its properties
+     *
      * @param name describing the sample (e.g. code)
      * @param sampleProperties describing the samples properties
      */
