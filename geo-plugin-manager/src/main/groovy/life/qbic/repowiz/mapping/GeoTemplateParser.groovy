@@ -5,9 +5,6 @@ import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.apache.poi.xssf.usermodel.XSSFCell
 
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
-
 class GeoTemplateParser extends XlsxParser {
 
     final byte[] rgbLevelColor = [-1, 0, 0]
@@ -15,20 +12,20 @@ class GeoTemplateParser extends XlsxParser {
 
     private static final Logger LOG = LogManager.getLogger(GeoTemplateParser.class)
 
-    GeoTemplateParser(){
+    GeoTemplateParser() {
         super.commentMarker = '#'
     }
 
     @Override
-    def createWorkbook(String template){
+    def createWorkbook(String template) {
         super.createWorkbook(template)
     }
 
     //a required field does not contain the keyword "[optional]" within the cells comment
-    def isRequired(XSSFCell cell){
+    def isRequired(XSSFCell cell) {
         boolean required = false
 
-        if(cell.cellComment != null){
+        if (cell.cellComment != null) {
             String cellComment = cell.cellComment.string.string.toLowerCase()
             required = !cellComment.contains("[optional]")
         }
@@ -36,7 +33,7 @@ class GeoTemplateParser extends XlsxParser {
     }
 
     //a section is defined by the rgb color red
-    def isSection(XSSFCell cell){
+    def isSection(XSSFCell cell) {
         byte[] color = getRGBColor(cell)
         int col = cell.getColumnIndex()
 
@@ -44,7 +41,7 @@ class GeoTemplateParser extends XlsxParser {
     }
 
     //a field is defined by the rbg color blue
-    def isField(XSSFCell cell){
+    def isField(XSSFCell cell) {
         byte[] color = getRGBColor(cell)
         int col = cell.getColumnIndex()
 
@@ -52,7 +49,7 @@ class GeoTemplateParser extends XlsxParser {
     }
 
     //a cell is valid if it is not empty, not null and it is no cell only containing comments
-    def isValidCell(XSSFCell cell){
+    def isValidCell(XSSFCell cell) {
         return cell != null && cell.stringCellValue != "" && !commentCell(cell) && !cell.stringCellValue.toLowerCase().contains("[optional]")
     }
 

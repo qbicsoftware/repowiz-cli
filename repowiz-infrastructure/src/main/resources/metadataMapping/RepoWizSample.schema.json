@@ -12,7 +12,10 @@
           "type": "string"
         }
       },
-      "required": ["label","value"]
+      "required": [
+        "label",
+        "value"
+      ]
     }
   },
   "type": "object",
@@ -30,7 +33,7 @@
       "type": "string"
     },
     "organism": {
-      "description":"Source organism of the sample",
+      "description": "Source organism of the sample",
       "type": "string"
     },
     "characteristics": {
@@ -72,14 +75,32 @@
       "type": "string"
     },
     "library protocol": {
-      "description":"Library construction protocol",
+      "description": "Library construction protocol",
       "type": "string"
     },
     "sequencing type": {
       "description": "Type of sequencing used for samples",
-      "enum": ["RNA-Seq", "miRNA-Seq", "ncRNA-Seq", "RNA-Seq (CAGE)", "RNA-Seq (RACE)", "ChIP-Seq", "MNase-Seq", "MBD-Seq",
-        "MRE-Seq", "Bisulfite-Seq" ," Bisulfite-Seq (reduced representation)", "nMeDIP-Seq", "DNase-Hypersensitivity",
-        "Tn-Seq"," FAIRE-seq", "SELEX", "RIP-Seq", "ChIA-PET", "OTHER"],
+      "enum": [
+        "RNA-Seq",
+        "miRNA-Seq",
+        "ncRNA-Seq",
+        "RNA-Seq (CAGE)",
+        "RNA-Seq (RACE)",
+        "ChIP-Seq",
+        "MNase-Seq",
+        "MBD-Seq",
+        "MRE-Seq",
+        "Bisulfite-Seq",
+        " Bisulfite-Seq (reduced representation)",
+        "nMeDIP-Seq",
+        "DNase-Hypersensitivity",
+        "Tn-Seq",
+        " FAIRE-seq",
+        "SELEX",
+        "RIP-Seq",
+        "ChIA-PET",
+        "OTHER"
+      ],
       "type": "string"
     },
     "data processing step": {
@@ -87,7 +108,7 @@
       "type": "string"
     },
     "ref genome": {
-      "description":"UCSC or NCBI genome build number, or reference sequence used for read alignment",
+      "description": "UCSC or NCBI genome build number, or reference sequence used for read alignment",
       "type": "string"
     },
     "processed data files format and content": {
@@ -108,13 +129,33 @@
     },
     "instrument model": {
       "description": "Sequencing device",
-      "enum" : ["Illumina Genome Analyzer", "Illumina Genome Analyzer II", "Illumina Genome Analyzer IIx",
-        "Illumina HiSeq 2000", "Illumina HiSeq 1000", "Illumina MiSeq", "Illumina HiSeq 2500",
-        "AB SOLiD System", "AB SOLiD System 2.0"," AB SOLiD System 3.0", "AB SOLiD 4 System",
-        "AB SOLiD 4hq System", "AB SOLiD PI System", "AB 5500xl Genetic Analyzer",
+      "enum": [
+        "Illumina Genome Analyzer",
+        "Illumina Genome Analyzer II",
+        "Illumina Genome Analyzer IIx",
+        "Illumina HiSeq 2000",
+        "Illumina HiSeq 1000",
+        "Illumina MiSeq",
+        "Illumina HiSeq 2500",
+        "AB SOLiD System",
+        "AB SOLiD System 2.0",
+        " AB SOLiD System 3.0",
+        "AB SOLiD 4 System",
+        "AB SOLiD 4hq System",
+        "AB SOLiD PI System",
+        "AB 5500xl Genetic Analyzer",
         "AB 5500 Genetic Analyzer",
-        "454 GS", "454 GS 20", "454 GS FLX", "454 GS Junior", "454 GS FLX Titanium",
-        "Helicos HeliScope"," PacBio RS", "PacBio RS II", "Complete Genomics", "Ion Torrent PGM"],
+        "454 GS",
+        "454 GS 20",
+        "454 GS FLX",
+        "454 GS Junior",
+        "454 GS FLX Titanium",
+        "Helicos HeliScope",
+        " PacBio RS",
+        "PacBio RS II",
+        "Complete Genomics",
+        "Ion Torrent PGM"
+      ],
       "type": "string"
     },
     "read length": {
@@ -123,7 +164,10 @@
     },
     "sequencing mode": {
       "description": "Sequencing mode, single or paired-end",
-      "enum": ["SINGLE", "PAIRED_END"],
+      "enum": [
+        "SINGLE",
+        "PAIRED_END"
+      ],
       "type": "string"
     },
     "file name 1": {

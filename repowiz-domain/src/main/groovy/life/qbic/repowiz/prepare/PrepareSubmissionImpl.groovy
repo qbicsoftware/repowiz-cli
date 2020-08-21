@@ -1,6 +1,5 @@
 package life.qbic.repowiz.prepare
 
-
 import life.qbic.repowiz.Repository
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
@@ -10,17 +9,33 @@ import life.qbic.repowiz.prepare.projectSearch.ProjectSearchOutput
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutput{
+/**
+ * This class describes the process of the submission preparation.
+ *
+ * This class should be used for preparing a submission. It obtains submission data as a {@link SubmissionModel} through the {@link ProjectSearchOutput} interface.
+ * This data is then processed and passed on to the {@link PrepareSubmissionOutput}.
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
+ */
+class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutput {
 
     private static final Logger LOG = LogManager.getLogger(PrepareSubmissionImpl.class)
 
-    PrepareSubmissionOutput output
-    String project
-    ProjectSearchInput projectSearch
+    private final PrepareSubmissionOutput output
+    private final String project
+    private final ProjectSearchInput projectSearch
     private Repository repo
     private String uploadType
 
-    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch){
+    /**
+     * Creates a PrepareSubmissionImpl object
+     * @param output defines the target output class defined by the {@link PrepareSubmissionOutput} interface
+     * @param projectID is the ID of the selected projected
+     * @param projectSearch defines how the project can be searched
+     */
+    PrepareSubmissionImpl(PrepareSubmissionOutput output, String projectID, ProjectSearchInput projectSearch) {
         this.output = output
         this.project = projectID
         this.projectSearch = projectSearch
@@ -36,9 +51,9 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
         LOG.info "Request upload type "
         output.transferQuestion(repository.uploadTypes)
 
-        //project data
         LOG.info "Fetch Project Data"
         projectSearch.loadProjectInformation(project)
+        //TODO close openbis session
     }
 
     //PrepareSubmissionInput
@@ -52,19 +67,16 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
 
     //project search output
     @Override
-    def createSubmissionModel(RepoWizProject project, List samples) throws InvalidProjectException{
+    def createSubmissionModel(RepoWizProject project, List samples) throws InvalidProjectException {
         LOG.info "Validate project data"
-        if (isValid(samples,repo)){
+        if (isValid(samples, repo)) {
 
             SubmissionModel model = new SubmissionModel(project, samples)
             model.setUploadType(uploadType)
 
             output.finaliseSubmission(model, repo)
-        }
-        else{
-            throw new InvalidProjectException("Your project does not fit the selected repository "+repo.name)
-            //todo throw exception/warning
-            // output.displayAnswer() oder so
+        } else {
+            throw new InvalidProjectException("Your project does not fit the selected repository " + repo.repositoryName)
         }
     }
 
@@ -74,8 +86,14 @@ class PrepareSubmissionImpl implements PrepareSubmissionInput, ProjectSearchOutp
     }
 
     //todo check if project data matches the repository conditions
-    static boolean isValid(List<RepoWizSample> samples, Repository repo){
-        //todo
+    /**
+     * This method checks if the collected sample data fits the selected repository
+     * @param samples with the data of the submission
+     * @param repo which was selected by the user
+     * @return true if the actual sample data fits the repository requirements
+     */
+    static boolean isValid(List<RepoWizSample> samples, Repository repo) {
+        //TODO: Implement method
         return true
     }
 

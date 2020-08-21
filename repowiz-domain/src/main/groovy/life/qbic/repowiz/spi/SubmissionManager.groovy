@@ -3,7 +3,15 @@ package life.qbic.repowiz.spi
 import life.qbic.repowiz.model.SubmissionModel
 
 /**
- *  Interface for managing the submission within the target repository provider
+ * Interface for managing the submission within the {@link TargetRepositoryProvider}
+ *
+ * The SubmissionModel interface provides methods to manage repository requirements. It provides methods to validate a submission model
+ * and methods to retrieve a submission model.
+ *
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface SubmissionManager {
 

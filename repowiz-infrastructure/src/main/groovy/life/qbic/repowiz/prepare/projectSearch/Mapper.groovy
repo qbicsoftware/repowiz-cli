@@ -1,7 +1,14 @@
 package life.qbic.repowiz.prepare.projectSearch
 
 /**
- * Interface that defines
+ * Interface that defines how properties are mapped to be used in RepoWiz
+ *
+ * In order to handle properties of external databases they must be mapped so that they can be translated into
+ * RepoWiz terms. Beside the mapping duplicate terms must also be masked to be able to distinguish them.
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
  */
 interface Mapper {
 
@@ -10,7 +17,7 @@ interface Mapper {
      * @param properties
      * @return
      */
-    HashMap mapProperties(Map properties)
+    Map mapProperties(Map properties)
 
     /**
      * Properties that are duplicates must be masked
@@ -18,6 +25,6 @@ interface Mapper {
      * @param properties
      * @return
      */
-    HashMap maskDuplicateProperties(String mask, Map properties)
+    Map maskDuplicateProperties(String mask, Map properties)
 
 }

@@ -2,29 +2,29 @@ import life.qbic.repowiz.mapping.GeoTemplateParser
 import org.apache.poi.xssf.usermodel.XSSFCell
 import spock.lang.Specification
 
-class XlsxParserSpecification extends Specification{
+class XlsxParserSpecification extends Specification {
 
-   /*def "Geo Parser returns all Fields from Template"(){
-        given:
-        GeoTemplateParser parser = new GeoTemplateParser()
-        parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+    /*def "Geo Parser returns all Fields from Template"(){
+         given:
+         GeoTemplateParser parser = new GeoTemplateParser()
+         parser.parseAsStream("templates/seq_template_v2.1.xlsx")
+ 
+         when:
+         parser.parseTemplateSheet("METADATA TEMPLATE")
+ 
+         then:
+         parser.templateFields.keySet().size() == 7
+         assert parser.templateFields.containsKey("SERIES")
+         assert parser.templateFields.containsKey("SAMPLES")
+         assert parser.templateFields.containsKey("PROTOCOLS")
+         assert parser.templateFields.containsKey("DATA PROCESSING PIPELINE")
+         assert parser.templateFields.containsKey("PROCESSED DATA FILES")
+         assert parser.templateFields.containsKey("RAW FILES")
+         assert parser.templateFields.containsKey("PAIRED-END EXPERIMENTS")
+ 
+     }*/
 
-        when:
-        parser.parseTemplateSheet("METADATA TEMPLATE")
-
-        then:
-        parser.templateFields.keySet().size() == 7
-        assert parser.templateFields.containsKey("SERIES")
-        assert parser.templateFields.containsKey("SAMPLES")
-        assert parser.templateFields.containsKey("PROTOCOLS")
-        assert parser.templateFields.containsKey("DATA PROCESSING PIPELINE")
-        assert parser.templateFields.containsKey("PROCESSED DATA FILES")
-        assert parser.templateFields.containsKey("RAW FILES")
-        assert parser.templateFields.containsKey("PAIRED-END EXPERIMENTS")
-
-    }*/
-
-    def "blbl"(){
+    def "blbl"() {
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
         parser.createWorkbook("templates/seq_template_v2.1.xlsx")
@@ -41,7 +41,7 @@ class XlsxParserSpecification extends Specification{
         assert !parser.requiredFields.contains("protocols_growth protocol")
     }
 
-    def "Finds correct Level RGB color"(){
+    def "Finds correct Level RGB color"() {
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
         parser.createWorkbook("templates/seq_template_v2.1.xlsx")
@@ -52,10 +52,10 @@ class XlsxParserSpecification extends Specification{
         def color = parser.getRGBColor(cell)
 
         then:
-        color == (byte []) [-1,0,0]
+        color == (byte[]) [-1, 0, 0]
     }
 
-    def "Finds correct Field RGB color"(){
+    def "Finds correct Field RGB color"() {
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
         parser.createWorkbook("templates/seq_template_v2.1.xlsx")
@@ -66,11 +66,11 @@ class XlsxParserSpecification extends Specification{
         def color = parser.getRGBColor(cell)
 
         then:
-        color == (byte []) [0,0,-1]
+        color == (byte[]) [0, 0, -1]
 
     }
 
-    def "Detect required fields from comment"(){
+    def "Detect required fields from comment"() {
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
         parser.createWorkbook("templates/seq_template_v2.1.xlsx")
@@ -84,7 +84,7 @@ class XlsxParserSpecification extends Specification{
         required
     }
 
-    def "Detect optional fields in comment"(){
+    def "Detect optional fields in comment"() {
         given:
         GeoTemplateParser parser = new GeoTemplateParser()
         parser.createWorkbook("templates/seq_template_v2.1.xlsx")

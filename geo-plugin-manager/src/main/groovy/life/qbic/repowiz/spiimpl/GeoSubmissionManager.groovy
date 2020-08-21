@@ -1,7 +1,7 @@
 package life.qbic.repowiz.spiimpl
 
-import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.mapping.GeoMapper
+import life.qbic.repowiz.model.GeoSample
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
 import life.qbic.repowiz.model.SubmissionModel
@@ -11,19 +11,19 @@ import life.qbic.repowiz.submissionTypes.GeoSubmission
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class GeoSubmissionManager implements SubmissionManager{
+class GeoSubmissionManager implements SubmissionManager {
 
     private SubmissionModel geoSubmissionModel
     private GeoMapper mapper
     private GeoSubmission geoSubmission
 
-    private HashMap<String,List> sampleFiles = new HashMap<>() //samplename:filelist
-    private HashMap<String,HashMap> characteristics = new HashMap<>() //samplename:characteristics label, value
+    private HashMap<String, List> sampleFiles = new HashMap<>() //samplename:filelist
+    private HashMap<String, HashMap> characteristics = new HashMap<>() //samplename:characteristics label, value
 
 
     private static final Logger LOG = LogManager.getLogger(GeoSubmissionManager.class)
 
-    GeoSubmissionManager(){
+    GeoSubmissionManager() {
         LOG.info "Creating Geo Submission Manager"
         mapper = new GeoMapper()
     }
@@ -59,11 +59,11 @@ class GeoSubmissionManager implements SubmissionManager{
         List<GeoSample> samples = []
         //add sample name to properties and convert hashmap to list
         //todo other place to do that?
-        geoSubmissionModel.sampleProperties().each {sampleName, properties ->
+        geoSubmissionModel.sampleProperties().each { sampleName, properties ->
             HashMap sampleProperties = new HashMap()
             sampleProperties << properties
             //add sample name manually
-            sampleProperties << ["samples_Sample name":sampleName]
+            sampleProperties << ["samples_Sample name": sampleName]
 
             samples << new GeoSample(sampleName, sampleProperties, sampleFiles.get(sampleName), characteristics.get(sampleName))
         }
@@ -74,9 +74,9 @@ class GeoSubmissionManager implements SubmissionManager{
         geoSubmission.downloadFile(fileName)
     }
 
-    void createGeoSubmissionObject(String uploadType){//called in the SubmissionManager
+    void createGeoSubmissionObject(String uploadType) {//called in the SubmissionManager
 
-        switch (uploadType){
+        switch (uploadType) {
             case "hts": //defined in the repository description (json file)
                 geoSubmission = new GeoHtsSubmission()
                 break
@@ -87,44 +87,44 @@ class GeoSubmissionManager implements SubmissionManager{
         }
     }
 
-    void mapMetadata(SubmissionModel model){
+    void mapMetadata(SubmissionModel model) {
         RepoWizProject project = model.project
         //map project data
-        HashMap mappedProjectProps = mapProperties(project.properties, project.projectID)
+        HashMap mappedProjectProps = mapProperties(project.projectProperties, project.projectID)
         RepoWizProject mappedProject = new RepoWizProject(project.projectID, mappedProjectProps)
         //map sample data
         List<RepoWizSample> mappedSamples = []
 
-        model.samples.each {sample ->
-            HashMap mappedSampleProps = mapProperties(sample.properties,sample.sampleName)
-            mappedSamples << new RepoWizSample(sample.sampleName,mappedSampleProps)
+        model.samples.each { sample ->
+            HashMap mappedSampleProps = mapProperties(sample.sampleProperties, sample.sampleName)
+            mappedSamples << new RepoWizSample(sample.sampleName, mappedSampleProps)
         }
 
-        geoSubmissionModel = new SubmissionModel(mappedProject,mappedSamples)
+        geoSubmissionModel = new SubmissionModel(mappedProject, mappedSamples)
     }
 
-    HashMap mapProperties(HashMap<String,String> properties , String name){
-        HashMap<String,String> mappedProperties = new HashMap<>()
+    HashMap mapProperties(HashMap<String, String> properties, String name) {
+        HashMap<String, String> mappedProperties = new HashMap<>()
         HashMap samples_characteristics = new HashMap()
 
-        properties.each {k,v ->
-            String mappedTerm = mapper.getGeoTerm(k)
+        properties.each { key, value ->
+            String mappedTerm = mapper.getGeoTerm(key)
 
-            if(mappedTerm == "samples_raw file") sampleFiles.put(name,v.toList())
+            if (mappedTerm == "samples_raw file") sampleFiles.put(name, value.toList())
 
-            if(mappedTerm != null && mappedTerm.contains("characteristics")){
+            if (mappedTerm != null && mappedTerm.contains("characteristics")) {
                 //String tag = mappedTerm.split(":")[0]
-                samples_characteristics.put(mappedTerm,v)
+                samples_characteristics.put(mappedTerm, value)
 
-            }else{
-                mappedProperties.put(mappedTerm, v)
+            } else {
+                mappedProperties.put(mappedTerm, value)
             }
         }
-        characteristics.put(name,samples_characteristics)
+        characteristics.put(name, samples_characteristics)
         return mappedProperties
     }
 
-    HashMap getCharacteristics(){
+    HashMap getCharacteristics() {
         return characteristics
     }
 

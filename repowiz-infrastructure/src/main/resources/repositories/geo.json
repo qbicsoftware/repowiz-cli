@@ -1,11 +1,23 @@
 {
   "repositoryName": "Geo",
   "dataType": "dna_rna",
-  "uploadTypes": ["affymetrix_GE","hts"],
+  "uploadTypes": [
+    "affymetrix_GE",
+    "hts"
+  ],
   "uploadFormat": "template",
-  "uploadRequirements": ["All raw data files (original scan quantification or raw reads)","All final processed (normalized) data files e.g expression count matrix",
-  "Essential sample annotation and experimental factors with their values", "Experimental design with sample data relationship","Sufficient annotation for array or sequence features",
-  "Essential laboratory and data processing protocols"],
-  "subsequentSteps": ["Upload the file to Geo through https://www.ncbi.nlm.nih.gov/account/?back_url=/geo/submitter/","Accession number approval within 5 business days","Contact per email: geo@ncbi.nlm.nih.gov"]
+  "uploadRequirements": [
+    "All raw data files (original scan quantification or raw reads)",
+    "All final processed (normalized) data files e.g expression count matrix",
+    "Essential sample annotation and experimental factors with their values",
+    "Experimental design with sample data relationship",
+    "Sufficient annotation for array or sequence features",
+    "Essential laboratory and data processing protocols"
+  ],
+  "subsequentSteps": [
+    "Upload the file to Geo through https://www.ncbi.nlm.nih.gov/account/?back_url=/geo/submitter/",
+    "Accession number approval within 5 business days",
+    "Contact per email: geo@ncbi.nlm.nih.gov"
+  ]
 }
 

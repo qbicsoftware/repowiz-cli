@@ -37,6 +37,12 @@
       }
     }
   },
-  "required" : ["repositoryName","subsequentSteps","uploadRequirements","uploadTypes", "uploadFormat"]
+  "required": [
+    "repositoryName",
+    "subsequentSteps",
+    "uploadRequirements",
+    "uploadTypes",
+    "uploadFormat"
+  ]
 }
 

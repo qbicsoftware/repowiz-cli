@@ -7,17 +7,32 @@ import life.qbic.repowiz.find.tree.Node
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class FindMatchingRepositories implements FindMatchingRepositoriesInput{
+/**
+ * This class is responsible for finding a matching repository for data that was submitted by the user.
+ *
+ * This class should be used whenever a matching repository needs to be found. A decision tree is used in order to find a repository.
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
+ */
+class FindMatchingRepositories implements FindMatchingRepositoriesInput {
 
     private static final Logger LOG = LogManager.getLogger(FindMatchingRepositories.class)
 
-    MatchingRepositoriesOutput output
-    RepositoryDescription repositoryDescription
-    DecisionTree tree
-    Node currentDecisionLevel
-    List<String> decisionStack = new ArrayList<>()
+    private final MatchingRepositoriesOutput output
+    private final RepositoryDescription repositoryDescription
 
-    FindMatchingRepositories(MatchingRepositoriesOutput output, RepositoryDescription repoDescription){
+    private DecisionTree tree
+    private Node currentDecisionLevel
+    private List<String> decisionStack = new ArrayList<>()
+
+    /**
+     * Creates the FindMatchingRepositories use case with the output port {@link MatchingRepositoriesOutput} and the {@link RepositoryDescription}
+     * @param output defines how the output is handled
+     * @param repoDescription offers a description for a repository
+     */
+    FindMatchingRepositories(MatchingRepositoriesOutput output, RepositoryDescription repoDescription) {
         this.output = output
         this.repositoryDescription = repoDescription
 
@@ -26,7 +41,7 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
     }
 
     @Override
-    def startGuide() {
+    void startGuide() {
         LOG.info "Starting the RepoWiz guide ..."
         def organisms = []
 
@@ -35,32 +50,34 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         }
 
         output.transferAnswerPossibilities(organisms)//todo use observer pattern!
-        //validateDecision(user_answer)
     }
 
     @Override
-    def validateDecision(String answer){
+    boolean validateDecision(String answer) {
         decisionStack.add(answer)
         output.transferDecisionStack(decisionStack)
 
         boolean validAnswer = false
 
         currentDecisionLevel.children.each {
-            if(it.data == answer){
+            if (it.data == answer) {
                 validAnswer = true
                 currentDecisionLevel = it
-                if(it.children.get(0).leaf){
+                if (it.children.get(0).leaf) {
                     leafDecision()
-                }else{
+                } else {
                     nodeDecision()
                 }
             }
         }
-        validAnswer
+        return validAnswer
     }
 
-
-    def nodeDecision(){
+    /**
+     * If the answer given by the user specifies his experiment data, the corresponding node is not a leave node and this function should be called.
+     * It traverses all children of the current node in the decision tree and sets the child node with the respective node content as current node
+     */
+    private void nodeDecision() {
         def decisionPossibilities = []
 
         currentDecisionLevel.children.each {
@@ -71,7 +88,11 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         validateDecision(answer)
     }
 
-    def leafDecision(){
+    /**
+     * If a decision ends in a leaf the next decision will be a decision for a repository.
+     * After this decision no further decisions on repository selection can be made
+     */
+    void leafDecision() {
 
         List<String> matchingRepos = tree.getChildrenData(currentDecisionLevel)
 
@@ -85,8 +106,12 @@ class FindMatchingRepositories implements FindMatchingRepositoriesInput{
         output.transferRepositoryList(repositories)
     }
 
-    def displayUploadRequirements(List<Repository>repositories){
-        repositories.each {repo ->
+    /**
+     * Method to display the requirements of repositories to the user
+     * @param repositories for which the requirements should be displayed
+     */
+    void displayUploadRequirements(List<Repository> repositories) {
+        repositories.each { repo ->
             output.transferUserInformation("For a successful submission of $repo.repositoryName provide: ")
             repo.uploadRequirements.each {
                 output.transferUserInformation(it)

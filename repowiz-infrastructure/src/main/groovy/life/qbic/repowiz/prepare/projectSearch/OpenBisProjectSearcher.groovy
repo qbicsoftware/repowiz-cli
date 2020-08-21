@@ -18,7 +18,6 @@ import ch.ethz.sis.openbis.generic.dssapi.v3.IDataStoreServerApi
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.DataSetFile
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.fetchoptions.DataSetFileFetchOptions
 import ch.ethz.sis.openbis.generic.dssapi.v3.dto.datasetfile.search.DataSetFileSearchCriteria
-import life.qbic.repowiz.io.JsonParser
 import life.qbic.repowiz.model.RepoWizProject
 import life.qbic.repowiz.model.RepoWizSample
 import life.qbic.repowiz.prepare.openBis.ConditionParser
@@ -26,29 +25,48 @@ import life.qbic.xml.properties.Property
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-//todo separate code, try to create general class for plugin architecture and move openBis code into concrete opnebis class
+/**
+ * This class handles the project search in OpenBis
+ *
+ * In order to fetch data from a local database and transfer it into RepoWiz the {@link ProjectSearchInput} must be implemented.
+ * Furthermore, the {@link ProjectSearcher} must be implemented.
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
+ */
 class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInput {
 
     private static final Logger LOG = LogManager.getLogger(OpenBisProjectSearcher.class)
 
-    Project project
+    private Project project
 
-    IApplicationServerApi v3
-    IDataStoreServerApi dss
-    String sessionToken
+    private final IApplicationServerApi applicationServerApiV3
+    private final IDataStoreServerApi dataStoreServer
+    private final String sessionToken
 
-    OpenBisMapper mapper
-    ConditionParser conditionParser
+    private final OpenBisMapper openBisMapper
+    private ConditionParser conditionParser
 
-    OpenBisProjectSearcher(IApplicationServerApi v3, IDataStoreServerApi dss, String session, OpenBisMapper mapper, String projectSchema, String sampleSchema) {
-        this.v3 = v3
-        this.dss = dss
+    /**
+     * Creates a ProjectSearch object with a connection to OpenBis and the required schemata for mapping project data from OpenBis to RepoWiz
+     *
+     * @param applicationServerApiV3 server api of OpenBis
+     * @param dataStoreServer data storage server api of OpenBis
+     * @param session for querying OpenBis
+     * @param openBisMapper for translating OpenBis terms into RepoWiz terms
+     * @param projectSchema for translating project terms
+     * @param sampleSchema for translating sample terms
+     */
+    OpenBisProjectSearcher(IApplicationServerApi applicationServerApiV3, IDataStoreServerApi dataStoreServer, String session, OpenBisMapper openBisMapper, String projectSchema, String sampleSchema) {
+        this.applicationServerApiV3 = applicationServerApiV3
+        this.dataStoreServer = dataStoreServer
 
         sessionToken = session
 
-        this.mapper = mapper
+        this.openBisMapper = openBisMapper
 
-        super.mapper = mapper
+        super.mapper = openBisMapper
         super.projectSchema = projectSchema
         super.sampleSchema = sampleSchema
     }
@@ -61,7 +79,11 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         super.createModel()
     }
 
-    def loadOpenBisProjectInfo(String projectID) {
+    /**
+     * Loads the project information from OpenBis for a given project identifier
+     * @param projectID specifying the project for which data needs to be loaded
+     */
+    void loadOpenBisProjectInfo(String projectID) {
         LOG.info "Fetching Project Information ..."
 
         // invoke other API methods using the session token, for instance search for spaces
@@ -78,30 +100,30 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
         projectFetchOptions.withExperimentsUsing(experimentFetchOptions)
 
-        SearchResult<Project> projects = v3.searchProjects(sessionToken, projectSearchCriteria, projectFetchOptions)
+        SearchResult<Project> projects = applicationServerApiV3.searchProjects(sessionToken, projectSearchCriteria, projectFetchOptions)
         project = projects.getObjects().get(0)
 
         checkSpaceAvailability()
 
-
         //todo how to get rid of code here?
-        Map projectInfo =  mapper.mapProperties(["Q_PROJECT_DETAILS":project.description])
-        //validate the object
+        Map projectInfo = openBisMapper.mapProperties(["Q_PROJECT_DETAILS": project.description])
         projectValidation(projectInfo)
 
-        repoWizProject = new RepoWizProject(projectID,projectInfo)
+        repoWizProject = new RepoWizProject(projectID, projectInfo)
 
         //prepare condition parse for samples
-        project.experiments.each {exp ->
-            if(exp.type.code == "Q_PROJECT_DETAILS"){
+        project.experiments.each { exp ->
+            if (exp.type.code == "Q_PROJECT_DETAILS") {
                 conditionParser = new ConditionParser(exp.properties)
                 conditionParser.parse()
             }
         }
     }
 
-    //load the RepoWiz sample info
-    def loadOpenBisSampleInfo() { //do that for a experiment or generally?? Experiment experiment
+    /**
+     * Loads the OpenBis sample information that is stored for the previously fetched OpenBis project
+     */
+    void loadOpenBisSampleInfo() {
         LOG.info "Fetching Sample Information ..."
 
         SampleFetchOptions fetchOptions = new SampleFetchOptions()
@@ -120,34 +142,40 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         sampleSearchCriteria.withExperiment().withProject().withCode().thatEquals(project.code)
         sampleSearchCriteria.withType().withCode().thatEquals("Q_TEST_SAMPLE")
 
-        SearchResult<Sample> samples = v3.searchSamples(sessionToken, sampleSearchCriteria, fetchOptions)
+        SearchResult<Sample> samples = applicationServerApiV3.searchSamples(sessionToken, sampleSearchCriteria, fetchOptions)
 
         int counter = 1
         samples.objects.each { sample ->
             //todo mapp the terms before adding to project!!!!!
-            HashMap sampleProperties = collectProperties(sample)
+            Map sampleProperties = collectProperties(sample)
             sampleValidation(sampleProperties)
 
-            repoWizSamples << new RepoWizSample("Sample "+counter, sampleProperties)
-            counter ++
+            repoWizSamples << new RepoWizSample("Sample " + counter, sampleProperties)
+            counter++
         }
 
     }
 
-    def collectProperties(Sample sample){
-        HashMap<String,String> allProperties = new HashMap()
+    /**
+     * Collects all properties and the properties of the related datasets of a sample and stores them in a map
+     *
+     * @param sample is an OpenBis sample
+     * @return a map containing all properties of the sample
+     */
+    HashMap collectProperties(Sample sample) {
+        HashMap<String, String> allProperties = new HashMap()
         //fetch info about experiments and related samples
         allProperties << fetchParentSamples(sample)
         allProperties << fetchChildSamples(sample)
 
-        allProperties << mapper.maskDuplicateProperties(sample.type.code,sample.properties)
+        allProperties << openBisMapper.maskDuplicateProperties(sample.type.code, sample.properties)
 
         //map openBis vocabulary to readable names
-        allProperties.each {key, value ->
+        allProperties.each { key, value ->
             allProperties.put(key.toString(), getVocabulary(value.toString()))
         }
 
-        allProperties = mapper.mapProperties(allProperties)
+        allProperties = openBisMapper.mapProperties(allProperties)
 
         //just load the dataset for the current sample //todo can there be a sample higher than the q_test_sample??
         LOG.info "Fetching Data Set ..."
@@ -155,12 +183,18 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
 
         //add conditions
         List<Property> res = conditionParser.getSampleCondition(sample.code)
-        allProperties << mapper.mapConditions(res)
+        allProperties << openBisMapper.mapConditions(res)
 
         return allProperties
     }
 
-    //load the RepoWiz data set info
+    /**
+     * Loads the a specific data set type info for a given sample
+     *
+     * @param sampleCode specifying the sample for which the data set needs to be fetched
+     * @param type describes the data set type
+     * @return
+     */
     HashMap loadOpenBisDataSetInfo(String sampleCode, String type) {
 
         HashMap allDataSets = new HashMap()
@@ -169,7 +203,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
             DataSetFileSearchCriteria criteria = new DataSetFileSearchCriteria()
             criteria.withDataSet().withPermId().thatEquals(dataSet.permId.permId)
 
-            SearchResult<DataSetFile> result = dss.searchFiles(sessionToken, criteria, new DataSetFileFetchOptions())
+            SearchResult<DataSetFile> result = dataStoreServer.searchFiles(sessionToken, criteria, new DataSetFileFetchOptions())
             List<DataSetFile> files = result.getObjects()
 
             List<String> dataFiles = []
@@ -182,11 +216,16 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
                     dataFiles << path[path.size() - 1]
                 }
             }
-            allDataSets << mapper.mapFiles(dataFiles, dataSet.type.code)
+            allDataSets << openBisMapper.mapFiles(dataFiles, dataSet.type.code)
         }
         return allDataSets
     }
 
+    /**
+     * Searches for all datasets of a sample recursively
+     * @param sampleId defining the sample for which the datasets are fetched
+     * @return a list of OpenBis datasets
+     */
     List<DataSet> findAllDatasetsRecursive(final String sampleId) {
         SampleSearchCriteria criteria = new SampleSearchCriteria()
         criteria.withCode().thatEquals(sampleId)
@@ -197,7 +236,7 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         dsFetchOptions.withType()
         fetchOptions.withChildrenUsing(fetchOptions)
         fetchOptions.withDataSetsUsing(dsFetchOptions)
-        SearchResult<Sample> result = v3.searchSamples(sessionToken, criteria, fetchOptions)
+        SearchResult<Sample> result = applicationServerApiV3.searchSamples(sessionToken, criteria, fetchOptions)
 
         List<DataSet> foundDatasets = new ArrayList<>()
 
@@ -208,10 +247,15 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
             // fetch all datasets of the children
             foundDatasets.addAll(fetchDescendantDatasets(sample))
         }
-
         return foundDatasets
     }
 
+    /**
+     * Fetches descendant datasets of a sample. The method checks the children and the children of the children,...
+     *
+     * @param sample as an OpenBis sample
+     * @return a list of the found datasets of all descendants of the given sample
+     */
     private static List<DataSet> fetchDescendantDatasets(final Sample sample) {
         List<DataSet> foundSets = new ArrayList<>()
 
@@ -225,22 +269,33 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         return foundSets
     }
 
-
+    /**
+     * Fetches all children of a sample and maps their properties to RepoWiz terms
+     *
+     * @param sample from OpenBis with information on properties and relatives
+     * @return a map of the properties of the samples children
+     */
     HashMap fetchChildSamples(Sample sample) {
         HashMap childProperties = new HashMap()
-        sample.children.each {child ->
-            childProperties << mapper.mapConditions(conditionParser.getSampleCondition(child.code))
+        sample.children.each { child ->
+            childProperties << openBisMapper.mapConditions(conditionParser.getSampleCondition(child.code))
             childProperties << mapper.maskDuplicateProperties(child.type.code, child.properties)
-            childProperties <<mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties)
+            childProperties << mapper.maskDuplicateProperties(child.experiment.type.code, child.experiment.properties)
             childProperties << fetchChildSamples(child)
         }
         return childProperties
     }
 
-    HashMap fetchParentSamples(Sample sample){
+    /**
+     * Fetches all parents of a sample and maps their properties to RepoWiz terms
+     *
+     * @param sample from OpenBis with information on properties and relatives
+     * @return a map of the properties of the samples parents
+     */
+    HashMap fetchParentSamples(Sample sample) {
         HashMap parentProperties = new HashMap()
-        sample.parents.each {parent ->
-            parentProperties << mapper.mapConditions(conditionParser.getSampleCondition(parent.code))
+        sample.parents.each { parent ->
+            parentProperties << openBisMapper.mapConditions(conditionParser.getSampleCondition(parent.code))
             parentProperties << mapper.maskDuplicateProperties(parent.type.code, parent.properties)
             parentProperties << mapper.maskDuplicateProperties(parent.experiment.type.code, parent.experiment.properties)
             parentProperties << fetchParentSamples(parent)
@@ -248,25 +303,33 @@ class OpenBisProjectSearcher extends ProjectSearcher implements ProjectSearchInp
         return parentProperties
     }
 
-
-    def getVocabulary(String code){
+    /**
+     * Searches for the vocabulary term of a code stored in OpenBis.
+     *
+     * @param code which needs to be translated into a value
+     * @return the obtained value, if its not a code the code itself is returned
+     */
+    def getVocabulary(String code) {
         VocabularyTermSearchCriteria vocabularyTermSearchCriteria = new VocabularyTermSearchCriteria()
         vocabularyTermSearchCriteria.withCode().thatEquals(code)
 
-        SearchResult<VocabularyTerm> vocabularyTermSearchResult = v3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
+        SearchResult<VocabularyTerm> vocabularyTermSearchResult = applicationServerApiV3.searchVocabularyTerms(sessionToken, vocabularyTermSearchCriteria, new VocabularyTermFetchOptions())
 
-        if(!vocabularyTermSearchResult.objects.empty && vocabularyTermSearchResult.objects.get(0).label != null){
+        if (!vocabularyTermSearchResult.objects.empty && vocabularyTermSearchResult.objects.get(0).label != null) {
             return vocabularyTermSearchResult.objects.get(0).label
-        }else{
+        } else {
             return code
         }
     }
 
+    /**
+     * Checks if the project and space is accessible for the user or if it is existent
+     */
     private void checkSpaceAvailability() {
 
         if (project == null) {
             LOG.error "Project " + project.code + " does not exist for user"
-            v3.logout(sessionToken)
+            applicationServerApiV3.logout(sessionToken)
             System.exit(0)
         } else {
             LOG.info "Found project " + project.code + " for user"

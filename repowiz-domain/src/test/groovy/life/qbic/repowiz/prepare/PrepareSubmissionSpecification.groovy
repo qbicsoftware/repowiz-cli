@@ -2,7 +2,7 @@ package life.qbic.repowiz.prepare
 
 import spock.lang.Specification
 
-class PrepareSubmissionSpecification extends Specification{
+class PrepareSubmissionSpecification extends Specification {
 
     /* Sample Mock Data for this use case:
     [PAIRED-END EXPERIMENTS:[file name 1, file name 2, average insert size, standard deviation],
@@ -14,9 +14,7 @@ class PrepareSubmissionSpecification extends Specification{
     SAMPLES:[Sample name, title, source name, organism, characteristics: tag, characteristics: tag, characteristics: tag, molecule, description, processed data file, raw file]]
     */
 
-    /**def "Each project sample needs an output file"(){
-
-    }*/
+    /**def "Each project sample needs an output file"(){}*/
 
 
 }

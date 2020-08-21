@@ -5,7 +5,7 @@ import spock.lang.Specification
 
 class JsonParserSpecification extends Specification {
 
-    def "parses file"(){
+    def "parses file"() {
         given:
         //def path = getClass().getResource("/repositories/geo.json").getPath()
         //File file = new File(path)
@@ -21,7 +21,7 @@ class JsonParserSpecification extends Specification {
         res.get("repositoryName") == "Geo"
     }
 
-    def "load schema successfully"(){
+    def "load schema successfully"() {
         given:
         JsonParser parser = new JsonParser(null)
 
@@ -32,7 +32,7 @@ class JsonParserSpecification extends Specification {
         schema != null
     }
 
-    def "parse schema successfully"(){
+    def "parse schema successfully"() {
         given:
         InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream("repositories/clinvar.json")
         JsonParser parser = new JsonParser(stream)
@@ -40,32 +40,32 @@ class JsonParserSpecification extends Specification {
         def map = parser.parse()
 
         when:
-        parser.validate("repositories/repository.schema.json",map)
+        parser.validate("repositories/repository.schema.json", map)
 
         then:
         noExceptionThrown()
     }
 
-    def "throw exception for wrong json data"(){
+    def "throw exception for wrong json data"() {
         given:
         InputStream stream = JsonParser.class.getClassLoader().getResourceAsStream("repositories/invalidRepository.json")
         JsonParser parser = new JsonParser(stream)
         def map = parser.parse()
 
         when:
-        parser.validate("repositories/repository.schema.json",map)
+        parser.validate("repositories/repository.schema.json", map)
 
 
         then:
         thrown IllegalArgumentException
     }
 
-    def "validate integrity number"(){
+    def "validate integrity number"() {
         given:
-        def map = ["integrity number":"9.1"]
+        def map = ["integrity number": "9.1"]
 
         when:
-        JsonParser.validate("metadataMapping/RepoWizSample.schema.json",map)
+        JsonParser.validate("metadataMapping/RepoWizSample.schema.json", map)
 
         then:
         noExceptionThrown()

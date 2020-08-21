@@ -1,8 +1,17 @@
 {
   "repositoryName": "ClinVar",
   "dataType": "variants",
-  "uploadTypes": ["lite", "full"],
+  "uploadTypes": [
+    "lite",
+    "full"
+  ],
   "uploadFormat": "template",
-  "uploadRequirements": ["miame",""],
-  "subsequentSteps": ["accession number approval within 5 business days","contact per email: XXXX"]
+  "uploadRequirements": [
+    "miame",
+    ""
+  ],
+  "subsequentSteps": [
+    "accession number approval within 5 business days",
+    "contact per email: XXXX"
+  ]
 }

@@ -1,17 +1,33 @@
 package life.qbic.repowiz.find.tree
 
+/**
+ * This class creates a decision tree
+ *
+ * This class should be used whenever a decision tree is required. A decision tree is a data structure which allows to guide
+ * the user to a suitable repository for his data. The nodes of the tree represent characteristics of his data. The leaf nodes
+ * are repositories which implement the traits of the previously selected nodes.
+ *
+ *  @since: 1.0.0
+ *  @author: Jennifer Bödker
+ *
+ */
 class DecisionTree {
 
     private Node<String> root
 
-    DecisionTree(){
+    /**
+     * Constructs the decision tree
+     */
+    DecisionTree() {
         buildTree()
     }
 
-    void buildTree(){
+    /**
+     * Creates the decision tree
+     */
+    void buildTree() {
         root = new Node<String>("Root");
 
-        //organism type
         Node<String> human = new Node<String>("human")
         Node<String> env = new Node<String>("environmental community")
         Node<String> plant = new Node<String>("plants")
@@ -108,7 +124,6 @@ class DecisionTree {
         open.addChild(protein_human)
         protein_human.addChild("pride")
 
-       //env tree
         root.addChild(env)
 
         env.addChild(expression_data_env)
@@ -183,81 +198,34 @@ class DecisionTree {
 
     }
 
-    List<Node> getFirstDecisionLevel(){
+    /**
+     * Returns the all children of the root
+     * @return a list of all nodes of the first level of the decision tree
+     */
+    List<Node> getFirstDecisionLevel() {
         root.children
     }
 
-    def getRoot(){
-        root
+    /**
+     * Returns the root node of the tree
+     * @return the root node
+     */
+    Node getRoot() {
+        return root
     }
 
-    List<String> getChildrenData(Node<String> parent){
+    /**
+     * Collects the data that is stored in the children of a parent node
+     * @param parent of the children for which the data needs to be collected
+     * @return list of data stored in the child nodes
+     */
+    List<String> getChildrenData(Node<String> parent) {
         List<String> childrenData = []
 
         parent.children.each {
             childrenData << it.data
         }
-
         return childrenData
     }
-
-    /**
-    def findRepository(HashMap<String,String> submissionType){
-
-        if(submissionType.get("organism") == "human"){
-            return getRepository(leafNodeForHuman(submissionType))
-        }
-        getRepository(leafNodeForNoneHuman(submissionType))
-    }
-
-    List<String> getRepository(Node<String> leafNode){
-        List<String> repos = []
-
-        leafNode.children.each {
-            repos << it.data
-        }
-        repos
-    }
-
-    Node<String> leafNodeForHuman(HashMap<String,String> submissionType) throws NullPointerException{
-        String org = submissionType.get("organism")
-        String access = submissionType.get("access_type")
-        String data = submissionType.get("data_type")
-        String experiment = submissionType.get("experiment_type")
-
-        Node<String> org_ = findMatchingNode(root,org)
-        Node<String> access_ = findMatchingNode(org_,access)
-        Node<String> data_ = findMatchingNode(access_,data)
-        Node<String> exp_ = findMatchingNode(data_,experiment)
-
-        exp_
-    }
-
-    Node<String> leafNodeForNoneHuman(HashMap<String,String> submissionType) throws NullPointerException{
-        String org = submissionType.get("organism")
-        String data = submissionType.get("data_type")
-        String experiment = submissionType.get("experiment_type")
-
-        Node<String> org_ = findMatchingNode(root,org)
-        Node<String> data_ = findMatchingNode(org_,data)
-        Node<String> exp_ = findMatchingNode(data_,experiment)
-
-        exp_
-    }
-
-    Node<String> findMatchingNode(Node<String> parentNode, String submissionType) throws NullPointerException{
-        Node<String> match = null
-
-        List<Node<String>> childrenNodes = parentNode.children
-
-        childrenNodes.each {
-            if(it.data == submissionType){
-                match = it
-            }
-        }
-        match
-    }*/
-
-
 
 }
